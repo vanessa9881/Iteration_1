@@ -1,4 +1,4 @@
-package rumi;
+package rummi;
 
 public class main {
 
