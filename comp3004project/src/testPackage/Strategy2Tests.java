@@ -1,5 +1,14 @@
 package testPackage;
 
-public class Strategy2Tests {
+import org.junit.Test;
 
+import rummi.Player;
+
+public class Strategy2Tests {
+	private Player testPlayer = null;
+	
+	@Test
+	public void testTurn(){
+		
+	}
 }
