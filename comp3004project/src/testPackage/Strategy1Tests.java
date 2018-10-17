@@ -1,7 +1,7 @@
 package testPackage;
 
 import static org.junit.Assert.assertTrue;
-//import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,15 @@ public class Strategy1Tests {
 public void test_init_30 () {
 	Strategy1 strat1 = new Strategy1();
 	
-	assertTrue(30 <= strat1.hand());
+	assertTrue(30 <= strat1.init_30_hand());
+	
+}
+
+@Test
+public void test_play() {
+	Strategy1 strat1= new Strategy1();
+	
+	assertEquals(true, strat1.valid_hand());
 	
 }
 
