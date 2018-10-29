@@ -2,18 +2,36 @@ package rummi;
 
 public class Tile {
 
+	private int value;
+	private char colour;
+	
 	public Tile(char c, int i) {
-		// TODO Auto-generated constructor stub
+		value = i;
+		colour = c;
 	}
 
 	public int getValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return value;
 	}
 
 	public String getColour() {
-		// TODO Auto-generated method stub
-		return null;
+		switch (colour) {
+		
+		case 1: colour = 'k';
+		return "Black";
+		
+		case 2: colour = 'r';
+		return "Red";
+		
+		case 3: colour = 'o';
+		return "Orange";
+		
+		case 4: colour = 'b';
+		return "Blue";
+		
+		default: colour ='?';
+		return "Error, tile had no valid colour!";
+		}
 	}
 	
 	@Override
