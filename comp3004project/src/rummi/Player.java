@@ -8,7 +8,7 @@ public class Player {
 	private int handValue;
 	private List<Tile> hand;
 	
-	public void Player() {
+	public Player() {
 		this.hand = new ArrayList<Tile>();
 		this.handValue = 0; 
 	}
