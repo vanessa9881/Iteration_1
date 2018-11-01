@@ -16,5 +16,10 @@ public class Player {
 	public int getHandValue() {
 		return this.handValue;
 	}
+	
+	// For Testing purposes
+	public void setHandValue(int x) {
+		this.handValue = x;
+	}
 
 }

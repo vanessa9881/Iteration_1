@@ -20,5 +20,14 @@ public class Strategy2 extends Player {
 			}
 		}
 	}
+	
+	// Method for Turn
+	public void play(){
+		// if (this.maneNewMelds(players hand value))
+		// 		play turn without making new melds
+		// else
+		// 		play turn regular
+		
+	}
 
 }
