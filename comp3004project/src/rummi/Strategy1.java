@@ -15,6 +15,7 @@ public class Strategy1 extends Player{
 	}
 
 	public boolean playTurn() {
+		p2.setHandValue(20);
 		// TODO Auto-generated method stub
 		if (p2.getHandValue()>1) {
 			//String c = "Play all the melds it can";
