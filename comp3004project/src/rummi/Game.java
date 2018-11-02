@@ -18,6 +18,12 @@ public class Game extends Observable {
 		playerList.add(new Strategy2());
 	}
 	
+	public void boardChanged() {
+		setChanged();
+		notifyObservers();
+	}
+	
+		
 	
 	public void play() {
 		// TODO Auto-generated method stub
