@@ -1,13 +1,13 @@
 package rummi;
 
 public class Strategy1 extends Player{
-	Player p2= new Player();
+	Player p1= new Player();
 	
 	public int thirty_or_over() {
-		p2.setHandValue(40);
+		p1.setHandValue(40);
 		// TODO Auto-generated method stub
-		if (p2.getHandValue() >= 30) {
-			return p2.getHandValue();
+		if (p1.getHandValue() >= 30) {
+			return p1.getHandValue();
 		}
 		else {
 			return 1;
@@ -15,9 +15,9 @@ public class Strategy1 extends Player{
 	}
 
 	public boolean playTurn() {
-		p2.setHandValue(20);
+		p1.setHandValue(20);
 		// TODO Auto-generated method stub
-		if (p2.getHandValue()>1) {
+		if (p1.getHandValue()>1) {
 			//String c = "Play all the melds it can";
 			return true;
 		}
