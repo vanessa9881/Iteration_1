@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import rummi.Strategy1;
 
-import rummi.Player;
+//import rummi.Player;
 
 public class Strategy1Tests {
-	Player p2 = new Player ();
+	//Player p2 = new Player ();
 	Strategy1 strat1 = new Strategy1();
 	
 	
@@ -21,5 +21,9 @@ public void test_30_or_over() {
 	
 }
 
+@Test
+public void test_play() {
+	assertTrue("Play all the Melds it can", strat1.playTurn());
+}
 
 }

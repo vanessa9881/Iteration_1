@@ -13,11 +13,15 @@ public class Player{
 		
 		public Player() {
 			this.hand = new ArrayList<Tile>();
-			this.handValue = 40;
+			this.handValue = 0;
 		}
 		
 		public int getHandValue() {
 			return this.handValue; 
+		}
+		
+		public int setHandValue(int x) {
+			return this.handValue = x; 
 		}
 		
 		}
