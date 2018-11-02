@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Game {
 
 	Deck playingDeck;
-	ArrayList<Player> playerList;
+	public ArrayList<Player> playerList;
 	
 	public Game() {
 		playingDeck = new Deck();
@@ -26,7 +26,7 @@ public class Game {
 				playerIndex = 0;
 			}
 			Player currentPlayer = playerList.get(playerIndex);
-			currentPlayer.play();
+			currentPlayer.play(this);
 			if(currentPlayer.checkWin() == true){
 				break;
 			}
