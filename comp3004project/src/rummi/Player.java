@@ -1,9 +1,8 @@
 package rummi;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class Player implements Observer {
+public class Player extends Observable{
 	//To be done: Constructor with hand, values etc... 
 	private int handValue;
 	private List<Tile> hand;
@@ -21,5 +20,5 @@ public class Player implements Observer {
 	public void setHandValue(int x) {
 		this.handValue = x;
 	}
-
+	
 }
