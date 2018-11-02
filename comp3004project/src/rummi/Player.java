@@ -3,7 +3,7 @@ package rummi;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player implements Observer {
 	//To be done: Constructor with hand, values etc... 
 	private int handValue;
 	private List<Tile> hand;
