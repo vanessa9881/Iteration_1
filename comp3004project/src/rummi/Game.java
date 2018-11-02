@@ -7,7 +7,6 @@ public class Game extends Observable {
 
 	Deck playingDeck;
 	ArrayList<Player> playerList;
-	ArrayList observers;
 	
 	public Game() {
 		playingDeck = new Deck();
@@ -18,17 +17,12 @@ public class Game extends Observable {
 		playerList.add(new Strategy2());
 	}
 	
-<<<<<<< HEAD
 	public void boardChanged() {
 		setChanged();
 		notifyObservers();
 	}
 	
 		
-	
-	public void play() {
-		// TODO Auto-generated method stub
-=======
 	public void start() {
 		playingDeck.shuffle();
 		int playerIndex = 0;
@@ -47,8 +41,6 @@ public class Game extends Observable {
 				playerIndex++;
 			}
 		}
->>>>>>> master
-		
 	}
 
 }

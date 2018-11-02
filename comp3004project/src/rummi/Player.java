@@ -1,14 +1,10 @@
 package rummi;
 
-<<<<<<< HEAD
-import java.util.*;
-public class Player implements Observer {
-=======
-import java.util.ArrayList;
-import java.util.Comparator;
 
-public class Player {
->>>>>>> master
+import java.util.*;
+
+public class Player implements Observer {
+
 	//To be done: Constructor with hand, values etc... 
 	Observable observable;
 	private int handValue;
@@ -29,13 +25,12 @@ public class Player {
 		return this.handValue;
 	}
 	
-<<<<<<< HEAD
+
 	// For Testing purposes
 	public void setHandValue(int x) {
 		this.handValue = x;
 	}
 	
-=======
 	public void sortHand() {
 		//Comparator cmp = new Comparator();
 	}
@@ -52,5 +47,4 @@ public class Player {
 		else {return false;}
 	}
 
->>>>>>> master
 }
