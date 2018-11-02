@@ -13,7 +13,7 @@ public class Player{
 		
 		public Player() {
 			this.hand = new ArrayList<Tile>();
-			this.handValue = 0;
+			this.handValue = 40;
 		}
 		
 		public int getHandValue() {
