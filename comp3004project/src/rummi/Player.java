@@ -35,7 +35,7 @@ public class Player implements Observer {
 		//Comparator cmp = new Comparator();
 	}
 
-	public void play() {
+	public void play(Game game) {
 		// To be overriden by each strategy
 		
 	}
@@ -45,6 +45,11 @@ public class Player implements Observer {
 			return true;
 		}
 		else {return false;}
+	}
+
+	public void play() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

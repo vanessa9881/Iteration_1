@@ -6,7 +6,7 @@ import java.util.*;
 public class Game extends Observable {
 
 	Deck playingDeck;
-	ArrayList<Player> playerList;
+	public ArrayList<Player> playerList;
 	
 	public Game() {
 		playingDeck = new Deck();
@@ -33,7 +33,7 @@ public class Game extends Observable {
 				playerIndex = 0;
 			}
 			Player currentPlayer = playerList.get(playerIndex);
-			currentPlayer.play();
+			currentPlayer.play(this);
 			if(currentPlayer.checkWin() == true){
 				break;
 			}
