@@ -16,8 +16,24 @@ public class Game {
 		playerList.add(new Strategy2());
 	}
 	
-	public void play() {
-		// TODO Auto-generated method stub
+	public void start() {
+		playingDeck.shuffle();
+		int playerIndex = 0;
+		while(true) {
+			// Reset player index back to first player after the fourth player
+			// had their turn
+			if (playerIndex == 4) {
+				playerIndex = 0;
+			}
+			Player currentPlayer = playerList.get(playerIndex);
+			currentPlayer.play();
+			if(currentPlayer.checkWin() == true){
+				break;
+			}
+			else {
+				playerIndex++;
+			}
+		}
 		
 	}
 
