@@ -15,8 +15,8 @@ public class Strategy1Tests {
 	
 	
 @Test
-public void test_init_30 () {	
-	assertTrue(30 <= strat1.init_30_hand());
+public void test_30_or_over() {	
+	assertTrue(30 <= strat1.thirty_or_over());
 	
 }
 

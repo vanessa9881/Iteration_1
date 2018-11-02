@@ -2,14 +2,15 @@ package rummi;
 
 public class Strategy1 extends Player{
 
-	public int init_30_hand() {
+	public int thirty_or_over() {
 		// TODO Auto-generated method stub
-		return 0;
+		if (getHandValue() >= 30) {
+			return getHandValue();
+		}
+		else {
+			return 1;
+		}
 	}
 
-	public boolean valid_hand() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 }
