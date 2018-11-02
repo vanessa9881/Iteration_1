@@ -1,9 +1,12 @@
 package rummi;
+ 
 
 import java.util.ArrayList;
 
 public class Game {
 
+	
+	/*
 	Deck playingDeck;
 	ArrayList<Player> playerList;
 	
@@ -20,5 +23,7 @@ public class Game {
 		// TODO Auto-generated method stub
 		
 	}
+	*/
 
 }
+
