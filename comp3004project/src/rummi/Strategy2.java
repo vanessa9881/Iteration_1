@@ -1,24 +1,43 @@
 package rummi;
 
+import java.util.*;
+
 public class Strategy2 extends Player {
 	
 	//Add constructors, etc... 
 	
 	
-	// Method to show if P3 can make new melds 
-	public boolean makeNewMelds(int playerHand) {
-		int handDifference = 0; 
+	// Method to show if P3 can make new melds based on hands of other players
+	public boolean makeNewMelds(ArrayList<Player> players) {
+		boolean makenew = false;
 		
-		if (playerHand > this.getHandValue()) {
-			return true; 
-		} else {
-			handDifference = this.getHandValue() - playerHand;
-			if (handDifference >= 3) {
-				return false;
+		for (Player player : players) {
+			int handDifference = 0; 
+			if (player.equals(this)) {
+				makenew = makenew; 
+			} else if (player.getHandValue() > this.getHandValue()) {
+				makenew =  true; 
 			} else {
-				return true; 
+				handDifference = this.getHandValue() - player.getHandValue();
+				if (handDifference >= 3) {
+					makenew = false;
+				} else {
+					makenew = true; 
+				}
 			}
+			
 		}
+		return makenew;
+	}
+	
+	// Method for Turn
+	public void play(Game g){
+		if (this.makeNewMelds(g.playerList)) {
+			//play turn without making new melds 
+		} else {
+			//play turn regular (code from player class) 
+		}
+		
 	}
 
 }

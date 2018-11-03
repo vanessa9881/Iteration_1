@@ -1,8 +1,9 @@
 package rummi;
 
 import java.util.ArrayList;
+import java.util.*;
 
-public class Game {
+public class Game extends Observable {
 
 	Deck playingDeck;
 	public ArrayList<Player> playerList;
@@ -16,6 +17,12 @@ public class Game {
 		playerList.add(new Strategy2());
 	}
 	
+	public void boardChanged() {
+		setChanged();
+		notifyObservers();
+	}
+	
+		
 	public void start() {
 		playingDeck.shuffle();
 		int playerIndex = 0;
@@ -34,7 +41,6 @@ public class Game {
 				playerIndex++;
 			}
 		}
-		
 	}
 
 }

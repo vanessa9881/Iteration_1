@@ -1,15 +1,25 @@
 package rummi;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import rummi.Tile;
 	
-	
 
-public class Player {
+import java.util.*;
+
+public class Player implements Observer {
+
 	//To be done: Constructor with hand, values etc... 
+	Observable observable;
 	private int handValue;
 	private ArrayList<Tile> hand;
+	
+	public void update(Observable obs, Object args) {
+		if (obs instanceof Game) {
+			// Code to be finished
+		}
+	}
 	
 	public Player() {
 		this.hand = new ArrayList<Tile>();
@@ -18,6 +28,12 @@ public class Player {
 	
 	public int getHandValue() {
 		return this.handValue;
+	}
+	
+
+	// For Testing purposes
+	public void setHandValue(int x) {
+		this.handValue = x;
 	}
 	
 	public void sortHand() {
