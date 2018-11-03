@@ -8,11 +8,16 @@ public class Player implements Observer {
 	//To be done: Constructor with hand, values etc... 
 	Observable observable;
 	private int handValue;
-	private ArrayList<Tile> hand;
+	protected ArrayList<Tile> hand;
 	
+	// To be modified to fit the board observable methods
 	public void update(Observable obs, Object args) {
 		if (obs instanceof Game) {
 			// Code to be finished
+			Game game = (Game)obs;
+			//this.handValue = ;
+			 ;
+			
 		}
 	}
 	

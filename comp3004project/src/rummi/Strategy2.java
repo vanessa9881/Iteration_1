@@ -5,7 +5,7 @@ import java.util.*;
 public class Strategy2 extends Player {
 	
 	//Add constructors, etc... 
-	
+	private int turnNumber = 0;
 	
 	// Method to show if P3 can make new melds based on hands of other players
 	public boolean makeNewMelds(ArrayList<Player> players) {
@@ -30,14 +30,32 @@ public class Strategy2 extends Player {
 		return makenew;
 	}
 	
+	// Method for initial 30+ point turn 
+	public void initialTurn() {
+		// if hand melds total >= 30 then 
+		// play all available melds in hand
+		// check hand
+	}
+	
+	
 	// Method for Turn
+	@Override
 	public void play(Game g){
-		if (this.makeNewMelds(g.playerList)) {
-			//play turn without making new melds 
+		if (this.turnNumber > 1) {
+			if (this.makeNewMelds(g.playerList)) {
+				//play turn while able to make new melds 
+			} else {
+				// If unable to make new melds, player draws 
+				this.hand.add(g.playingDeck.draw());
+			} 
 		} else {
-			//play turn regular (code from player class) 
+			// for first turn plays 30+ points as fast as possible 
+			this.initialTurn();
 		}
+		this.turnNumber++;
 		
 	}
 
+	
+	
 }
