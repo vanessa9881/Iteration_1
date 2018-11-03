@@ -7,7 +7,7 @@ public class Strategy2 extends Player {
 	//Add constructors, etc... 
 	
 	
-	// Method to show if P3 can make new melds 
+	// Method to show if P3 can make new melds based on hands of other players
 	public boolean makeNewMelds(ArrayList<Player> players) {
 		boolean makenew = false;
 		
@@ -32,11 +32,11 @@ public class Strategy2 extends Player {
 	
 	// Method for Turn
 	public void play(Game g){
-		//if (this.maneNewMelds(playerlist)) {
+		if (this.makeNewMelds(g.playerList)) {
 			//play turn without making new melds 
-		//} else {
+		} else {
 			//play turn regular (code from player class) 
-		//}
+		}
 		
 	}
 
