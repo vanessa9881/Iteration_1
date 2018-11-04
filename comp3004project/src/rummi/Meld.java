@@ -76,7 +76,7 @@ public class Meld {
 				failedGroup = true;
 			}
 		}
-		// Check if the added tile is valid for a 'group'
+		// Check if the added tile is valid for a 'run'
 		// This expects tiles to be placed down in the 
 		// correct sequence, as out of sequence placement
 		// of tiles for a run is not supported!
@@ -84,7 +84,13 @@ public class Meld {
 			// more than the previous tile
 		Tile priorTile = meldTiles.get(meldTiles.size() - 1);
 		if (priorTile.getValue()  + 1 != addedTile.getValue()) {
-			failedRun = true;
+			// Tile is not valid when added to the right
+			// Now check if it is valid when added to the left
+			if (meldTiles.get(0).getValue() == 1 || meldTiles.get(0).getValue() != addedTile.getValue() + 1) {
+				// Left most tile was a 1 or the added tile's
+				// value is not in sequence!
+				failedRun = true;
+			}
 		}
 			// Now check if the tile is the same colour
 			// as the previous tile
