@@ -51,6 +51,7 @@ public class Tile {
 		      String numberValue = number.getSymbol();  
 		      return Integer.parseInt(numberValue);  
 	   		}
+	  
 
 	   /*
 	public String getColour() {
