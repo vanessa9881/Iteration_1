@@ -17,6 +17,7 @@ public class Game extends Observable {
 		playerList.add(new Strategy2());
 	}
 	
+	// To be eventually moved to board class
 	public void boardChanged() {
 		setChanged();
 		notifyObservers();
@@ -42,5 +43,6 @@ public class Game extends Observable {
 			}
 		}
 	}
+	
 
 }
