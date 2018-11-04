@@ -147,4 +147,25 @@ public class Meld {
 			return true;
 		}
 	}
+	
+	// Function for getting value of the meld 
+	public int getValue() {
+		int size = 0; 
+		
+		for (int i = 0; i < this.meldTiles.size(); i++) {
+			size = size + meldTiles.get(i).getValue();
+		}
+		
+		return size; 
+	}
+	
+	// Function for getting the size of the meld
+	public int getSize() {
+		return meldTiles.size();
+	}
+	
+	// Function for obtaining the meld 
+	public ArrayList<Tile> getTiles(){
+		return this.meldTiles;
+	}
 }
