@@ -30,12 +30,48 @@ public class Strategy2 extends Player {
 		return makenew;
 	}
 	
+	// Method for possible melds / runs in hand 
+	public ArrayList<Tile> melds(Player player){
+		ArrayList<Tile> possPlays = new ArrayList<Tile>();
+		
+		
+		for (int i = 1; i < player.hand.size(); i++) {
+			
+		}
+		
+		return possPlays; 
+		
+	}
+	
+	
+	// Method for valid melds 
+	public boolean isValidMeld(ArrayList<Tile> tiles) {
+		boolean valid = false;
+		
+		for (int i =0; i < tiles.size(); i++) {
+			// Check run (Same colour in increasing value)
+			if (tiles.get(i).getValue() + 1 == tiles.get(i + 1).getValue() && 
+					(tiles.get(i).getColour() == tiles.get(i + 1).getColour())) {
+				valid = true;
+				if (tiles.get(i + 1) == null) { break; }
+				
+			} else if (tiles.get(i).getValue() == tiles.get(i + 1).getValue()) {
+				valid = true;
+				if (tiles.get(i + 1) == null) { break; }
+				
+			}
+		}
+		
+		return valid;
+	}
+	
 	// Method for initial 30+ point turn 
 	public void initialTurn() {
 		// if hand melds total >= 30 then 
 		// play all available melds in hand
 		// check hand
 	}
+	
 	
 	
 	// Method for Turn
