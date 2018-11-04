@@ -56,25 +56,22 @@ public class Strategy2 extends Player {
 		
 		if (tiles.size() < 3) {return false;}
 		
-		for (int i =0; i < tiles.size(); i++) {
+		for (int i = 1; i < tiles.size(); i++) {
 			
 			if (tiles.get(i).getColour() == "Orange") {numOrange++;}
 			if (tiles.get(i).getColour() == "Black") {numBlack++;}
-			if (tiles.get(i).getColour() == "Blue") {numRed++;}
-			if (tiles.get(i).getColour() == "Red") {numBlue++;}
+			if (tiles.get(i).getColour() == "Blue") {numBlue++;}
+			if (tiles.get(i).getColour() == "Red") {numRed++;}
 			
 			
 			// Check run (Same colour in increasing value)
-			if (tiles.get(i).getValue() + 1 == tiles.get(i + 1).getValue() && 
-					(tiles.get(i).getColour() == tiles.get(i + 1).getColour())) {
+			if (tiles.get(i - 1).getValue() + 1 == tiles.get(i).getValue() && 
+					(tiles.get(i - 1).getColour() == tiles.get(i).getColour())) {
 				valid = true;
-				if (tiles.get(i + 1) == null) { break; }
 				
-			} else if (tiles.get(i).getValue() == tiles.get(i + 1).getValue() && 
+			} else if (tiles.get(i - 1).getValue() == tiles.get(i).getValue() && 
 					(numBlack == 0) && (numBlue == 0) && (numRed == 0) && (numOrange == 0)) {
 				valid = true;
-				if (tiles.get(i + 1) == null) { break; }
-				
 			}
 		}
 		
