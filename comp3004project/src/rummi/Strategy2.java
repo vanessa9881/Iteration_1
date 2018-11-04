@@ -47,15 +47,31 @@ public class Strategy2 extends Player {
 	// Method for valid melds 
 	public boolean isValidMeld(ArrayList<Tile> tiles) {
 		boolean valid = false;
+		int numBlack, numOrange, numRed, numBlue;
+		
+		numBlack = 0;
+		numBlue = 0;
+		numRed = 0;
+		numOrange = 0;
+		
+		if (tiles.size() < 3) {return false;}
 		
 		for (int i =0; i < tiles.size(); i++) {
+			
+			if (tiles.get(i).getColour() == "Orange") {numOrange++;}
+			if (tiles.get(i).getColour() == "Black") {numBlack++;}
+			if (tiles.get(i).getColour() == "Blue") {numRed++;}
+			if (tiles.get(i).getColour() == "Red") {numBlue++;}
+			
+			
 			// Check run (Same colour in increasing value)
 			if (tiles.get(i).getValue() + 1 == tiles.get(i + 1).getValue() && 
 					(tiles.get(i).getColour() == tiles.get(i + 1).getColour())) {
 				valid = true;
 				if (tiles.get(i + 1) == null) { break; }
 				
-			} else if (tiles.get(i).getValue() == tiles.get(i + 1).getValue()) {
+			} else if (tiles.get(i).getValue() == tiles.get(i + 1).getValue() && 
+					(numBlack == 0) && (numBlue == 0) && (numRed == 0) && (numOrange == 0)) {
 				valid = true;
 				if (tiles.get(i + 1) == null) { break; }
 				
