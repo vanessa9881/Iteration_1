@@ -7,11 +7,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -25,7 +23,6 @@ import javafx.stage.Stage;
 import rummi.Deck;
 import rummi.Player;
 import rummi.Tile;
-
 
 public class RummiApp extends Application {
 	
@@ -47,7 +44,7 @@ public class RummiApp extends Application {
 	// Start method for app when it is launched
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
+		
 	    //Controls Section--------------------------------------------------------------Controls-------------------------------------------
 		root.setRight(addVBox());
 	   
