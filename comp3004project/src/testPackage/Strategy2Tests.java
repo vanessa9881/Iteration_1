@@ -39,8 +39,27 @@ public class Strategy2Tests extends TestCase {
 		testPlayerThree.hand.add(new Tile('b', 10));
 		testPlayerThree.hand.add(new Tile('b', 11));
 		testPlayerThree.hand.add(new Tile('b', 12));
-		
-		
+	
 		assertEquals("This should be valid", true, testPlayerThree.isValidMeld(testPlayerThree.hand));
+		
+		testPlayerThree.hand.clear();
+		
+		testPlayerThree.hand.add(new Tile('b', 10));
+		testPlayerThree.hand.add(new Tile('k', 10));
+		testPlayerThree.hand.add(new Tile('o', 10));
+		testPlayerThree.hand.add(new Tile('o', 10));
+	
+		assertEquals("This should be valid", false, testPlayerThree.isValidMeld(testPlayerThree.hand));
+	
+		testPlayerThree.hand.clear();
+		
+		testPlayerThree.hand.add(new Tile('b', 10));
+		testPlayerThree.hand.add(new Tile('k', 11));
+		testPlayerThree.hand.add(new Tile('o', 12));
+	
+		assertEquals("This should be valid", false, testPlayerThree.isValidMeld(testPlayerThree.hand));
+	
+		
+		
 	}
 }
