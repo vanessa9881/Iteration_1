@@ -23,7 +23,7 @@ public class Number {
    final static Number TWELVE = new Number( "Twelve", "12" );
    final static Number THIRTEEN = new Number( "Thirteen", "13" );
 
-   public final static List VALUES =
+   public final static List<Number> VALUES =
       Collections.unmodifiableList( Arrays.asList( new Number[] { ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN,
                                      EIGHT, NINE, TEN, ELEVEN, TWELVE, THIRTEEN } ) );
    
