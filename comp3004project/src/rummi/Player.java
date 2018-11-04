@@ -22,7 +22,7 @@ public class Player implements Observer {
 	}
 	
 	public Player() {
-		this.hand = new ArrayList<Tile>();
+		this.setHand(new ArrayList<Tile>());
 		this.handValue = 0; 
 	}
 	
@@ -55,5 +55,13 @@ public class Player implements Observer {
 	public void play() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public ArrayList<Tile> getHand() {
+		return hand;
+	}
+
+	public void setHand(ArrayList<Tile> hand) {
+		this.hand = hand;
 	}
 }

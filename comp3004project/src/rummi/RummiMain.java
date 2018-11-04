@@ -6,5 +6,6 @@ public class RummiMain {
 		Game gameObject = new Game();
 		gameObject.start();
 		
+		
 	}
 }

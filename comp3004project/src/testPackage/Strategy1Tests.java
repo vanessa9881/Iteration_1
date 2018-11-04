@@ -14,16 +14,10 @@ public class Strategy1Tests {
 	Strategy1 strat1 = new Strategy1();
 	
 	
-	
 @Test
 public void test_30_or_over() {	
-	assertTrue(30 <= strat1.thirty_or_over());
-	
-}
+	assertTrue(30 <= strat1.score_of_valid_hand());
 
-@Test
-public void test_play() {
-	assertTrue("Play all the Melds it can", strat1.playTurn());
 }
 
 }
