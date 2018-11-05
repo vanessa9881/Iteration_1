@@ -61,7 +61,7 @@ public class RummiMain extends Application {
     
     //Creates a new shuffled deck
     public void newDeck(){
-        tileDeck.restoreDeck(); 
+        tileDeck = new Deck(2);
         tileDeck.shuffle(); 
         System.out.println("Shuffled the deck of tiles"); 
     }
@@ -210,11 +210,4 @@ public class RummiMain extends Application {
 		return playerList;
 	}
 	
-	/*
-	public static void main(String[] args) {
-		Game gameObject = new Game();
-		gameObject.start();
-		
-	}
-	*/
 }

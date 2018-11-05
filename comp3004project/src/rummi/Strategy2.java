@@ -8,6 +8,9 @@ public class Strategy2 extends Player {
 	private int turnNumber = 0;
 	public ArrayList<Meld> melds = new ArrayList<Meld>(); 
 	
+	public Strategy2() {
+	}
+	
 	public ArrayList<Meld> getMelds(){
 		return this.melds;
 	}

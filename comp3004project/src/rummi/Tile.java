@@ -20,9 +20,7 @@ public class Tile {
 	}
 
 	public static String getFilename(Colour colour, Number number) {
-	//   return "file:resources/tiles/"+colour.getName() + number.getSymbol() + ".gif";
-	   return "file:resources/"+number.getSymbol() + colour.getSymbol() + ".gif";
-	   
+	   return "file:resources/"+number.getSymbol() + colour.getSymbol() + ".gif";   
 	}
 	
 	public Number getNumberValue() {
@@ -37,29 +35,24 @@ public class Tile {
 		   return tileImage;
 	}
 	
-	   @Override
-	   public String toString() {
-		   	  return number.toString() + " of " + colour.toString();
-	   }
+	@Override
+	public String toString() {
+		   	  return colour.toString() + " " + number.toString();
+	}
 
-	   public String numberToString() {
+	public String numberToString() {
 		      return number.toString();
-	   }
+	}
 
-	   public String colourToString() {
+	public String colourToString() {
 		      return colour.toString();
-	   }
+	}
 	   
-	   public int getValue() {
+	public int getValue() {
 		      String numberValue = number.getSymbol();  
 		      return Integer.parseInt(numberValue);  
-	   }
-	  
-
-	   /*
-	public String getColour() {
-		return Character.toString(this.colour);
 	}
+	  
 	
 	public void setID(int i) {
 		this.tileID = i;
@@ -68,7 +61,6 @@ public class Tile {
 	public int getID() {
 		return this.tileID;
 	}
-	
 	
 	@Override
     public boolean equals(Object o) {
@@ -86,8 +78,8 @@ public class Tile {
         } 
            
         Tile t = (Tile) o;   
+
         // Compare the char and int  
-        return (t.getValue() == this.getValue()) && (t.getColour().equals(this.getColour()) && (t.getID() == this.getID()));
+        return (t.getValue() == this.getValue()) && (t.getColour().toString().equals(this.getColour().toString()) && (t.getID() == this.getID()));
 	}
-*/
 }

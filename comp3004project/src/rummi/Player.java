@@ -1,6 +1,8 @@
 package rummi;
 
 import java.util.ArrayList;
+import rummi.Tile;
+
 
 public class Player {
 	private int handValue;	//----------To do
@@ -36,9 +38,8 @@ public class Player {
 	}
 	
 	public void play(RummiMain g) {
-		// TODO Auto-generated method stub
-		
-	}	
+		// TODO Auto-generated method stub		
+	}
 	
 	   		/*
 		   public void discardHand() {
@@ -59,28 +60,18 @@ public class Player {
 		    public String toString() {
 		        return hand.toString();
 		    }
-		    
-		     
-=======
 
-import java.util.*;
 
 public class Player implements Observer {
 
->>>>>>> origin/ryan
 	//To be done: Constructor with hand, values etc... 
 	Observable observable;
 	private int handValue;
-	public ArrayList<Tile> hand;
+	private ArrayList<Tile> hand;
 	
-	// To be modified to fit the board observable methods
 	public void update(Observable obs, Object args) {
 		if (obs instanceof Game) {
 			// Code to be finished
-			Game game = (Game)obs;
-			//this.handValue = ;
-			 ;
-			
 		}
 	}
 	
@@ -98,9 +89,7 @@ public class Player implements Observer {
 		this.handValue = x;
 	}
 	
-	public void sortHand() {
-		//Comparator cmp = new Comparator();
-	}
+
 
 	public void play(Game game) {
 		// To be overriden by each strategy
@@ -113,11 +102,10 @@ public class Player implements Observer {
 		}
 		else {return false;}
 	}
-
-	public void play() {
-		// TODO Auto-generated method stub
-		
+	
+	public ArrayList<Tile> getHand() {
+		return hand;
 	}
-	*/
 
+	*/
 }

@@ -2,6 +2,7 @@ package rummi;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public final class Colour {
    private String name;
@@ -12,7 +13,7 @@ public final class Colour {
    public final static Colour BLUE = new Colour("Blue","g");
    public final static Colour YELLOW = new Colour("Yellow","y");
    
-   public final static java.util.List VALUES = Collections.unmodifiableList(
+   public final static List<Colour> VALUES = Collections.unmodifiableList(
 		   Arrays.asList(new Colour[] { RED, BLACK, BLUE, YELLOW } ) );
 
    private Colour(String nameValue, String symbolValue) {

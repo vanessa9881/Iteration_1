@@ -8,8 +8,8 @@ public class Game extends Observable {
 
 	// DEPRECATED
 
-	
 	/*
+	
 	Deck playingDeck;
 	public ArrayList<Player> playerList;
 	
