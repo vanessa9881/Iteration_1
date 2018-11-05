@@ -25,7 +25,11 @@ public class Deck {
 			}
 			i++;
 		}
+		for (int j = 0; j < tileList.size(); j++) {
+			tileList.get(j).setID(j);
+		}
 	}
+	
 	
 	public int getNumberOfTiles() {
 		return tileList.size();

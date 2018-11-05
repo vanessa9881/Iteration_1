@@ -4,10 +4,12 @@ public class Tile {
 
 	private int value;
 	private char colour;
+	private int tileID;
 	
 	public Tile(char c, int i) {
 		value = i;
 		colour = c;
+		tileID = 0;
 	}
 
 	public int getValue() {
@@ -34,6 +36,14 @@ public class Tile {
 		}
 	}
 	
+	public void setID(int i) {
+		this.tileID = i;
+	}
+	
+	public int getID() {
+		return this.tileID;
+	}
+	
 	@Override
     public boolean equals(Object o) {
 		// Overrides the equals method for tile, should check if the colour
@@ -51,7 +61,7 @@ public class Tile {
            
         Tile t = (Tile) o;   
         // Compare the char and int  
-        return (t.getValue() == this.getValue()) && (t.getColour().equals(this.getColour()));
+        return (t.getValue() == this.getValue()) && (t.getColour().equals(this.getColour()) && (t.getID() == this.getID()));
 	}
 
 }

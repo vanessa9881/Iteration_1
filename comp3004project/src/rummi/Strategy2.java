@@ -36,7 +36,7 @@ public class Strategy2 extends Player {
 	
 	
 	// Method for initial 30+ point turn 
-	private boolean initialTurnPlay() {
+	public boolean initialTurnPlay() {
 		int meldTotal = 0;
 		boolean play = true;
 		// if hand melds total >= 30 then 
@@ -53,7 +53,7 @@ public class Strategy2 extends Player {
 	}
 	
 	// Method for getting highest meld available 
-	private Meld highestMeld(ArrayList<Meld> melds) {
+	public Meld highestMeld(ArrayList<Meld> melds) {
 		Meld highMeld = melds.get(0); 
 		for (Meld m : melds) {
 			if (m.getValue() > highMeld.getValue()) {
@@ -63,7 +63,7 @@ public class Strategy2 extends Player {
 		return highMeld; 
 	}
 	
-	private void getMeldsFromHand(){
+	public void getMeldsFromHand(){
 		Meld currMeld;
 		Meld highMeld; 
 		ArrayList<Meld> allMelds = new ArrayList<Meld>();
