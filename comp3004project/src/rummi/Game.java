@@ -1,10 +1,13 @@
 package rummi;
+ 
 
 import java.util.ArrayList;
 import java.util.*;
 
 public class Game extends Observable {
 
+	
+	
 	Deck playingDeck;
 	public ArrayList<Player> playerList;
 	
@@ -43,6 +46,7 @@ public class Game extends Observable {
 			}
 		}
 	}
-	
+
 
 }
+

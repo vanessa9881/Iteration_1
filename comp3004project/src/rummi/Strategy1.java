@@ -78,6 +78,10 @@ public class Strategy1 extends Player{
 		}
 	}
 
+	
+	public boolean First_Turn() {
+		
+	}
 	public int score_of_valid_hand() {
 		// TODO Auto-generated method stub
 			int count = 0;
