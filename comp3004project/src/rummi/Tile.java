@@ -18,9 +18,7 @@ public class Tile {
 	}
 
 	public static String getFilename(Colour colour, Number number) {
-	//   return "file:resources/tiles/"+colour.getName() + number.getSymbol() + ".gif";
-	   return "file:resources/"+number.getSymbol() + colour.getSymbol() + ".gif";
-	   
+	   return "file:resources/"+number.getSymbol() + colour.getSymbol() + ".gif";   
 	}
 	
 	
@@ -36,45 +34,23 @@ public class Tile {
 		   return tileImage;
 	}
 	
-	   @Override
-	   public String toString() {
-		   	  return colour.toString() + " " + number.toString();
-	   		}
-
-	   public String numberToString() {
-		      return number.toString();
-	   		}
-
-	   public String colourToString() {
-		      return colour.toString();
-	   		}	
-	   public int getValue() {
-		      String numberValue = number.getSymbol();  
-		      return Integer.parseInt(numberValue);  
-	   		}
-	  
-
-	   /*
-	public String getColour() {
-		switch (colour) {
-		
-		case 1: colour = 'k';
-		return "Black";
-		
-		case 2: colour = 'r';
-		return "Red";
-		
-		case 3: colour = 'o';
-		return "Orange";
-		
-		case 4: colour = 'b';
-		return "Blue";
-		
-		default: colour ='?';
-		return "Error, tile had no valid colour!";
-		}
+	@Override
+	public String toString() {
+		   return colour.toString() + " of " + number.toString();
 	}
+
+	public String numberToString() {
+		   return number.toString();
+	}
+
+	public String colourToString() {
+		   return colour.toString();
+	}	
 	
+	public int getValue() {
+		   String numberValue = number.getSymbol();  
+		   return Integer.parseInt(numberValue);  
+	}
 	
 	@Override
     public boolean equals(Object o) {
@@ -92,8 +68,7 @@ public class Tile {
         } 
            
         Tile t = (Tile) o;   
-        // Compare the char and int  
-        return (t.getValue() == this.getValue()) && (t.getColour().equals(this.getColour()));
+        // Compare the number and colour using their tostring()
+        return (t.colourToString().equals(this.colourToString())) && (t.numberToString().equals(this.numberToString()));
 	}
-*/
 }
