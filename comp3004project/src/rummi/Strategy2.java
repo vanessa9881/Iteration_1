@@ -149,6 +149,7 @@ public class Strategy2 extends Player {
 		}
 		this.turnNumber++;
 		// this.sort
+		
 	}
 
 	
