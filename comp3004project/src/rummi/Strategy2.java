@@ -8,6 +8,9 @@ public class Strategy2 extends Player {
 	private int turnNumber = 0;
 	private ArrayList<Meld> melds = new ArrayList<Meld>(); 
 	
+	public ArrayList<Meld> getMelds(){
+		return this.melds;
+	}
 	
 	// Method to show if P3 can make new melds based on hands of other players
 	public boolean makeNewMelds(ArrayList<Player> players) {
@@ -33,7 +36,7 @@ public class Strategy2 extends Player {
 	
 	
 	// Method for initial 30+ point turn 
-	public boolean initialTurnPlay() {
+	private boolean initialTurnPlay() {
 		int meldTotal = 0;
 		boolean play = true;
 		// if hand melds total >= 30 then 
@@ -60,13 +63,10 @@ public class Strategy2 extends Player {
 		return highMeld; 
 	}
 	
-	public void getMeldsFromHand(){
-		this.sortHand();
+	private void getMeldsFromHand(){
 		Meld currMeld;
 		Meld highMeld; 
 		ArrayList<Meld> allMelds = new ArrayList<Meld>();
-		int meldTotal; 
-		
 		
 		// TODO: Iterate through hand to get highest possible melds   
 		while (true) {
@@ -91,8 +91,6 @@ public class Strategy2 extends Player {
 			for (Meld m : allMelds) {
 				if (!(m.checkValid())) {allMelds.remove(m);}
 			}
-			
-			
 			// Breaks if no melds
 			if (allMelds.isEmpty()) {break;}
 			
@@ -121,6 +119,7 @@ public class Strategy2 extends Player {
 		if (this.turnNumber > 1) {
 			if (this.makeNewMelds(g.playerList)) {
 				//play turn while able to make new melds 
+				this.getMeldsFromHand();
 			} else {
 				// If unable to make new melds, player draws 
 				this.hand.add(g.playingDeck.draw());
@@ -129,10 +128,14 @@ public class Strategy2 extends Player {
 			// for first turn plays 30+ points as fast as possible 
 			if (!(this.initialTurnPlay())) {
 				this.hand.add(g.playingDeck.draw());
+				turnNumber = 0; 
+			} else {
+				// Play all possible melds
+				this.getMeldsFromHand();
 			}
 		}
 		this.turnNumber++;
-		
+		this.sortHand();
 	}
 
 	

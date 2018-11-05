@@ -21,6 +21,9 @@ public class Strategy2Tests extends TestCase {
 		players = new ArrayList<Player>();
 		players.add(testPlayerOne);
 		players.add(testPlayerThree);
+		players.add(testPlayerOne);
+		players.add(testPlayerOne);
+		
 		
 		
 		testPlayerThree.setHandValue(14);

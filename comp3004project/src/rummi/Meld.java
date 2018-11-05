@@ -150,13 +150,13 @@ public class Meld {
 	
 	// Function for getting value of the meld 
 	public int getValue() {
-		int size = 0; 
+		int value = 0; 
 		
 		for (int i = 0; i < this.meldTiles.size(); i++) {
-			size = size + meldTiles.get(i).getValue();
+			value = value + meldTiles.get(i).getValue();
 		}
 		
-		return size; 
+		return value; 
 	}
 	
 	// Function for getting the size of the meld
