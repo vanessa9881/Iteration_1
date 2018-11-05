@@ -44,15 +44,37 @@ public class Strategy2Tests extends TestCase {
 		testMeld.addToMeld(new Tile('b', 10));
 		testMeld.addToMeld(new Tile('o', 10));
 		testPlayer.melds.add(testMeld);
-		
-		
 		assertEquals("This should play", true, testPlayer.initialTurnPlay());
+		testPlayer.melds.clear();
+		
+		testMeld = new Meld(new Tile('r', 5));
+		testMeld.addToMeld(new Tile('b', 5));
+		testMeld.addToMeld(new Tile('o', 5));
+		testPlayer.melds.add(testMeld);
+		assertEquals("This should not play", false, testPlayer.initialTurnPlay());
+		testPlayer.melds.clear();
 		
 	}
 	
 	@Test 
 	public void testHighestMeld() {
 		// Tests highest Meld method
+		Strategy2 testPlayer = new Strategy2();
+		
+		//Highest Meld 
+		Meld testMeld = new Meld(new Tile('r', 10));
+		testMeld.addToMeld(new Tile('b', 10));
+		testMeld.addToMeld(new Tile('o', 10));
+		testMeld.addToMeld(new Tile('k', 10));
+		testPlayer.melds.add(testMeld);
+		
+		
+		Meld testMeld2 = new Meld(new Tile('r', 10));
+		testMeld2.addToMeld(new Tile('b', 10));
+		testMeld2.addToMeld(new Tile('o', 10));
+		testPlayer.melds.add(testMeld2);
+		
+		assertEquals("This should play the firt meld", testMeld, testPlayer.highestMeld(testPlayer.melds));		
 	}
 	
 	@Test 
