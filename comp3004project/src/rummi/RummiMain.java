@@ -1,5 +1,7 @@
 package rummi;
 
+import java.util.Arrays;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,18 +31,17 @@ public class RummiMain extends Application {
     private Deck tileDeck;  
     private Player playerHand;
     
-    Button[][] boardButtonGrid = new Button[12][12];
-    Button[] playerHandButtons = new Button[80];    
+    RummiButton[][] boardButtonGrid = new RummiButton[12][12];
+    RummiButton[] playerHandButtons = new RummiButton[64];    
 	BorderPane root = new BorderPane();	
     GridPane gameBoard = new GridPane();
 	FlowPane userPane = new FlowPane();
-	
 	ScrollPane userScrollPane = new ScrollPane();
     Label tileSelectedLabel = new Label("Selected Tile");
-    Tile currentSelectedTile;	
-	int coloumnIndex;
-	int rowIndex;
-	int playerHandIndex;
+    Tile currentSelectedTile;
+    Tile previousSelectedTile;
+    RummiButton currentSelectedButton;
+    RummiButton previousSelectedButton;
 	
 	// Start method for app when it is launched
 	@Override
@@ -77,31 +78,35 @@ public class RummiMain extends Application {
 	}
 	
     //Method for Drawing  Card
-    public void drawCard(Player player, Button[] b){
-        try{
-        	int handIndex = player.getNumberOfTiles();
+    public void drawCard(Player player, RummiButton[] button){
+        	//int handIndex = player.getNumberOfTiles();
         	Tile addedTile = tileDeck.dealTile();
-
         	
-            ImageView img = new ImageView(addedTile.getTileImage()); 	//Get and view of the image
-            img.setFitHeight(50);										//image resize
-            img.setFitWidth(70);										//image resize
-            b[handIndex].setGraphic(img);								//Adding image
-            player.addTile(addedTile);
-        } catch (Exception exception){
-            System.out.println(exception.getMessage()); 
-        }
+        	player.addTile(addedTile);
+        	player.sort();
+        	button[player.findTile(addedTile)].setTile(addedTile);
+        	for (RummiButton b : playerHandButtons) {
+        		b.setGraphic(null);
+        	}
+        	for (RummiButton b : playerHandButtons) {
+        		if (b.getTile() == null) {
+        		}
+        		else {
+        			ImageView img = new ImageView(b.getTile().getTileImage());
+            		img.setFitHeight(50);										//image resize
+                    img.setFitWidth(70);										//image resize
+                    b.setGraphic(img);
+        		}
+        	}            
     }
     
-    private void drawTileToBoard(Tile i,Button[][] b) {
-    	System.out.println("Drawing a card to Game Board from Player Button (currentSelectedTile): " + currentSelectedTile.toString());
+    private void drawTileToBoard(Tile i, RummiButton b) {
+    	//System.out.println("Drawing a card to Game Board from Player Button (currentSelectedTile): " + currentSelectedTile.toString());
     	System.out.println("------------------------------------------------------------");
-    	i = currentSelectedTile;
-    	b = boardButtonGrid;
     	ImageView img = new ImageView(i.getTileImage());
     	img.setFitHeight(40);
         img.setFitWidth(70);				//image resize
-        b[coloumnIndex][rowIndex].setGraphic(img);
+        b.setGraphic(img);  
     }
     
     
@@ -130,27 +135,27 @@ public class RummiMain extends Application {
     
     public void createUserButtons() {
 		for (int i=0; i<64;i++) {					//Always have more buttons than tiles or null
-			playerHandButtons[i] = new Button();
+			playerHandButtons[i] = new RummiButton();
 			playerHandButtons[i].setPrefSize(60, 60);
 			userPane.getChildren().add(playerHandButtons[i]);			
 		}	
 		
 		for(int j=0;j<=63;j++) {
-			Button myPlayerButton = playerHandButtons[j];
-			myPlayerButton.setTooltip(new Tooltip(Integer.toString(j)));
+			RummiButton myPlayerButton = playerHandButtons[j];
+			myPlayerButton.setPos(j,j);
 	        myPlayerButton.setOnAction(new EventHandler<ActionEvent>() {
 	        	// This part will need to be moved to its own class
 	            public void handle(ActionEvent event) {	            	
 	                String currentSelectedTileText;
-	            	playerHandIndex = Integer.parseInt(myPlayerButton.getTooltip().getText());
-	            	System.out.println(playerHandIndex + "th index value selected in playerUserButton array");
+	            	System.out.println(myPlayerButton.getPos()[0] + "the index value selected in playerUserButton array");
 	            	System.out.println(playerHand.getNumberOfTiles() + " Tiles in the hand");
 	            	       	
-	            	if (playerHandIndex <= playerHand.getNumberOfTiles()-1) {
-	            		tileSelectedLabel.setText(playerHand.getTile(playerHandIndex).toString()); 
-	            		currentSelectedTile = playerHand.getTile(playerHandIndex);
+	            	if (myPlayerButton.getPos()[0] <= playerHand.getNumberOfTiles() -1 ) {
+	            		tileSelectedLabel.setText(playerHand.getTile(myPlayerButton.getPos()[0]).toString()); 
+	            		currentSelectedTile = playerHand.getTile(myPlayerButton.getPos()[0]);					// Set currently selected tile
+	            		currentSelectedButton = myPlayerButton;
 	            		System.out.println(currentSelectedTile.toString()+ " Current tile object selected"); 	            		
-	            	} else if (playerHandIndex > playerHand.getNumberOfTiles()-1){
+	            	} else if (myPlayerButton.getPos()[0] > playerHand.getNumberOfTiles() - 1){
 	            		tileSelectedLabel.setText("No tile");	
 	            		currentSelectedTile = null;
 	            		if (currentSelectedTile == null) {
@@ -168,7 +173,7 @@ public class RummiMain extends Application {
     public void createGameBoardButtons() {
 		for( int i=0 ; i<=11 ; i++) {
 			for( int j=0 ; j<=11 ; j++) {
-				boardButtonGrid[i][j] = new Button();
+				boardButtonGrid[i][j] = new RummiButton();
 				boardButtonGrid[i][j].setPrefSize(100, 100);
 				GridPane.setHgrow(boardButtonGrid[i][j], Priority.ALWAYS);
 				GridPane.setVgrow(boardButtonGrid[i][j], Priority.ALWAYS);
@@ -178,45 +183,42 @@ public class RummiMain extends Application {
 		
 		 for(int i=0; i<=11; i++) {
 			    for(int j=0; j<=11; j++) {
-			        Button myButton = boardButtonGrid[i][j];	    
-			        Tooltip coloumnToolTip = new Tooltip(Integer.toString(i));
-			        Tooltip rowToolTip = new Tooltip(Integer.toString(j));
-			       
+			        RummiButton myButton = boardButtonGrid[i][j];
+			        myButton.setPos(i,j);
+			      
 			        myButton.setOnAction(new EventHandler<ActionEvent>() {
 			            public void handle(ActionEvent event) {
-			            	coloumnIndex = (Integer.parseInt(coloumnToolTip.getText()));				
-			            	rowIndex = Integer.parseInt(rowToolTip.getText());							
-			            	//int buttonNumber = 12 * rowIndex + coloumnIndex;            	
-			            	System.out.println("Column Number " + coloumnIndex + " and " + " Row Number " + rowIndex);	
-			            	System.out.println("------------------------------------------------------------");		            	
-			            	//checkTilePlacement(currentSelectedTile);
+			            	if (currentSelectedTile == null) {
+			            		System.out.println("Current selected tile is null");
+			            	}
+			            	else {
+			            		previousSelectedTile = currentSelectedTile;
+			            		previousSelectedButton = currentSelectedButton;
+			            		int x = myButton.getPos()[0];
+			            		int y = myButton.getPos()[1];
+			            		currentSelectedTile = boardButtonGrid[x][y].getTile();
+			            		currentSelectedButton = boardButtonGrid[x][y];
+				            	System.out.println("Column Number " + x + " and " + " Row Number " + y);	
+				            	System.out.println("------------------------------------------------------------");		            	
+				            	checkTilePlacement();
+			            	}
 			            }
 			        });
+			        }
 
 			    }
 			}
-    }
     
-    private void checkTilePlacement(Tile i) {
-    	i = currentSelectedTile;				//This is a Tile 
+    private void checkTilePlacement() { 
     	Boolean occupied = false;
     	
-    	if (i == null) {
-    		System.out.println("This tile has");
-    		System.out.println("------------------------------------------------------------");	
-    	}
-    	
     	if (occupied == false) {
-    	drawTileToBoard(i,boardButtonGrid);
-    		//System.out.println(playerHand.toString());
-    		playerHand.deleteTile(i, playerHandButtons[playerHandIndex]);
-    		//playerHand.sort(new TileComparator());
-    		//System.out.println(playerHand.toString());
-    		
-    	} else {
-    		return;
+    		drawTileToBoard(previousSelectedTile, currentSelectedButton);
+    		previousSelectedButton.setGraphic(null);
+    		playerHand.deleteTile(previousSelectedTile);
+    		currentSelectedTile = null;
+    		currentSelectedButton = null;
     	}
-    	
     }
 
     
