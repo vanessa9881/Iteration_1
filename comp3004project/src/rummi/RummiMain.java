@@ -24,7 +24,7 @@ import rummi.Deck;
 import rummi.Player;
 import rummi.Tile;
 
-public class RummiApp extends Application {
+public class RummiMain extends Application {
 	
     private Deck tileDeck;  
     private Player playerHand;
@@ -253,6 +253,6 @@ public class RummiApp extends Application {
         return vbox;
     }
 	public static void main(String[] args) {
-		RummiApp.launch(args);
+		RummiMain.launch(args);
 	}
 }

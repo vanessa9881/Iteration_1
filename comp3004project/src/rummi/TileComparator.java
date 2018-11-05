@@ -30,5 +30,4 @@ public class TileComparator implements Comparator<Tile>{
 			return -1;
 		}
 	}
-
 }
