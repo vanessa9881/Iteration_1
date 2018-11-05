@@ -99,9 +99,6 @@ public class Strategy2 extends Player {
 			}
 			allMelds.removeAll(toRemoveMeld);
 			
-			System.out.println("all melds are valid");
-			System.out.println(allMelds.size());
-			System.out.println("This is the removed melds size: " + toRemoveMeld.size());
 			
 			
 			// Breaks if no melds
@@ -112,8 +109,6 @@ public class Strategy2 extends Player {
 		
 			// Add highest melds to be played 
 			this.melds.add(highMeld);
-		
-			System.out.println(" First here ");
 			
 			// remove tiles that exist in meld from hand
 			for (int i = 0; i < highMeld.getSize(); i++) {
@@ -122,8 +117,6 @@ public class Strategy2 extends Player {
 				}
 			}
 			this.hand.removeAll(toRemove);
-			
-			System.out.println(" We got here" );
 			
 			// Reset allMelds for next iteration
 			allMelds.clear();
