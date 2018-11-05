@@ -1,0 +1,7 @@
+package rummi;
+
+import java.util.Comparator;
+
+public class TileComparator implements Comparator<? super Tile> {
+
+}
