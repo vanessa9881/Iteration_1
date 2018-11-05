@@ -1,9 +1,12 @@
 package rummi;
+ 
 
 import java.util.ArrayList;
 
 public class Game {
 
+	
+	/*
 	Deck playingDeck;
 	public ArrayList<Player> playerList;
 	
@@ -36,5 +39,7 @@ public class Game {
 		}
 		
 	}
+	*/
 
 }
+
