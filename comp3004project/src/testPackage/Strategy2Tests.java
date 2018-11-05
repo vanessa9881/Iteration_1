@@ -80,6 +80,16 @@ public class Strategy2Tests extends TestCase {
 	@Test 
 	public void testgetMeldsFromHands() {
 		// Tests getMeldsFromHands method
+		Strategy2 testPlayer = new Strategy2();
+		
+		testPlayer.hand.add(new Tile('r', 10));
+		testPlayer.hand.add(new Tile('k', 10));
+		testPlayer.hand.add(new Tile('o', 10));
+		testPlayer.hand.add(new Tile('b', 10));
+		
+		testPlayer.getMeldsFromHand();
+		
+		assertEquals("Hand should be empty", true, testPlayer.hand.isEmpty());
 	}
 	
 	@Test
