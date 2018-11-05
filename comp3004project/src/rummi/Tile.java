@@ -17,23 +17,7 @@ public class Tile {
 	}
 
 	public String getColour() {
-		switch (colour) {
-		
-		case 1: colour = 'k';
-		return "Black";
-		
-		case 2: colour = 'r';
-		return "Red";
-		
-		case 3: colour = 'o';
-		return "Orange";
-		
-		case 4: colour = 'b';
-		return "Blue";
-		
-		default: colour ='?';
-		return "Error, tile had no valid colour!";
-		}
+		return Character.toString(this.colour);
 	}
 	
 	public void setID(int i) {

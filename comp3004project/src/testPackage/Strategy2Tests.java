@@ -5,6 +5,7 @@ import java.util.*;
 
 import junit.framework.TestCase;
 import rummi.Deck;
+import rummi.Meld;
 import rummi.Player;
 import rummi.Strategy2;
 import rummi.Tile;
@@ -39,12 +40,11 @@ public class Strategy2Tests extends TestCase {
 	public void testInitialTurn() {
 		// Tests initial turn function
 		Strategy2 testPlayer = new Strategy2();
+		Meld testMeld = new Meld(new Tile('r', 10));
+		testMeld.addToMeld(new Tile('b', 10));
+		testMeld.addToMeld(new Tile('o', 10));
+		testPlayer.melds.add(testMeld);
 		
-		testPlayer.hand.add(new Tile('k', 9));
-		testPlayer.hand.add(new Tile('k', 10));
-		testPlayer.hand.add(new Tile('k', 11));
-		testPlayer.sortHand();
-		testPlayer.getMeldsFromHand();
 		
 		assertEquals("This should play", true, testPlayer.initialTurnPlay());
 		

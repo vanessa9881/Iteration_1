@@ -6,7 +6,7 @@ public class Strategy2 extends Player {
 	
 	//Add constructors, etc... 
 	private int turnNumber = 0;
-	private ArrayList<Meld> melds = new ArrayList<Meld>(); 
+	public ArrayList<Meld> melds = new ArrayList<Meld>(); 
 	
 	public ArrayList<Meld> getMelds(){
 		return this.melds;
