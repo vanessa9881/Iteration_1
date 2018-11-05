@@ -67,7 +67,7 @@ public class Meld {
 		int groupValue = meldTiles.get(0).getValue();
 		if (addedTile.getValue() != groupValue) {
 			failedGroup = true;
-			System.out.println("Failed at value check");
+			//System.out.println("Failed at value check");
 		}
 			// Now check if it is a different colour from
 			// the other tiles in the meld
@@ -75,8 +75,8 @@ public class Meld {
 		for (Tile t : meldTiles) {
 			if (t.getColour().toString().equals(addedTileColour)) {
 				failedGroup = true;
-				System.out.println("Failed at colour test");
-				System.out.println("Initial tile colour: " +t.getColour() + " Added tile colour: " + addedTileColour);
+				//System.out.println("Failed at colour test");
+				//System.out.println("Initial tile colour: " +t.getColour() + " Added tile colour: " + addedTileColour);
 			}
 		}
 		// Check if the added tile is valid for a 'run'
@@ -105,7 +105,7 @@ public class Meld {
 		// If both are true, that means adding this
 		// tile is not possible as it invalidates the meld
 		if (failedGroup && failedRun) {
-			System.out.println("Wrong");
+			//System.out.println("Wrong");
 		}
 		// If we're here, that means the tile does not
 		// invalidate the meld and can be added

@@ -70,6 +70,8 @@ public class Strategy2 extends Player {
 		Meld currMeld;
 		Meld highMeld; 
 		ArrayList<Meld> allMelds = new ArrayList<Meld>();
+		ArrayList<Tile> toRemove = new ArrayList<Tile>();
+		ArrayList<Meld> toRemoveMeld = new ArrayList<Meld>();
 		
 		// TODO: Iterate through hand to get highest possible melds   
 		while (true) {
@@ -84,16 +86,24 @@ public class Strategy2 extends Player {
 			}
 		
 			// test all possible melds from each other item in hand
-			for (int i = 0; i < allMelds.size(); i++) {
-				if (!(this.hand.get(i).equals(allMelds.get(i)))){
-					allMelds.get(i).addToMeld(this.hand.get(i));
+			for (Meld m : allMelds) {
+				for (Tile t : this.hand) {
+					if (m.getTiles().get(0).equals(t) ==  false) {
+						m.addToMeld(t);
+					}
 				}
 			}
 		
 			// checks if all melds assembled are valid 
 			for (Meld m : allMelds) {
-				if (!(m.checkValid())) {allMelds.remove(m);}
+				if (m.checkValid() == false) {
+					toRemoveMeld.add(m);
+				}
 			}
+			allMelds.removeAll(toRemoveMeld);
+			
+			
+			
 			// Breaks if no melds
 			if (allMelds.isEmpty()) {break;}
 			
@@ -102,15 +112,18 @@ public class Strategy2 extends Player {
 		
 			// Add highest melds to be played 
 			this.melds.add(highMeld);
-		
+			
 			// remove tiles that exist in meld from hand
 			for (int i = 0; i < highMeld.getSize(); i++) {
 				if (this.hand.contains(highMeld.getTiles().get(i))) {
-					this.hand.remove(highMeld.getTiles().get(i)); 
+					toRemove.add(highMeld.getTiles().get(i)); 
 				}
 			}
+			this.hand.removeAll(toRemove);
+			
 			// Reset allMelds for next iteration
 			allMelds.clear();
+			toRemove.clear();
 		}
 		
 	}
@@ -138,7 +151,12 @@ public class Strategy2 extends Player {
 			}
 		}
 		this.turnNumber++;
+<<<<<<< HEAD
+		// this.sort
+		
+=======
 		this.sort();
+>>>>>>> renato
 	}
 
 	
