@@ -154,7 +154,7 @@ public class RummiApp extends Application {
 	            		tileSelectedLabel.setText("No tile");	
 	            		currentSelectedTile = null;
 	            		if (currentSelectedTile == null) {
-	            		System.out.println(" This is clicking on empty tile in hand after setting to null");
+	            		System.out.println("This is clicking on empty tile in hand after setting to null");
 	            		}
 	            	}
 	            	currentSelectedTileText = tileSelectedLabel.getText();
@@ -202,7 +202,7 @@ public class RummiApp extends Application {
     	Boolean occupied = false;
     	
     	if (i == null) {
-    		System.out.println("This tile has: " + i.toString());
+    		System.out.println("This tile has");
     		System.out.println("------------------------------------------------------------");	
     	}
     	
@@ -218,19 +218,7 @@ public class RummiApp extends Application {
     	}
     	
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     
     private VBox addVBox() {
