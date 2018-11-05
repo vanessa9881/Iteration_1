@@ -27,7 +27,6 @@ public class Strategy2 extends Player {
 					makenew = true; 
 				}
 			}
-			
 		}
 		return makenew;
 	}
@@ -80,9 +79,6 @@ public class Strategy2 extends Player {
 				currMeld = new Meld(t);
 				allMelds.add(currMeld);
 			}
-			
-			// Breaks if no melds
-			if (allMelds.isEmpty()) {break;}
 		
 			// test all possible melds from each other item in hand
 			for (int i = 0; i < allMelds.size(); i++) {
@@ -91,6 +87,15 @@ public class Strategy2 extends Player {
 				}
 			}
 		
+			// checks if all melds assembled are valid 
+			for (Meld m : allMelds) {
+				if (!(m.checkValid())) {allMelds.remove(m);}
+			}
+			
+			
+			// Breaks if no melds
+			if (allMelds.isEmpty()) {break;}
+			
 			// find highest value meld from this
 			highMeld = highestMeld(allMelds);
 		
@@ -100,13 +105,11 @@ public class Strategy2 extends Player {
 			// remove tiles that exist in meld from hand
 			for (int i = 0; i < highMeld.getSize(); i++) {
 				if (this.hand.contains(highMeld.getTiles().get(i))) {
-					this.hand.remove(i); 
+					this.hand.remove(highMeld.getTiles().get(i)); 
 				}
 			}
-		
 			// Reset allMelds for next iteration
 			allMelds.clear();
-		
 		}
 		
 	}
@@ -124,7 +127,7 @@ public class Strategy2 extends Player {
 			} 
 		} else {
 			// for first turn plays 30+ points as fast as possible 
-			while(!(this.initialTurnPlay())) {
+			if (!(this.initialTurnPlay())) {
 				this.hand.add(g.playingDeck.draw());
 			}
 		}
