@@ -52,7 +52,12 @@ public class Player {
 
 		   public int findTile(Tile tile) {
 		      return hand.indexOf(tile);
-		   }		       
+		   }
+
+		public void play() {
+			// TODO Auto-generated method stub
+			
+		}		       
 
 		   	/*
 		   @Override

@@ -25,11 +25,11 @@ public class Meld {
 			if (t.getValue() != groupValue) {return false;}
 		}
 		// Check if tiles have different colours
-		// Adding to a hashet will return false
+		// Adding to a hashset will return false
 		// if the element is already in the set
 		HashSet<String> tempTileSet = new HashSet<String>();
 		for (Tile t : meldTiles) {
-			if(!tempTileSet.add(t.getColour())){return false;}
+			if(!tempTileSet.add(t.getColour().toString())){return false;}
 		}
 		
 		return true;
@@ -43,7 +43,7 @@ public class Meld {
 		// Check if tiles are the same colour
 		HashSet<String> tempTileSet = new HashSet<String>();
 		for (Tile t : meldTiles) {
-			tempTileSet.add(t.getColour());
+			tempTileSet.add(t.getColour().toString());
 		}
 		if (tempTileSet.size() > 1) {return false;}
 		
@@ -70,9 +70,9 @@ public class Meld {
 		}
 			// Now check if it is a different colour from
 			// the other tiles in the meld
-		String addedTileColour = addedTile.getColour();
+		String addedTileColour = addedTile.getColour().toString();
 		for (Tile t : meldTiles) {
-			if (t.getColour().equals(addedTileColour)) {
+			if (t.getColour().toString().equals(addedTileColour)) {
 				failedGroup = true;
 			}
 		}
