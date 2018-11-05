@@ -1,34 +1,45 @@
 package rummi;
 
 import java.util.ArrayList;
-//<<<<<<< HEAD
-import java.util.Comparator;
-//=======
-import java.util.Collections;
-import java.util.List;
-import rummi.Tile;
-//>>>>>>> Manish
 
 public class Player {
 	private int handValue;	//----------To do
-	private List hand = new ArrayList();	//Hand is a refrence to a players hand. (hand = players hand)
+	protected ArrayList<Tile> hand;	//Hand is a refrence to a players hand. (hand = players hand)
 	
 	public Player() {
-		this.hand = new ArrayList<Tile>();
-		this.handValue = 0; 
+		hand = new ArrayList<Tile>();
+		handValue = 0; 
 	}
 	
 	public int getHandValue() {
 		return this.handValue;
 	}
 	
-	   public void addTile(Tile tile) {
-		   hand.add(tile);
-	   }
+	public void addTile(Tile tile) {
+		hand.add(tile);
+	}
 	   
-	   public Tile getTile(int index) {
-		      return (Tile) hand.get(index);
-		   }
+	public Tile getTile(int index) {
+		   return (Tile) hand.get(index);
+	}
+	
+	public int getNumberOfTiles() {
+	      return hand.size();
+	}
+	
+	public void sort() {
+	      hand.sort(new TileComparator());;
+	}
+	
+	public int findTile(Tile tile) {
+	      return hand.indexOf(tile);
+	}
+	
+	public void play(RummiMain g) {
+		// TODO Auto-generated method stub
+		
+	}	
+	
 	   		/*
 		   public void discardHand() {
 		      hand.clear();
@@ -37,27 +48,11 @@ public class Player {
 		   }
 		   */
 
-		   public int getNumberOfTiles() {
-		      return hand.size();
-		   }
-
-		   public void sort() {
-		      Collections.sort(hand);
-		   }
 		   /* Observer pattern here?
 		   public boolean isEmpty() {
 		      return hand.isEmpty();
 		   }
-		   */
-
-		   public int findTile(Tile tile) {
-		      return hand.indexOf(tile);
-		   }
-
-		public void play() {
-			// TODO Auto-generated method stub
-			
-		}		       
+		   */       
 
 		   	/*
 		   @Override
@@ -66,9 +61,28 @@ public class Player {
 		    }
 		    
 		     
+=======
+
+import java.util.*;
+
+public class Player implements Observer {
+
+>>>>>>> origin/ryan
 	//To be done: Constructor with hand, values etc... 
+	Observable observable;
 	private int handValue;
-	private ArrayList<Tile> hand;
+	public ArrayList<Tile> hand;
+	
+	// To be modified to fit the board observable methods
+	public void update(Observable obs, Object args) {
+		if (obs instanceof Game) {
+			// Code to be finished
+			Game game = (Game)obs;
+			//this.handValue = ;
+			 ;
+			
+		}
+	}
 	
 	public Player() {
 		this.hand = new ArrayList<Tile>();
@@ -78,7 +92,11 @@ public class Player {
 	public int getHandValue() {
 		return this.handValue;
 	}
-<<<<<<< HEAD
+
+	// For Testing purposes
+	public void setHandValue(int x) {
+		this.handValue = x;
+	}
 	
 	public void sortHand() {
 		//Comparator cmp = new Comparator();
@@ -100,8 +118,6 @@ public class Player {
 		// TODO Auto-generated method stub
 		
 	}
-=======
 	*/
-//>>>>>>> Manish
 
 }

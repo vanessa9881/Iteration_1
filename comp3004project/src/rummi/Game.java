@@ -2,8 +2,11 @@ package rummi;
  
 
 import java.util.ArrayList;
+import java.util.*;
 
-public class Game {
+public class Game extends Observable {
+
+	// DEPRECATED
 
 	
 	/*
@@ -19,6 +22,13 @@ public class Game {
 		playerList.add(new Strategy2());
 	}
 	
+	// To be eventually moved to board class
+	public void boardChanged() {
+		setChanged();
+		notifyObservers();
+	}
+	
+		
 	public void start() {
 		playingDeck.shuffle();
 		int playerIndex = 0;
@@ -37,9 +47,7 @@ public class Game {
 				playerIndex++;
 			}
 		}
-		
 	}
 	*/
-
 }
 

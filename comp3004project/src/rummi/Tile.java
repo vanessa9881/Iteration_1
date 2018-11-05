@@ -10,11 +10,13 @@ public class Tile {
 	private Number number;
 	private Colour colour;
 	private Image tileImage;
+	private int tileID;
 	
 	public Tile(Colour c,Number i, Image t) {
 		number = i;
 		colour = c;
 		tileImage = t;
+		tileID = 0;
 	}
 
 	public static String getFilename(Colour colour, Number number) {
@@ -55,23 +57,15 @@ public class Tile {
 
 	   /*
 	public String getColour() {
-		switch (colour) {
-		
-		case 1: colour = 'k';
-		return "Black";
-		
-		case 2: colour = 'r';
-		return "Red";
-		
-		case 3: colour = 'o';
-		return "Orange";
-		
-		case 4: colour = 'b';
-		return "Blue";
-		
-		default: colour ='?';
-		return "Error, tile had no valid colour!";
-		}
+		return Character.toString(this.colour);
+	}
+	
+	public void setID(int i) {
+		this.tileID = i;
+	}
+	
+	public int getID() {
+		return this.tileID;
 	}
 	
 	
@@ -92,7 +86,7 @@ public class Tile {
            
         Tile t = (Tile) o;   
         // Compare the char and int  
-        return (t.getValue() == this.getValue()) && (t.getColour().equals(this.getColour()));
+        return (t.getValue() == this.getValue()) && (t.getColour().equals(this.getColour()) && (t.getID() == this.getID()));
 	}
 */
 }
