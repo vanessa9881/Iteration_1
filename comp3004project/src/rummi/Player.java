@@ -21,17 +21,12 @@ public class Player {
 	   public void addTile(Tile tile) {
 		   hand.add(tile);
 	   }
+	 
 	   
 	   public Tile getTile(int index) {
 		      return (Tile) hand.get(index);
 		   }
-	   		/*
-		   public void discardHand() {
-		      hand.clear();
-		      total = 0; 
-		      soft = 0; 
-		   }
-		   */
+	   
 
 		   public int getNumberOfTiles() {
 		      return hand.size();
@@ -40,11 +35,6 @@ public class Player {
 		   public void sort() {
 		      Collections.sort(hand);
 		   }
-		   /* Observer pattern here?
-		   public boolean isEmpty() {
-		      return hand.isEmpty();
-		   }
-		   */
 
 		   public int findTile(Tile tile) {
 		      return hand.indexOf(tile);

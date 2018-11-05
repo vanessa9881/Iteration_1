@@ -23,6 +23,7 @@ public class Tile {
 	   
 	}
 	
+	
 	public Number getNumberValue() {
 		return number;
 	}
