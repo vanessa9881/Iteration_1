@@ -40,19 +40,20 @@ public class Tile {
 	   @Override
 	   public String toString() {
 		   	  return number.toString() + " of " + colour.toString();
-	   		}
+	   }
 
 	   public String numberToString() {
 		      return number.toString();
-	   		}
+	   }
 
 	   public String colourToString() {
 		      return colour.toString();
-	   		}	
+	   }
+	   
 	   public int getValue() {
 		      String numberValue = number.getSymbol();  
 		      return Integer.parseInt(numberValue);  
-	   		}
+	   }
 	  
 
 	   /*
