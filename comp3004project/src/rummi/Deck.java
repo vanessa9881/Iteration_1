@@ -12,11 +12,11 @@ public class Deck {
 	
 	private ArrayList<Tile> tileList;
 	
-	public Deck(int numberOfAllTiles) {
+	public Deck() {
 		tileList = new ArrayList<Tile>();
 	
 		try{
-			for(int i = 0; i<numberOfAllTiles; i++){
+			for(int i = 0; i<2; i++){
 				Iterator<Colour> colourIterator = Colour.VALUES.iterator();
 				while ( colourIterator.hasNext() ) {
 					Colour colour = (Colour) colourIterator.next();
@@ -57,6 +57,12 @@ public class Deck {
 			   tileList.remove(0);
 			   return tileToReturn;
 		   }
+	}
+	
+	public Tile deleteTile(int index) {
+		Tile tileToDelete = tileList.get(index);
+		tileList.remove(index);
+		return tileToDelete;
 	}
 
 	public void shuffle() {

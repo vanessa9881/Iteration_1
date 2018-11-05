@@ -23,6 +23,7 @@ public class Tile {
 	   return "file:resources/"+number.getSymbol() + colour.getSymbol() + ".gif";   
 	}
 	
+	
 	public Number getNumberValue() {
 		return number;
 	}
@@ -37,20 +38,20 @@ public class Tile {
 	
 	@Override
 	public String toString() {
-		   	  return colour.toString() + " " + number.toString();
+		return colour.toString() + " " + number.toString();
 	}
 
 	public String numberToString() {
-		      return number.toString();
+		return number.toString();
 	}
 
 	public String colourToString() {
-		      return colour.toString();
+		return colour.toString();
 	}
 	   
 	public int getValue() {
-		      String numberValue = number.getSymbol();  
-		      return Integer.parseInt(numberValue);  
+		String numberValue = number.getSymbol();  
+		return Integer.parseInt(numberValue);  
 	}
 	  
 	
