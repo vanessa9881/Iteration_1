@@ -16,8 +16,17 @@ public class Strategy1Tests {
 	
 @Test
 public void test_30_or_over() {	
-	assertTrue(30 <= strat1.score_of_valid_hand());
+	assert.True(30 <= strat1.score_of_valid_hand());
+}
 
+@Test
+public void initial_turn() {
+	assert.True(true , strat1.firstTurn());
+}
+
+@Test
+public void playing_turn() {
+	assert.True("p1 has finished their turn", strat1.play(game));
 }
 
 }
