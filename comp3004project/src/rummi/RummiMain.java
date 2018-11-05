@@ -1,7 +1,5 @@
 package rummi;
 
-import java.util.Arrays;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -78,7 +75,7 @@ public class RummiMain extends Application {
 	}
 	
     //Method for Drawing  Card
-    public void drawCard(Player player, RummiButton[] button){
+    public void drawTile(Player player, RummiButton[] button){
         	//int handIndex = player.getNumberOfTiles();
         	Tile addedTile = tileDeck.dealTile();
         	
@@ -100,6 +97,11 @@ public class RummiMain extends Application {
         	}            
     }
     
+    public void drawTile(Player p) {
+    	p.addTile(tileDeck.dealTile());
+    	p.sort();
+	}
+    
     private void drawTileToBoard(Tile i, RummiButton b) {
     	//System.out.println("Drawing a card to Game Board from Player Button (currentSelectedTile): " + currentSelectedTile.toString());
     	System.out.println("------------------------------------------------------------");
@@ -117,20 +119,20 @@ public class RummiMain extends Application {
 
     //Initial 14 tiles drawn
     public void newPlayer() {
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons);
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons); 
+    	drawTile(playerHand, playerHandButtons);
     }
     
     public void createUserButtons() {
@@ -238,7 +240,7 @@ public class RummiMain extends Application {
         drawTileButton.setMaxWidth(Double.MAX_VALUE);
         drawTileButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-            	drawCard(playerHand, playerHandButtons);
+            	drawTile(playerHand, playerHandButtons);
             }
         });
         

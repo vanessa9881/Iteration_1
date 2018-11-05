@@ -22,7 +22,7 @@ public class Strategy2 extends Player {
 		for (Player player : players) {
 			int handDifference = 0; 
 			if (player.equals(this)) {
-				makenew = makenew; 
+				// Do nothing
 			} else if (player.getHandValue() > this.getHandValue()) {
 				makenew =  true; 
 			} else {
@@ -151,12 +151,7 @@ public class Strategy2 extends Player {
 			}
 		}
 		this.turnNumber++;
-<<<<<<< HEAD
-		// this.sort
-		
-=======
 		this.sort();
->>>>>>> renato
 	}
 
 	
