@@ -10,35 +10,40 @@ public class Strategy1 extends Player{
 	public void play(RummiMain game){
 		Meld meld_set;
 		Meld meld_run;
-		if(score_of_valid_hand() >= 30) {
-		meld_set = new Meld(null);
-		meld_run= new Meld(null);
-		for(int i=0; i < getHandValue();i++) {
-			int index= i+1;
-			Tile current_tile = hand.get(i);
-			Tile next_tile = hand.get(index);
-			if(index != getHandValue() - 1) {
-			
-			if((current_tile.getValue()== next_tile.getValue()+1 && current_tile.getColour() == next_tile.getColour())){
-				meld_run.addToMeld(hand.remove(i));
-				meld_run.addToMeld(hand.remove(index));
-			}
-			else if((current_tile.getValue()==next_tile.getValue())&&(current_tile.getColour()!=next_tile.getColour())) {
-				meld_set.addToMeld(hand.remove(i));
-				meld_set.addToMeld(hand.remove(index));
-			}
-			else {
-				continue;
-			}
-			index++; 
-		}
-			i++;
-		}
-		meld_set.checkGroup();
-		meld_set.checkRun();
-		
+		int initial_turn =0; 
+		while(!firstTurn()&& initial_turn==0) {
+			game.drawTile(this);
 	}
-		else if(score_of_valid_hand() > 0) {
+		if(score_of_valid_hand() >= 30) {
+			meld_set = new Meld(null);
+			meld_run= new Meld(null);
+			initial_turn=1;
+			for(int i=0; i < getHandValue();i++) {
+				int index= i+1;
+				Tile current_tile = hand.get(i);
+				Tile next_tile = hand.get(index);
+				if(index != getHandValue() - 1) {
+				
+				if((current_tile.getValue()== next_tile.getValue()+1 && current_tile.getColour() == next_tile.getColour())){
+					meld_run.addToMeld(hand.remove(i));
+					meld_run.addToMeld(hand.remove(index));
+				}
+				else if((current_tile.getValue()==next_tile.getValue())&&(current_tile.getColour()!=next_tile.getColour())) {
+					meld_set.addToMeld(hand.remove(i));
+					meld_set.addToMeld(hand.remove(index));
+				}
+				else {
+					continue;
+				}
+				index++; 
+			}
+				i++;
+			}
+			meld_set.checkGroup();
+			meld_set.checkRun();
+			
+		}
+		if(score_of_valid_hand() > 3) {
 			meld_run = new Meld(null);
 			meld_set = new Meld(null);
 			for(int i=0; i < getHandValue();i++) {
@@ -75,7 +80,12 @@ public class Strategy1 extends Player{
 
 	
 	public boolean firstTurn() {
-		return false;
+		if(score_of_valid_hand()>=30) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public int score_of_valid_hand() {
