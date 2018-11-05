@@ -2,56 +2,65 @@ package rummi;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import rummi.Tile;
+import rummi.Number;
+import rummi.Colour;
+import javafx.scene.image.Image;
 
 public class Deck {
-
+	
 	private ArrayList<Tile> tileList;
 	
-	public Deck() {
+	public Deck(int numberOfAllTiles) {
 		tileList = new ArrayList<Tile>();
-		int i = 0;
-		while(i !=2) {
-			for (int x = 1; x <= 13; x++) {
-				tileList.add(new Tile('k', x));
+	
+		try{
+			for(int i = 0; i<numberOfAllTiles; i++){
+				Iterator<Colour> colourIterator = Colour.VALUES.iterator();
+				while ( colourIterator.hasNext() ) {
+					Colour colour = (Colour) colourIterator.next();
+					Iterator<Number> numberIterator = Number.VALUES.iterator();
+					while ( numberIterator.hasNext() ) {
+						Number number = (Number) numberIterator.next();
+						Tile tile = new Tile( colour, number, new Image(Tile.getFilename( colour, number)) );
+						addTile(tile);
+					}
+				}
 			}
-			for (int x = 1; x <= 13; x++) {
-				tileList.add(new Tile('k', x));
-			}
-			for (int x = 1; x <= 13; x++) {
-				tileList.add(new Tile('k', x));
-			}
-			for (int x = 1; x <= 13; x++) {
-				tileList.add(new Tile('k', x));
-			}
-			i++;
-		}
-		for (int j = 0; j < tileList.size(); j++) {
-			tileList.get(j).setID(j);
-		}
+			shuffle(); 
+		} 
+		catch (Exception exception){
+			System.out.println(exception.getMessage()); 
+    	}
 	}
 	
+	public Tile getTile(int index)
+	{
+		return tileList.get(index);
+	}
 	
-	public int getNumberOfTiles() {
-		return tileList.size();
-	}
+	 public void addTile(Tile tile) {
+	      tileList.add(tile);
+	 }
+	 
+	 public int deckSize() {
+		    return tileList.size();
+	 }
 
-	public Tile peek() {
-		return tileList.get(0);
-	}
-
-	public Tile draw() {
-		Tile drawnTile = tileList.get(0);
-		tileList.remove(0);
-		return drawnTile;
-	}
-
-	public ArrayList<Tile> getDeck() {
-		return tileList;
+	public Tile dealTile() {
+		   if (deckSize() == 0) {
+			   throw new NullPointerException("Deck is empty!");
+		   }
+		   else {
+			   Tile tileToReturn = tileList.get(0);
+			   tileList.remove(0);
+			   return tileToReturn;
+		   }
 	}
 
 	public void shuffle() {
 		Collections.shuffle(tileList);
-		
 	}
 
 }

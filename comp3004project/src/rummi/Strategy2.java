@@ -8,6 +8,9 @@ public class Strategy2 extends Player {
 	private int turnNumber = 0;
 	public ArrayList<Meld> melds = new ArrayList<Meld>(); 
 	
+	public Strategy2() {
+	}
+	
 	public ArrayList<Meld> getMelds(){
 		return this.melds;
 	}
@@ -127,20 +130,20 @@ public class Strategy2 extends Player {
 	
 	// Method for Turn
 	@Override
-	public void play(Game g){
+	public void play(RummiMain g){
 		
 		if (this.turnNumber > 1) {
-			if (this.makeNewMelds(g.playerList)) {
+			if (this.makeNewMelds(g.getPlayerList())) {
 				//play turn while able to make new melds 
 				this.getMeldsFromHand();
 			} else {
 				// If unable to make new melds, player draws 
-				this.hand.add(g.playingDeck.draw());
+				g.drawTile(this);
 			} 
 		} else {
 			// for first turn plays 30+ points as fast as possible 
 			if (!(this.initialTurnPlay())) {
-				this.hand.add(g.playingDeck.draw());
+				g.drawTile(this);
 				turnNumber = 0; 
 			} else {
 				// Play all possible melds
@@ -148,8 +151,12 @@ public class Strategy2 extends Player {
 			}
 		}
 		this.turnNumber++;
+<<<<<<< HEAD
 		// this.sort
 		
+=======
+		this.sort();
+>>>>>>> renato
 	}
 
 	
