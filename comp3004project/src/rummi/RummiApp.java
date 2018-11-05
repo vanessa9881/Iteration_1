@@ -27,7 +27,7 @@ import rummi.Tile;
 public class RummiApp extends Application {
 	
     private Deck tileDeck;  
-    private Player playerHand = new Player();
+    private Player playerHand;
     
     Button[][] boardButtonGrid = new Button[12][12];
     Button[] playerHandButtons = new Button[80];    
@@ -37,10 +37,10 @@ public class RummiApp extends Application {
 	
 	ScrollPane userScrollPane = new ScrollPane();
     Label tileSelectedLabel = new Label("Selected Tile");
-    Tile currentSelectedTile;
-	int nextSelectedTileButtonNumber;	
+    Tile currentSelectedTile;	
 	int coloumnIndex;
 	int rowIndex;
+	int playerHandIndex;
 	
 	// Start method for app when it is launched
 	@Override
@@ -62,7 +62,12 @@ public class RummiApp extends Application {
         BorderPane.setAlignment(gameBoard, Pos.TOP_LEFT);
         root.setCenter(gameBoard);	
         createGameBoardButtons();
-	
+
+        
+        newDeck();
+        System.out.println("Size of intial Deck size: " + tileDeck.deckSize());
+        
+        playerHand = new Player(); 
 		newPlayer();
 		
 		//Adding Main Frame to Window
@@ -76,35 +81,35 @@ public class RummiApp extends Application {
         try{
         	int handIndex = player.getNumberOfTiles();
         	Tile addedTile = tileDeck.dealTile();
+
         	
             ImageView img = new ImageView(addedTile.getTileImage()); 	//Get and view of the image
             img.setFitHeight(50);										//image resize
             img.setFitWidth(70);										//image resize
             b[handIndex].setGraphic(img);								//Adding image
-            playerHand.addTile(addedTile);
+            player.addTile(addedTile);
         } catch (Exception exception){
             System.out.println(exception.getMessage()); 
         }
     }
     
     private void drawTileToBoard(Tile i,Button[][] b) {
+    	System.out.println("Drawing a card to Game Board from Player Button (currentSelectedTile): " + currentSelectedTile.toString());
+    	System.out.println("------------------------------------------------------------");
     	i = currentSelectedTile;
     	b = boardButtonGrid;
-   	
-    	System.out.println("Drawing the current selected tile object " + currentSelectedTile);
     	ImageView img = new ImageView(i.getTileImage());
-        img.setFitWidth(60);				//image resize
-        img.setFitHeight(40);
+    	img.setFitHeight(40);
+        img.setFitWidth(70);				//image resize
         b[coloumnIndex][rowIndex].setGraphic(img);
     }
     
     
     //Creates a new shuffled deck
     public void newDeck(){
-        tileDeck = new Deck(104);
-        System.out.println("Deck refreshed"); 
+        tileDeck = new Deck();
     }
-    
+
     //Initial 14 tiles drawn
     public void newPlayer() {
     	drawCard(playerHand, playerHandButtons); 
@@ -120,7 +125,7 @@ public class RummiApp extends Application {
     	drawCard(playerHand, playerHandButtons); 
     	drawCard(playerHand, playerHandButtons); 
     	drawCard(playerHand, playerHandButtons); 
-    	drawCard(playerHand, playerHandButtons); 
+    	drawCard(playerHand, playerHandButtons);
     }
     
     public void createUserButtons() {
@@ -137,28 +142,26 @@ public class RummiApp extends Application {
 	        	// This part will need to be moved to its own class
 	            public void handle(ActionEvent event) {	            	
 	                String currentSelectedTileText;
-	            	int index = Integer.parseInt(myPlayerButton.getTooltip().getText());
-	            	System.out.println(index + "th index value selected in playerUserButton array");
+	            	playerHandIndex = Integer.parseInt(myPlayerButton.getTooltip().getText());
+	            	System.out.println(playerHandIndex + "th index value selected in playerUserButton array");
 	            	System.out.println(playerHand.getNumberOfTiles() + " Tiles in the hand");
 	            	       	
-	            	if (index <= playerHand.getNumberOfTiles()-1) {
-	            		tileSelectedLabel.setText(playerHand.getTile(index).toString()); 
-	            		currentSelectedTile = playerHand.getTile(index);
-	            		System.out.println(currentSelectedTile.toString()+ " Current tile object selected"); 
-	            		
-	            	} else {
-	            		tileSelectedLabel.setText("No tile");	      
-	            		//If a blank space is clicked, it should make the current tile clicked empty (saving the old one)............................
-	            		//If blank tile is selected and clicked on board, crashes because no tile object..........
-	            		//currentSelectedTile = null;		//--------------------------------------------------------????????
-
+	            	if (playerHandIndex <= playerHand.getNumberOfTiles()-1) {
+	            		tileSelectedLabel.setText(playerHand.getTile(playerHandIndex).toString()); 
+	            		currentSelectedTile = playerHand.getTile(playerHandIndex);
+	            		System.out.println(currentSelectedTile.toString()+ " Current tile object selected"); 	            		
+	            	} else if (playerHandIndex > playerHand.getNumberOfTiles()-1){
+	            		tileSelectedLabel.setText("No tile");	
+	            		currentSelectedTile = null;
+	            		if (currentSelectedTile == null) {
+	            		System.out.println(" This is clicking on empty tile in hand after setting to null");
+	            		}
 	            	}
 	            	currentSelectedTileText = tileSelectedLabel.getText();
 	               	System.out.println(currentSelectedTileText + " Selected");
 	               	System.out.println("------------------------------------------------------------");
 	            }
 	        }); 
-	        // --------------------------------------------------------------------------
 		}
     }
     
@@ -166,7 +169,7 @@ public class RummiApp extends Application {
 		for( int i=0 ; i<=11 ; i++) {
 			for( int j=0 ; j<=11 ; j++) {
 				boardButtonGrid[i][j] = new Button();
-				boardButtonGrid[i][j].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+				boardButtonGrid[i][j].setPrefSize(100, 100);
 				GridPane.setHgrow(boardButtonGrid[i][j], Priority.ALWAYS);
 				GridPane.setVgrow(boardButtonGrid[i][j], Priority.ALWAYS);
 				gameBoard.add(boardButtonGrid[i][j], i, j);			
@@ -181,14 +184,12 @@ public class RummiApp extends Application {
 			       
 			        myButton.setOnAction(new EventHandler<ActionEvent>() {
 			            public void handle(ActionEvent event) {
-			            	System.out.println("If condition");
-			            	coloumnIndex = (Integer.parseInt(coloumnToolTip.getText()));				//Do we need to make these variables global?
-			            	rowIndex = Integer.parseInt(rowToolTip.getText());							//Do we need to make these variables global?
-			            	int buttonNumber = 12 * rowIndex + coloumnIndex;							//Checks button position on grid	            	
-			            	System.out.println(buttonNumber);	
-			            	System.out.println("------------------------------------------------------------");
-			            	nextSelectedTileButtonNumber = buttonNumber;		            	
-			            	checkTilePlacement(currentSelectedTile, nextSelectedTileButtonNumber); 		//????????????????????????????????
+			            	coloumnIndex = (Integer.parseInt(coloumnToolTip.getText()));				
+			            	rowIndex = Integer.parseInt(rowToolTip.getText());							
+			            	//int buttonNumber = 12 * rowIndex + coloumnIndex;            	
+			            	System.out.println("Column Number " + coloumnIndex + " and " + " Row Number " + rowIndex);	
+			            	System.out.println("------------------------------------------------------------");		            	
+			            	//checkTilePlacement(currentSelectedTile);
 			            }
 			        });
 
@@ -196,18 +197,41 @@ public class RummiApp extends Application {
 			}
     }
     
-    private  void checkTilePlacement(Tile i, int n) {
-    	i = currentSelectedTile;				//This is a Tile
-    	n = nextSelectedTileButtonNumber;		//This is an int
+    private void checkTilePlacement(Tile i) {
+    	i = currentSelectedTile;				//This is a Tile 
     	Boolean occupied = false;
+    	
+    	if (i == null) {
+    		System.out.println("This tile has: " + i.toString());
+    		System.out.println("------------------------------------------------------------");	
+    	}
     	
     	if (occupied == false) {
     	drawTileToBoard(i,boardButtonGrid);
+    		//System.out.println(playerHand.toString());
+    		playerHand.deleteTile(i, playerHandButtons[playerHandIndex]);
+    		//playerHand.sort(new TileComparator());
+    		//System.out.println(playerHand.toString());
+    		
     	} else {
     		return;
     	}
     	
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     private VBox addVBox() {
         Button drawTileButton = new Button("Draw Tile");
@@ -240,4 +264,7 @@ public class RummiApp extends Application {
         moveInfoTextArea.setEditable(false);      
         return vbox;
     }
+	public static void main(String[] args) {
+		RummiApp.launch(args);
+	}
 }

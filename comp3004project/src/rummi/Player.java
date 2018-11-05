@@ -2,16 +2,19 @@ package rummi;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import javafx.scene.control.Button;
 import rummi.Tile;
 
 public class Player {
-	private int handValue;	//----------To do
-	private List hand = new ArrayList();	//Hand is a refrence to a players hand. (hand = players hand)
+	private ArrayList<Tile> hand;
+	private int handValue;	//----------To do	//Hand is a refrence to a players hand. (hand = players hand)
 	
 	public Player() {
-		this.hand = new ArrayList<Tile>();
-		this.handValue = 0; 
+		hand = new ArrayList<Tile>();
+		handValue = 0; 
 	}
 	
 	public int getHandValue() {
@@ -33,20 +36,30 @@ public class Player {
 		   }
 
 		   public void sort() {
-		      Collections.sort(hand);
+		     // hand.sort(new Comparator());
 		   }
 
 		   public int findTile(Tile tile) {
 		      return hand.indexOf(tile);
 		   }		       
 
-		   	/*
+		   //Setting the graphic of the removed tile to null
+			public void deleteTile(Tile tile,Button b) {
+				hand.remove(tile);
+				b.setGraphic(null);
+			
+			}
+		   	
 		   @Override
 		    public String toString() {
 		        return hand.toString();
 		    }
+
+		public void sort(TileComparator tc) {
+				hand.sort(tc);
+		}
 		    
-		     
+		     /*
 	//To be done: Constructor with hand, values etc... 
 	private int handValue;
 	private List<Tile> hand;

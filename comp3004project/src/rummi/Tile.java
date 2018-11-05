@@ -36,7 +36,7 @@ public class Tile {
 	
 	@Override
 	public String toString() {
-		   return colour.toString() + " of " + number.toString();
+		   return colour.toString() + " " + number.toString();
 	}
 
 	public String numberToString() {
