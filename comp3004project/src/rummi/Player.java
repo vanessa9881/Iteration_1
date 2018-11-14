@@ -1,8 +1,7 @@
 package rummi;
 
 import java.util.ArrayList;
-import rummi.Tile;
-
+import javafx.scene.control.Button;
 
 public class Player {
 	private int handValue;	//----------To do
@@ -22,90 +21,32 @@ public class Player {
 	}
 	   
 	public Tile getTile(int index) {
-		   return (Tile) hand.get(index);
+		return (Tile) hand.get(index);
 	}
 	
 	public int getNumberOfTiles() {
-	      return hand.size();
+		return hand.size();
 	}
 	
 	public void sort() {
-	      hand.sort(new TileComparator());;
+		hand.sort(new TileComparator());;
 	}
 	
 	public int findTile(Tile tile) {
-	      return hand.indexOf(tile);
+		return hand.indexOf(tile);
 	}
 	
 	public void play(RummiMain g) {
 		// TODO Auto-generated method stub		
 	}
 	
-	   		/*
-		   public void discardHand() {
-		      hand.clear();
-		      total = 0; 
-		      soft = 0; 
-		   }
-		   */
-
-		   /* Observer pattern here?
-		   public boolean isEmpty() {
-		      return hand.isEmpty();
-		   }
-		   */       
-
-		   	/*
-		   @Override
-		    public String toString() {
-		        return hand.toString();
-		    }
-
-
-public class Player implements Observer {
-
-	//To be done: Constructor with hand, values etc... 
-	Observable observable;
-	private int handValue;
-	private ArrayList<Tile> hand;
-	
-	public void update(Observable obs, Object args) {
-		if (obs instanceof Game) {
-			// Code to be finished
-		}
+	//Setting the graphic of the removed tile to null
+	public void deleteTile(Tile tile) {
+		hand.remove(tile);
 	}
-	
-	public Player() {
-		this.hand = new ArrayList<Tile>();
-		this.handValue = 0; 
+		   	
+	@Override
+	public String toString() {
+		return hand.toString();
 	}
-	
-	public int getHandValue() {
-		return this.handValue;
-	}
-
-	// For Testing purposes
-	public void setHandValue(int x) {
-		this.handValue = x;
-	}
-	
-
-
-	public void play(Game game) {
-		// To be overriden by each strategy
-		
-	}
-
-	public boolean checkWin() {
-		if (getHandValue() == 0) {
-			return true;
-		}
-		else {return false;}
-	}
-	
-	public ArrayList<Tile> getHand() {
-		return hand;
-	}
-
-	*/
 }
