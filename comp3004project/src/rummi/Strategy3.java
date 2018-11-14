@@ -18,9 +18,17 @@ public class Strategy3 extends Player {
 	
 	
 	// Method for initial 30+ point turn 
-	public boolean initialTurnPlay() {
+	public boolean initialTurnPlay(RummiMain g) {
 		int meldTotal = 0;
 		boolean play = true;
+		// If another player has not played their initial 
+		// Then play = false 
+		
+		//for (Player p : g.getPlayerList()) {
+		//	if (p.getTurn > 1) {play = false;}
+		//	 
+		//}
+		
 		// if hand melds total >= 30 then 
 		// play all available melds in hand
 		// check hand
@@ -30,6 +38,7 @@ public class Strategy3 extends Player {
 		if (meldTotal < 30) {
 			play = false; 
 		}
+		
 		return play; 
 		
 	}
@@ -125,7 +134,7 @@ public class Strategy3 extends Player {
 			}
 		} else {
 			// for first turn plays 30+ points as fast as possible 
-			if (!(this.initialTurnPlay())) {
+			if (!(this.initialTurnPlay(g))) {
 				g.drawTile(this);
 				turnNumber = 0; 
 			} else {
