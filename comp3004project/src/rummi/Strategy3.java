@@ -2,40 +2,18 @@ package rummi;
 
 import java.util.*;
 
-// Actually Strategy 3
-public class Strategy2 extends Player {
+// Actually strategy 2 
+public class Strategy3 extends Player {
 	
 	//Add constructors, etc... 
 	private int turnNumber = 0;
 	public ArrayList<Meld> melds = new ArrayList<Meld>(); 
 	
-	public Strategy2() {
+	public Strategy3() {
 	}
 	
 	public ArrayList<Meld> getMelds(){
 		return this.melds;
-	}
-	
-	// Method to show if P3 can make new melds based on hands of other players
-	public boolean makeNewMelds(ArrayList<Player> players) {
-		boolean makenew = false;
-		
-		for (Player player : players) {
-			int handDifference = 0; 
-			if (player.equals(this)) {
-				// Do nothing
-			} else if (player.getHandValue() > this.getHandValue()) {
-				makenew =  true; 
-			} else {
-				handDifference = this.getHandValue() - player.getHandValue();
-				if (handDifference >= 3) {
-					makenew = false;
-				} else {
-					makenew = true; 
-				}
-			}
-		}
-		return makenew;
 	}
 	
 	
@@ -57,7 +35,7 @@ public class Strategy2 extends Player {
 	}
 	
 	// Method for getting highest meld available 
-	public Meld highestMeld(ArrayList<Meld> melds) {
+	private Meld highestMeld(ArrayList<Meld> melds) {
 		Meld highMeld = melds.get(0); 
 		for (Meld m : melds) {
 			if (m.getValue() > highMeld.getValue()) {
@@ -133,14 +111,18 @@ public class Strategy2 extends Player {
 	@Override
 	public void play(RummiMain g){
 		
+		this.getMeldsFromHand();
+		
 		if (this.turnNumber > 1) {
-			if (this.makeNewMelds(g.getPlayerList())) {
-				//play turn while able to make new melds 
-				this.getMeldsFromHand();
+			// Play next turn 
+			// Checks if all tiles can be played
+			if (this.hand.isEmpty()) {
+				// Play all melds and wins 
 			} else {
-				// If unable to make new melds, player draws 
+				// Play off the board 
+				// For now just draws tile until board is completed
 				g.drawTile(this);
-			} 
+			}
 		} else {
 			// for first turn plays 30+ points as fast as possible 
 			if (!(this.initialTurnPlay())) {
@@ -148,13 +130,10 @@ public class Strategy2 extends Player {
 				turnNumber = 0; 
 			} else {
 				// Play all possible melds
-				this.getMeldsFromHand();
 			}
 		}
 		this.turnNumber++;
 		this.sort();
 	}
 
-	
-	
 }
