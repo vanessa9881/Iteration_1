@@ -6,7 +6,7 @@ import rummi.Tile;
 
 public class Player {
 	private int handValue;	//----------To do
-	protected ArrayList<Tile> hand;	//Hand is a refrence to a players hand. (hand = players hand)
+	public ArrayList<Tile> hand;	//Hand is a refrence to a players hand. (hand = players hand)
 	
 	public Player() {
 		hand = new ArrayList<Tile>();

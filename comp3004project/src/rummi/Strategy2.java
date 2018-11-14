@@ -151,12 +151,7 @@ public class Strategy2 extends Player {
 			}
 		}
 		this.turnNumber++;
-<<<<<<< HEAD
-		// this.sort
-		
-=======
 		this.sort();
->>>>>>> renato
 	}
 
 	
