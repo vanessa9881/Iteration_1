@@ -41,9 +41,8 @@ public class Player {
 	}
 	
 	//Setting the graphic of the removed tile to null
-	public void deleteTile(Tile tile,Button b) {
+	public void deleteTile(Tile tile) {
 		hand.remove(tile);
-		b.setGraphic(null);
 	}
 		   	
 	@Override
