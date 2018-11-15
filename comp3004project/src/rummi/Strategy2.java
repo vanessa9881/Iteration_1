@@ -127,7 +127,7 @@ public class Strategy2 extends Player {
 		}
 		
 	}
-	
+	/*
 	// Method for Turn
 	@Override
 	public void play(RummiMain g){
@@ -153,7 +153,7 @@ public class Strategy2 extends Player {
 		this.turnNumber++;
 		this.sort();
 	}
-
+*/
 	
 	
 }

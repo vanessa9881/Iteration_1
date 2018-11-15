@@ -1,5 +1,7 @@
 package rummi;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import rummi.Deck;
 import rummi.Player;
 import rummi.Tile;
@@ -27,6 +30,10 @@ public class RummiMain extends Application {
 	
     private Deck tileDeck;  
     private Player playerHand;
+    
+    //TIMER------------------------------------------------------------------------------------------------
+    Clock timer = new Clock();
+    //TIMER------------------------------------------------------------------------------------------------
     
     RummiButton[][] boardButtonGrid = new RummiButton[12][12];
     RummiButton[] playerHandButtons = new RummiButton[64];    
@@ -46,7 +53,8 @@ public class RummiMain extends Application {
 		
 	    //Controls Section--------------------------------------------------------------Controls-------------------------------------------
 		root.setRight(addVBox());
-	   
+		
+	    
 		//Player Section----------------------------------------------------------------Player Hand----------------------------------------
 		root.setBottom(userScrollPane);	
         userScrollPane.setContent(userPane); 
@@ -223,7 +231,31 @@ public class RummiMain extends Application {
     	}
     }
 
-    
+    //TIMER------------------------------------------------------------------------------------------------
+    public class Clock extends VBox {
+    	private Timeline animation;
+    	private int tmp = 10;
+    	private String S = "";
+    	Label label = new Label();
+    	
+    	private Clock() {
+    		label.setFont(Font.font("Arial", FontWeight.BOLD, 25));
+    		getChildren().add(label);
+    		
+    		animation = new Timeline(new KeyFrame(Duration.seconds(1), e -> timelabel()));
+    		animation.setCycleCount(Timeline.INDEFINITE);
+    		animation.play();
+    	}
+    	
+    	private void timelabel() { 
+    		if (tmp > 0) {
+    			tmp--;
+    		}
+    		S = tmp + "";
+    		label.setText(S);
+    	}	
+    }
+    //TIMER------------------------------------------------------------------------------------------------
     
     private VBox addVBox() {
         Button drawTileButton = new Button("Draw Tile");
@@ -233,7 +265,7 @@ public class RummiMain extends Application {
         VBox vbox = new VBox();
         Text title = new Text("Information");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 25));
-        vbox.getChildren().addAll(title,drawTileButton, endTurnButton, tileSelectedLabel, moveInfoTextArea);
+        vbox.getChildren().addAll(title,drawTileButton, endTurnButton, tileSelectedLabel, moveInfoTextArea, timer);
         vbox.setSpacing(20);
         
         //Draw Tile Section
