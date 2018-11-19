@@ -14,8 +14,8 @@ public class BoardController {
 		return board.drawTile();
 	}
 	
-	public void placeTile(int xpos, int ypos, Tile t) {
-		board.addBoardTile(t, xpos, ypos);
+	public boolean placeTile(int xpos, int ypos, Tile t) {
+		return board.addBoardTile(t, xpos, ypos);
 	}
 
 	public ArrayList<Tile> getHandTiles() {

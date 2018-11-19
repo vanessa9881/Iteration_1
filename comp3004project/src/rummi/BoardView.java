@@ -49,7 +49,10 @@ public class BoardView {
                 	// Will probably change the return type of this method to boolean,
                 	// so that if true that means the tile was added and that the board button
                 	// can have it's graphic changed
-                	controller.placeTile(x, y, priorSelectedTile);
+                	
+                	if (controller.placeTile(x, y, priorSelectedTile)) {
+                		// Update the button's graphic!
+                	}
         		}
         	}
         	else {
@@ -60,14 +63,15 @@ public class BoardView {
     
     EventHandler<ActionEvent> drawTileButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
+    		
     	}
     };
     
     EventHandler<ActionEvent> handButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
-    		System.out.println("Selected hand tile: " + selectedTile.toString());
     		priorSelectedTile = selectedTile;
     		selectedTile = ((RummiButton) e.getSource()).getTile();
+    		System.out.println("Selected hand tile: " + selectedTile.toString());
     	}
     };
     

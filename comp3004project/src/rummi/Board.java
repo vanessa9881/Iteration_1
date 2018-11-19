@@ -32,7 +32,8 @@ public class Board {
 		return tileDeck.dealTile();
     }
     
-    public void addBoardTile(Tile t, int xpos, int ypos) {
+    public boolean addBoardTile(Tile t, int xpos, int ypos) {
+		return false;
     }
     
     public void moveBoardTile() {
