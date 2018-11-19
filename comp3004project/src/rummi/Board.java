@@ -46,4 +46,8 @@ public class Board {
     public void removeHandTile(Tile t) {
     	handTiles.remove(t);
     }
+
+	public ArrayList<Tile> getHandTiles() {
+		return handTiles;
+	}
 }

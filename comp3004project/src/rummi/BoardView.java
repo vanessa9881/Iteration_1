@@ -37,7 +37,13 @@ public class BoardView {
     EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		selectedTile = ((RummiButton) e.getSource()).getTile();
-    		if (selectedTile == null) {
+    		if (controller.getHandTiles().contains(selectedTile)) {
+    			// Tile clicked on was in the hand
+    			priorSelectedTile = selectedTile;
+    			System.out.println("Selected hand tile: " + selectedTile.toString());
+    			return;
+    		}
+    		if (selectedTile == null ) {
         		System.out.println("Selected board space is empty");
         		if (priorSelectedTile != null) {
             		int x = ((RummiButton) e.getSource()).getPos()[0];
