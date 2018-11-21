@@ -16,7 +16,7 @@ public final class Colour {
    public final static List<Colour> VALUES = Collections.unmodifiableList(
 		   Arrays.asList(new Colour[] { RED, BLACK, BLUE, YELLOW } ) );
 
-   private Colour(String nameValue, String symbolValue) {
+   public Colour(String nameValue, String symbolValue) {
       name = nameValue;
       symbol = symbolValue;
    }

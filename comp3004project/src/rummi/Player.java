@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 
 public class Player {
 	private int handValue;	//----------To do
-	protected ArrayList<Tile> hand;	//Hand is a refrence to a players hand. (hand = players hand)
+	public ArrayList<Tile> hand;	//Hand is a refrence to a players hand. (hand = players hand) ****Had to make it public for test casses***
 	
 	public Player() {
 		hand = new ArrayList<Tile>();
@@ -36,7 +36,7 @@ public class Player {
 		return hand.indexOf(tile);
 	}
 	
-	public void play(RummiMain g) {
+	public void play(Board g) {
 		// TODO Auto-generated method stub		
 	}
 	

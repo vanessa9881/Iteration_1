@@ -68,5 +68,12 @@ public class Deck {
 	public void shuffle() {
 		Collections.shuffle(tileList);
 	}
+	
+	public ArrayList<Tile> getDeck() {
+		for (int i=0; i<=104; i++) {
+			tileList.get(i);		
+		}
+		return tileList;
+	}
 
 }

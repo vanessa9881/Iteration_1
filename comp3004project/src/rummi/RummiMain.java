@@ -1,3 +1,4 @@
+/*
 package rummi;
 
 import javafx.animation.KeyFrame;
@@ -310,3 +311,4 @@ public class RummiMain extends Application {
 		RummiMain.launch(args);
 	}
 }
+*/

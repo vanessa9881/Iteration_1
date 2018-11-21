@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -158,6 +159,10 @@ public class BoardView {
 	
 	public BoardController getController() {
 		return controller;
+	}
+	
+	public Parent asParent() {
+		return gameBoard;
 	}
 	
 }
