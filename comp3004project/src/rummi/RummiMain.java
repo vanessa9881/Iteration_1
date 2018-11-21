@@ -32,9 +32,10 @@ public class RummiMain extends Application {
     private Player playerHand;
     
     //TIMER------------------------------------------------------------------------------------------------
-    Clock timer = new Clock();
+    Clock timer;
     //TIMER------------------------------------------------------------------------------------------------
     
+    boolean timerEnabled = false;
     RummiButton[][] boardButtonGrid = new RummiButton[12][12];
     RummiButton[] playerHandButtons = new RummiButton[64];    
 	BorderPane root = new BorderPane();	
@@ -50,6 +51,8 @@ public class RummiMain extends Application {
 	// Start method for app when it is launched
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		 timer = new Clock();
 		
 	    //Controls Section--------------------------------------------------------------Controls-------------------------------------------
 		root.setRight(addVBox());
@@ -75,6 +78,7 @@ public class RummiMain extends Application {
         
         playerHand = new Player(); 
 		newPlayer();
+
 		
 		//Adding Main Frame to Window
 		Scene scene = new Scene(root, 1300,700);
@@ -242,9 +246,11 @@ public class RummiMain extends Application {
     		label.setFont(Font.font("Arial", FontWeight.BOLD, 25));
     		getChildren().add(label);
     		
+    		if (timerEnabled == true) {
     		animation = new Timeline(new KeyFrame(Duration.seconds(1), e -> timelabel()));
     		animation.setCycleCount(Timeline.INDEFINITE);
     		animation.play();
+    		}
     	}
     	
     	private void timelabel() { 
@@ -257,15 +263,27 @@ public class RummiMain extends Application {
     }
     //TIMER------------------------------------------------------------------------------------------------
     
-    private VBox addVBox() {
+    private VBox addVBox() {    	
+    	
         Button drawTileButton = new Button("Draw Tile");
         Button endTurnButton = new Button("End Turn");
+        Button setTimer = new Button("Set TImer");  
         TextArea moveInfoTextArea = new TextArea();
+        
+        
+        //SetTimer Section
+        setTimer.setMaxWidth(Double.MAX_VALUE);     
+        setTimer.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+            	timerEnabled = true;
+            }
+        });
+        
         
         VBox vbox = new VBox();
         Text title = new Text("Information");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 25));
-        vbox.getChildren().addAll(title,drawTileButton, endTurnButton, tileSelectedLabel, moveInfoTextArea, timer);
+        vbox.getChildren().addAll(title,drawTileButton, endTurnButton, setTimer, tileSelectedLabel, moveInfoTextArea, timer);
         vbox.setSpacing(20);
         
         //Draw Tile Section
