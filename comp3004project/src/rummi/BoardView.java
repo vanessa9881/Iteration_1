@@ -156,6 +156,10 @@ public class BoardView {
         return vbox;
     }
 	
+    public Parent asParent() {
+    	return gameBoard;
+    }
+    
 	public BoardController getController() {
 		return controller;
 	}

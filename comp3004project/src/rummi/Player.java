@@ -1,7 +1,6 @@
 package rummi;
 
 import java.util.ArrayList;
-import javafx.scene.control.Button;
 
 public class Player {
 	private int handValue;	//----------To do
