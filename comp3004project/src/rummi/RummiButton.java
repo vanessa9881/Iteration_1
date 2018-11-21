@@ -11,6 +11,11 @@ public class RummiButton extends Button implements Comparable<RummiButton>{
 	public RummiButton(){
 	}
 	
+	public RummiButton(int x, int y){
+		xPos = x;
+		yPos = y;
+	}
+	
 	public void setPos(int x, int y) {
 		xPos = x;
 		yPos = y;
