@@ -25,8 +25,8 @@ public class Strategy3 extends Player {
 		// Then play = false 
 		
 		//for (Player p : g.getPlayerList()) {
-		//	if (p.getTurn > 1) {play = false;}
-		//	 
+		//	if ((p.getTurn > 1) && (!(p.equals(this))) {
+		//  play = false;}	 
 		//}
 		
 		// if hand melds total >= 30 then 

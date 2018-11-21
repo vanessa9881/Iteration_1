@@ -132,11 +132,11 @@ public class Strategy2 extends Player {
 	// Method for Turn
 	@Override
 	public void play(RummiMain g){
+		this.getMeldsFromHand();
 		
 		if (this.turnNumber > 1) {
 			if (this.makeNewMelds(g.getPlayerList())) {
 				//play turn while able to make new melds 
-				this.getMeldsFromHand();
 			} else {
 				// If unable to make new melds, player draws 
 				g.drawTile(this);
@@ -148,7 +148,6 @@ public class Strategy2 extends Player {
 				turnNumber = 0; 
 			} else {
 				// Play all possible melds
-				this.getMeldsFromHand();
 			}
 		}
 		this.turnNumber++;
