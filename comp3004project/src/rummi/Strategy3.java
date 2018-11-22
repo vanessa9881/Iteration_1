@@ -24,10 +24,10 @@ public class Strategy3 extends Player {
 		// If another player has not played their initial 
 		// Then play = false 
 		
-		//for (Player p : g.getPlayerList()) {
-		//	if ((p.getTurn > 1) && (!(p.equals(this))) {
-		//  play = false;}	 
-		//}
+		for (Player p : b.getPlayerList()) {
+			if ((p.getTurnNumber() > 1) && (!(p.equals(this)))) {
+		  play = false;}	 
+		}
 		
 		// if hand melds total >= 30 then 
 		// play all available melds in hand

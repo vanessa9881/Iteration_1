@@ -6,10 +6,17 @@ import javafx.scene.control.Button;
 public class Player {
 	private int handValue;	//----------To do
 	public ArrayList<Tile> hand;	//Hand is a refrence to a players hand. (hand = players hand)
+	protected int turnNumber;
+	
 	
 	public Player() {
 		hand = new ArrayList<Tile>();
-		handValue = 0; 
+		handValue = 0;
+		turnNumber = 0;
+	}
+	
+	public int getTurnNumber() {
+		return this.turnNumber;
 	}
 	
 	public int getHandValue() {
