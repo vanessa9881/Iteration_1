@@ -7,7 +7,7 @@ public class Strategy2 extends Player {
 	
 	//Add constructors, etc... 
 	private int turnNumber = 0;
-	public ArrayList<Meld> melds = new ArrayList<Meld>(); 
+	private ArrayList<Meld> melds = new ArrayList<Meld>(); 
 	
 	public Strategy2() {
 	}
@@ -129,17 +129,22 @@ public class Strategy2 extends Player {
 		
 	}
 	
+	
 	// Method for Turn
-	@Override
-	public void play(RummiMain g){
+	public void play(Board b){
 		this.getMeldsFromHand();
 		
 		if (this.turnNumber > 1) {
-			if (this.makeNewMelds(g.getPlayerList())) {
+			if (this.makeNewMelds(b.getPlayerList())) {
 				//play turn while able to make new melds 
+				for (int i = 0; i < melds.size(); i++) {
+					b.addHandMeld(melds.get(i));
+				}
+				melds.clear();
 			} else {
 				// If unable to make new melds, player draws 
-				g.drawTile(this);
+				// TO ADD: If unable to make new melds, use board
+				this.hand.add(b.drawTile());
 			} 
 		} else {
 			// for first turn plays 30+ points as fast as possible 
@@ -148,6 +153,10 @@ public class Strategy2 extends Player {
 				turnNumber = 0; 
 			} else {
 				// Play all possible melds
+				for (int i = 0; i< melds.size(); i ++) {
+					b.addHandMeld(melds.get(i));
+				}
+				melds.clear();
 			}
 		}
 		this.turnNumber++;

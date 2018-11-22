@@ -18,7 +18,7 @@ public class Strategy3 extends Player {
 	
 	
 	// Method for initial 30+ point turn 
-	public boolean initialTurnPlay(RummiMain g) {
+	public boolean initialTurnPlay(Board b) {
 		int meldTotal = 0;
 		boolean play = true;
 		// If another player has not played their initial 
@@ -117,8 +117,7 @@ public class Strategy3 extends Player {
 	}
 	
 	// Method for Turn
-	@Override
-	public void play(RummiMain g){
+	public void play(Board b){
 		
 		this.getMeldsFromHand();
 		
@@ -127,18 +126,31 @@ public class Strategy3 extends Player {
 			// Checks if all tiles can be played
 			if (this.hand.isEmpty()) {
 				// Play all melds and wins 
+				for (int i = 0; i < melds.size(); i++) {
+					b.addHandMeld(melds.get(i));
+				}
+				melds.clear();
 			} else {
 				// Play off the board 
+				for(int i = 0; i < this.hand.size(); i++) {
+					for (Meld m : b.getMelds()) {
+						m.addToMeld(this.hand.get(i));
+					}
+				}
 				// For now just draws tile until board is completed
-				g.drawTile(this);
+				//this.hand.add(b.drawTile());
 			}
 		} else {
 			// for first turn plays 30+ points as fast as possible 
-			if (!(this.initialTurnPlay(g))) {
-				g.drawTile(this);
+			if (!(this.initialTurnPlay(b))) {
+				this.hand.add(b.drawTile());
 				turnNumber = 0; 
 			} else {
 				// Play all possible melds
+				for (int i = 0; i < melds.size(); i++) {
+					b.addHandMeld(melds.get(i));
+				}
+				melds.clear();
 			}
 		}
 		this.turnNumber++;

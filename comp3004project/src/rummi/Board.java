@@ -44,11 +44,19 @@ public class Board {
     	handTiles.add(t);
     }
     
+    public void addHandMeld(Meld m) {
+    	melds.add(m);
+    }
+    
     public void removeHandTile(Tile t) {
     	handTiles.remove(t);
     }
 
 	public ArrayList<Tile> getHandTiles() {
 		return handTiles;
+	}
+	
+	public ArrayList<Meld> getMelds(){
+		return melds;
 	}
 }
