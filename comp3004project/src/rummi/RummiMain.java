@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -128,6 +129,7 @@ public class RummiMain extends Application {
     //Creates a new shuffled deck
     public void newDeck(){
         tileDeck = new Deck();
+        
     }
 
     //Initial 14 tiles drawn
@@ -270,6 +272,7 @@ public class RummiMain extends Application {
         Button endTurnButton = new Button("End Turn");
         Button setTimer = new Button("Set TImer");  
         TextArea moveInfoTextArea = new TextArea();
+        TextField textField = new TextField();
         
         
         //SetTimer Section
@@ -284,7 +287,7 @@ public class RummiMain extends Application {
         VBox vbox = new VBox();
         Text title = new Text("Information");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 25));
-        vbox.getChildren().addAll(title,drawTileButton, endTurnButton, setTimer, tileSelectedLabel, moveInfoTextArea, timer);
+        vbox.getChildren().addAll(title,drawTileButton, endTurnButton, setTimer, tileSelectedLabel, moveInfoTextArea, timer, textField);
         vbox.setSpacing(20);
         
         //Draw Tile Section
@@ -292,6 +295,10 @@ public class RummiMain extends Application {
         drawTileButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
             	drawTile(playerHand, playerHandButtons);
+            	String value = textField.getText();
+            	System.out.println(value);
+            	System.out.println(value.charAt(0));
+            	System.out.println(value.charAt(1));
             }
         });
         
@@ -300,6 +307,10 @@ public class RummiMain extends Application {
         
         //Tile Selected Section
         tileSelectedLabel.setMaxWidth(Double.MAX_VALUE);
+        
+       //TextField Section
+        textField.setMaxWidth(Double.MAX_VALUE);
+       
         
         //TextArea Section
         moveInfoTextArea.setMaxWidth(200);
@@ -311,4 +322,5 @@ public class RummiMain extends Application {
 		RummiMain.launch(args);
 	}
 }
+
 */

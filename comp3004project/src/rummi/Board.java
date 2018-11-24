@@ -20,7 +20,6 @@ public class Board {
     	melds = new ArrayList<Meld>();
     	handTiles = new ArrayList<Tile>();
     	boardTiles = new HashMap<Point, Tile>();
-    	
     	// Construct the board with each board space being null
     	for(int x = 1; x <= 12; x++) {
     		for (int y = 1; y <= 12; y++) {
@@ -33,8 +32,20 @@ public class Board {
     	// etc
     }
     
+    public void setHMap(HashMap<Point, Tile> map) {
+    	boardTiles = map;
+    }
+    
+	public HashMap<Point, Tile> getSavedHMap() {
+		return boardTiles;
+	}
+    
     public Tile drawTile() {
 		return tileDeck.dealTile();
+    }
+    
+    public Tile drawRiggedTile(String c, String n) {
+		return tileDeck.dealRiggedTile(c,n);
     }
     
     public boolean addBoardTile(Tile t, int xpos, int ypos) {
@@ -76,6 +87,7 @@ public class Board {
     	else {
     		// Should not reach here, throw an error if it does
     	}
+    	return false;
     }
     
     public void moveBoardTile() {

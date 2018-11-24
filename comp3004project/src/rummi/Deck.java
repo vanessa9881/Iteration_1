@@ -59,6 +59,19 @@ public class Deck {
 		   }
 	}
 	
+	public Tile dealRiggedTile(String c, String n) {
+		for (Tile t : tileList) {
+			if (t.getColour().getSymbol().equals(c) && t.getValue() == Integer.parseInt(n)){
+				Tile rigged = t;
+				deleteTile(tileList.indexOf(t));
+				return rigged;
+			}
+		}
+		return null;
+	}
+	
+	
+	
 	public Tile deleteTile(int index) {
 		Tile tileToDelete = tileList.get(index);
 		tileList.remove(index);

@@ -1,6 +1,8 @@
 package rummi;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -9,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -28,11 +31,62 @@ public class BoardView {
     private ArrayList<RummiButton> boardButtons;
     private RummiButton[] handButtons;
     
+    Caretaker caretaker;
+    Originator originator;
+    int saveHMap = 0, currentHMap = 0;
+    HashMap<Point, Tile> originalHMapOnBoard;
+    
+    //Level 4 shit
+    TextField riggedTextField;
+    String riggedColour;
+    String riggedNumber;
+    
     private Tile priorSelectedTile;
     private Tile selectedTile;
     
     private BoardController controller;
     private Board board;
+    
+	public BoardView(BoardController controller, Board model) {
+		this.controller = controller;
+		board = model;
+		caretaker = new Caretaker();
+		originator = new Originator();	
+		riggedTextField = new TextField();
+		
+		initView();
+	}
+    
+	private void initView() {
+		root = new BorderPane();	
+		gameBoard = new GridPane();
+		userPane = new FlowPane();
+		userScrollPane = new ScrollPane();
+		tileSelectedLabel = new Label("Selected Tile");
+		
+		root.setRight(addVBox());
+		root.setBottom(userScrollPane);
+		userScrollPane.setContent(userPane);
+		userScrollPane.setMaxHeight(100);
+		userScrollPane.setFitToWidth(true);
+		userScrollPane.setFitToHeight(true);
+		createHandButtons();	
+		
+		originalHMapOnBoard = board.getSavedHMap();
+		originator.set(originalHMapOnBoard);
+		caretaker.addBoard(originator.storeInBoard());
+		
+		saveHMap++;
+		currentHMap++;
+		//resetBoard.setDisable(false);
+		System.out.println("Added the HMap to the arraylist");
+		
+		gameBoard.setMaxSize(1150, 1000);
+	    BorderPane.setAlignment(gameBoard, Pos.TOP_LEFT);
+	    root.setCenter(gameBoard);	
+	    createBoardButtons();
+	}
+    
     
     EventHandler<ActionEvent> boardButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
@@ -68,6 +122,26 @@ public class BoardView {
     	}
     };
     
+    EventHandler<ActionEvent> resetBoard = new EventHandler<ActionEvent>() {
+    	public void handle(final ActionEvent e) {
+    		//Reset Board to precious copy (doesnt need to check if board valid, this is user activated) 
+    		if(currentHMap >= 1) {
+    			currentHMap--;
+    			HashMap<Point, Tile> previousHMap = originator.restoreFromBoard(caretaker.getBoard(currentHMap));
+    			board.setHMap(previousHMap);
+    		}
+    	}
+    };
+      
+    EventHandler<ActionEvent> enterRiggedTile = new EventHandler<ActionEvent>() {
+    	public void handle(final ActionEvent e) {
+        	String value = riggedTextField.getText();
+        	riggedColour = Character.toString(value.charAt(0));
+        	riggedNumber = Character.toString(value.charAt(1));
+        	board.drawRiggedTile(riggedColour, riggedNumber);					
+    	}
+    };
+    
     EventHandler<ActionEvent> handButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		priorSelectedTile = selectedTile;
@@ -76,34 +150,7 @@ public class BoardView {
     	}
     };
     
-	public BoardView(BoardController controller, Board model) {
-		this.controller = controller;
-		board = model;
-		
-		initView();
-	}
 	
-	private void initView() {
-		root = new BorderPane();	
-		gameBoard = new GridPane();
-		userPane = new FlowPane();
-		userScrollPane = new ScrollPane();
-		tileSelectedLabel = new Label("Selected Tile");
-		
-		root.setRight(addVBox());
-		root.setBottom(userScrollPane);
-		userScrollPane.setContent(userPane);
-		userScrollPane.setMaxHeight(100);
-		userScrollPane.setFitToWidth(true);
-		userScrollPane.setFitToHeight(true);
-		createHandButtons();
-		
-		gameBoard.setMaxSize(1150, 1000);
-	    BorderPane.setAlignment(gameBoard, Pos.TOP_LEFT);
-	    root.setCenter(gameBoard);	
-	    createBoardButtons();
-	}
-    
 	public void createHandButtons() {
 		handButtons = new RummiButton[64];
 		//Always have more buttons than tiles or null
@@ -132,12 +179,14 @@ public class BoardView {
     private VBox addVBox() {
         Button drawTileButton = new Button("Draw Tile");
         Button endTurnButton = new Button("End Turn");
+        Button resetBoard = new Button("Reset Board");
         TextArea moveInfoTextArea = new TextArea();
+        Button enterRiggedTile = new Button("Enter - (example r5)");
         
         VBox vbox = new VBox();
         Text title = new Text("Information");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 25));
-        vbox.getChildren().addAll(title,drawTileButton, endTurnButton, tileSelectedLabel, moveInfoTextArea);
+        vbox.getChildren().addAll(title,drawTileButton, endTurnButton, resetBoard, tileSelectedLabel, moveInfoTextArea, riggedTextField, enterRiggedTile);
         vbox.setSpacing(20);
         
         //Draw Tile Section
@@ -147,6 +196,9 @@ public class BoardView {
         //End Turn Section
         endTurnButton.setMaxWidth(Double.MAX_VALUE);
         
+        //ResetBoard Button Section
+        resetBoard.setMaxWidth(Double.MAX_VALUE);
+        
         //Tile Selected Section
         tileSelectedLabel.setMaxWidth(Double.MAX_VALUE);
         
@@ -154,6 +206,13 @@ public class BoardView {
         moveInfoTextArea.setMaxWidth(200);
         moveInfoTextArea.setText("Move Information");
         moveInfoTextArea.setEditable(false);      
+        
+        //RiggedTextField section
+        riggedTextField.setMaxWidth(Double.MAX_VALUE);
+        
+        //enterRiggedTile button Section
+        enterRiggedTile.setMaxWidth(Double.MAX_VALUE);
+        
         return vbox;
     }
 	
@@ -163,10 +222,6 @@ public class BoardView {
     
 	public BoardController getController() {
 		return controller;
-	}
-	
-	public Parent asParent() {
-		return gameBoard;
 	}
 	
 }
