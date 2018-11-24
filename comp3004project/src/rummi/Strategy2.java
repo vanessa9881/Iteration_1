@@ -132,6 +132,8 @@ public class Strategy2 extends Player {
 	// Method for Turn
 	public void play(Board b){
 		this.getMeldsFromHand();
+		ArrayList<Tile> toRemove = new ArrayList<Tile>();
+		
 		
 		if (this.turnNumber > 1) {
 			if (this.makeNewMelds(b.getPlayerList())) {
@@ -140,15 +142,30 @@ public class Strategy2 extends Player {
 					b.addHandMeld(melds.get(i));
 				}
 				melds.clear();
-			} else {
-				// If unable to make new melds, player draws 
-				// TO ADD: If unable to make new melds, use board
-				this.hand.add(b.drawTile());
+			} else { 
+				// If unable to make new melds, use board or draw
+				// Play off the board 
+				for(int i = 0; i < this.hand.size(); i++) {
+					for (Meld m : b.getMelds()) {
+						m.addToMeld(this.hand.get(i));
+						if (m.checkValid()) {
+							toRemove.add(this.hand.get(i));
+						}
+					}
+				}
+				// if there are no tiles to remove then draw tile
+				// otherwise remove tiles from hand 
+				if (toRemove.isEmpty()) {
+					this.hand.add(b.drawTile());
+				} else {
+					this.hand.removeAll(toRemove);
+					toRemove.clear();
+				}
 			} 
 		} else {
 			// for first turn plays 30+ points as fast as possible 
 			if (!(this.initialTurnPlay())) {
-				g.drawTile(this);
+				this.hand.add(b.drawTile());
 				turnNumber = 0; 
 			} else {
 				// Play all possible melds

@@ -32,6 +32,10 @@ public class Board {
     	// etc
     }
     
+    public ArrayList<Player> getPlayerList() {
+    	return this.playerList;
+    }
+    
     public Tile drawTile() {
 		return tileDeck.dealTile();
     }

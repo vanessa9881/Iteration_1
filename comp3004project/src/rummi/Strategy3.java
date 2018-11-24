@@ -118,7 +118,7 @@ public class Strategy3 extends Player {
 	
 	// Method for Turn
 	public void play(Board b){
-		
+		ArrayList<Tile> toRemove = new ArrayList<Tile>();
 		this.getMeldsFromHand();
 		
 		if (this.turnNumber > 1) {
@@ -135,10 +135,19 @@ public class Strategy3 extends Player {
 				for(int i = 0; i < this.hand.size(); i++) {
 					for (Meld m : b.getMelds()) {
 						m.addToMeld(this.hand.get(i));
+						if (m.checkValid()) {
+							toRemove.add(this.hand.get(i));
+						}
 					}
 				}
-				// For now just draws tile until board is completed
-				//this.hand.add(b.drawTile());
+				// if there are no tiles to remove then draw tile
+				// otherwise remove tiles from hand 
+				if (toRemove.isEmpty()) {
+					this.hand.add(b.drawTile());
+				} else {
+					this.hand.removeAll(toRemove);
+					toRemove.clear();
+				}
 			}
 		} else {
 			// for first turn plays 30+ points as fast as possible 

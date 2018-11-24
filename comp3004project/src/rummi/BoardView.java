@@ -158,9 +158,9 @@ public class BoardView {
         return vbox;
     }
 	
-    public Parent asParent() {
-    	return root;
-    }
+    //public Parent asParent() {
+    //	return root;
+    //}
     
 	public BoardController getController() {
 		return controller;
