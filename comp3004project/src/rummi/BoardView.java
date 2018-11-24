@@ -155,6 +155,7 @@ public class BoardView {
 		handButtons = new RummiButton[64];
 		//Always have more buttons than tiles or null
 		for (int i = 0; i < 64; i++) {
+			handButtons[i] = new RummiButton();
 			handButtons[i].setPrefSize(60, 60);
 			handButtons[i].setOnAction(handButtonPress);
 			userPane.getChildren().add(handButtons[i]);			
@@ -217,7 +218,7 @@ public class BoardView {
     }
 	
     public Parent asParent() {
-    	return gameBoard;
+    	return root;
     }
     
 	public BoardController getController() {
