@@ -11,7 +11,6 @@ public class Board {
     private HashMap<Point, Tile> boardTiles;
     private ArrayList<Tile> handTiles;
     private ArrayList<Meld> melds;
-    private Tile selectedTile;
     
     public Board() {
     	// Playerlist should have players added to it with a gui button!
@@ -44,6 +43,7 @@ public class Board {
     	Tile leftTile;
     	Tile rightTile;
     	if (ypos != 1) {
+    		// Aka if the tile isn't at the leftmost side
     		leftTile = boardTiles.get(new Point(xpos, ypos - 1));
     	}
     	else {
@@ -51,6 +51,7 @@ public class Board {
     	}
     	
     	if (ypos != 12) {
+    		// Aka if the tile isn't at the rightmost side
     		rightTile = boardTiles.get(new Point(xpos, ypos + 1));
     	}
     	else {
@@ -61,20 +62,69 @@ public class Board {
     		// Can not put a tile BETWEEN TWO existing tiles!
     		return false;
     	}
+    	
     	else if (leftTile == null && rightTile == null) {
     		// Tile is placed on the board as the start of a new meld!
     		// Do meld stuff here
+    		melds.add(new Meld(t));
+    		boardTiles.put(new Point(xpos, ypos), t);
+    		return true;
     	}
+    	
     	else if(leftTile != null) {
     		// Tile is added to the end of an existing meld
     		// Do meld stuff here
+    		Meld meldToAddTo = null;
+    		for (Meld m : melds) {
+    			if (m.getTiles().contains(leftTile)) {
+    				meldToAddTo = m;
+    			}
+    		}
+    		if (meldToAddTo != null) {
+    			meldToAddTo.addToMeld(t);
+    			//TODO:
+    			// CHANGE addToMeld to return a boolean
+    			// to determine if it was actually added
+    			boardTiles.put(new Point(xpos, ypos), t);
+    			return true;
+    		}
+    		else {
+    			// The tile that was already on the board is
+    			// somehow not found in any meld. Should not
+    			// reach here!
+    			return false;
+    		}
     	}
+    	
     	else if(rightTile != null) {
     		// Tile is added to the beginning of an existing meld
     		// Do meld stuff here
+    		// Tile is added to the end of an existing meld
+    		// Do meld stuff here
+    		Meld meldToAddTo = null;
+    		for (Meld m : melds) {
+    			if (m.getTiles().contains(leftTile)) {
+    				meldToAddTo = m;
+    			}
+    		}
+    		if (meldToAddTo != null) {
+    			meldToAddTo.addToMeld(t);
+    			//TODO:
+    			// CHANGE addToMeld to return a boolean
+    			// to determine if it was actually added
+    			boardTiles.put(new Point(xpos, ypos), t);
+    			return true;
+    		}
+    		else {
+    			// The tile that was already on the board is
+    			// somehow not found in any meld. Should not
+    			// reach here!
+    			return false;
+    		}
     	}
     	else {
     		// Should not reach here, throw an error if it does
+    		return false;
     	}
     }
     
