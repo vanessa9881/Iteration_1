@@ -21,4 +21,10 @@ public class BoardController {
 	public ArrayList<Tile> getHandTiles() {
 		return board.getHandTiles();
 	}
+
+	public ArrayList<Tile> getDeck() {
+		return board.getDeck();
+	}
+	
+	
 }

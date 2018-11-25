@@ -31,13 +31,35 @@ public class Board {
     	// etc
     }
     
-    public void setHMap(HashMap<Point, Tile> map) {
+ 
+    public Board(ArrayList<Object> state) {
+    	// Playerlist should have players added to it with a gui button!
+    	playerList = (ArrayList<Player>) state.get(0);
+    	tileDeck = (Deck) state.get(1);
+    	boardTiles = (HashMap<Point, Tile>) state.get(2);
+    	handTiles = (ArrayList<Tile>) state.get(3);
+    	melds = (ArrayList<Meld>) state.get(4);
+	}
+    
+	public ArrayList<Object> getState(){
+		ArrayList<Object> temp = new ArrayList<Object>();
+		temp.add(playerList);
+		temp.add(tileDeck);
+		temp.add(boardTiles);
+		temp.add(handTiles);
+		temp.add(melds);
+		return temp;
+	}
+
+    /*
+	public void setHMap(HashMap<Point, Tile> map) {
     	boardTiles = map;
     }
     
 	public HashMap<Point, Tile> getSavedHMap() {
 		return boardTiles;
 	}
+    */
     
     public Tile drawTile() {
 		return tileDeck.dealTile();
@@ -137,7 +159,6 @@ public class Board {
     		// Should not reach here, throw an error if it does
     		return false;
     	}
-    	return false;
     }
     
     public void moveBoardTile() {
@@ -155,4 +176,23 @@ public class Board {
 	public ArrayList<Tile> getHandTiles() {
 		return handTiles;
 	}
+
+	public ArrayList<Tile> getDeck() {
+		return tileDeck.getDeck();
+	}
+	
+	public Deck getDeckForMemento() {
+		return tileDeck;
+	}
+
+
+	public ArrayList<Player> getPlayerList() {
+		return playerList;
+	}
+
+
+	public ArrayList<Meld> getMeld() {
+		return melds;
+	}
+
 }

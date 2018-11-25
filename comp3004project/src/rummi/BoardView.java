@@ -34,7 +34,7 @@ public class BoardView {
     Caretaker caretaker;
     Originator originator;
     int saveHMap = 0, currentHMap = 0;
-    HashMap<Point, Tile> originalHMapOnBoard;
+    ArrayList<Object> storedBoard;
     
     //Level 4 shit
     TextField riggedTextField;
@@ -72,9 +72,9 @@ public class BoardView {
 		userScrollPane.setFitToHeight(true);
 		createHandButtons();	
 		
-		originalHMapOnBoard = board.getSavedHMap();
-		originator.set(originalHMapOnBoard);
-		caretaker.addBoard(originator.storeInBoard());
+		storedBoard = board.getState();
+		originator.setState(storedBoard);
+		caretaker.addMemento(originator.createMemento());
 		
 		saveHMap++;
 		currentHMap++;
@@ -127,18 +127,22 @@ public class BoardView {
     		//Reset Board to precious copy (doesnt need to check if board valid, this is user activated) 
     		if(currentHMap >= 1) {
     			currentHMap--;
-    			HashMap<Point, Tile> previousHMap = originator.restoreFromBoard(caretaker.getBoard(currentHMap));
-    			board.setHMap(previousHMap);
+    			ArrayList<Object> previousHMap = originator.restoreFromMemento(caretaker.getMemento(currentHMap));
+    			board.setState(previousHMap);
     		}
     	}
     };
       
-    EventHandler<ActionEvent> enterRiggedTile = new EventHandler<ActionEvent>() {
+    EventHandler<ActionEvent> rigTileButton = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
         	String value = riggedTextField.getText();
         	riggedColour = Character.toString(value.charAt(0));
         	riggedNumber = Character.toString(value.charAt(1));
-        	board.drawRiggedTile(riggedColour, riggedNumber);					
+        	board.drawRiggedTile(riggedColour, riggedNumber);	
+        	for (Tile t : controller.getDeck()) {
+        		System.out.println(t);
+        	}
+        	System.out.println("Pressed rigged button");
     	}
     };
     
@@ -183,6 +187,7 @@ public class BoardView {
         Button resetBoard = new Button("Reset Board");
         TextArea moveInfoTextArea = new TextArea();
         Button enterRiggedTile = new Button("Enter - (example r5)");
+        enterRiggedTile.setOnAction(rigTileButton);
         
         VBox vbox = new VBox();
         Text title = new Text("Information");
