@@ -1,6 +1,8 @@
 package rummi;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BoardController {
 
@@ -10,8 +12,8 @@ public class BoardController {
 		board = model;
 	}
 
-	public Tile drawTile() {
-		return board.drawTile();
+	public void drawTile() {
+		board.drawTile();
 	}
 	
 	public boolean placeTile(int xpos, int ypos, Tile t) {
@@ -20,5 +22,9 @@ public class BoardController {
 
 	public ArrayList<Tile> getHandTiles() {
 		return board.getHandTiles();
+	}
+
+	public HashMap<Point, Tile> getBoardTiles() {
+		return board.getBoardTiles();
 	}
 }

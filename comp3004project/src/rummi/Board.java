@@ -32,8 +32,8 @@ public class Board {
     	// etc
     }
     
-    public Tile drawTile() {
-		return tileDeck.dealTile();
+    public void drawTile() {
+		handTiles.add(tileDeck.dealTile());
     }
     
     public boolean addBoardTile(Tile t, int xpos, int ypos) {
@@ -142,5 +142,9 @@ public class Board {
 
 	public ArrayList<Tile> getHandTiles() {
 		return handTiles;
+	}
+
+	public HashMap<Point, Tile> getBoardTiles() {
+		return boardTiles;
 	}
 }

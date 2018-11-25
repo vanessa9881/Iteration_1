@@ -1,6 +1,8 @@
 package rummi;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -9,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -64,7 +67,7 @@ public class BoardView {
     
     EventHandler<ActionEvent> drawTileButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
-    		
+    		controller.drawTile();
     	}
     };
     
@@ -72,7 +75,13 @@ public class BoardView {
     	public void handle(final ActionEvent e) {
     		priorSelectedTile = selectedTile;
     		selectedTile = ((RummiButton) e.getSource()).getTile();
-    		System.out.println("Selected hand tile: " + selectedTile.toString());
+    		
+    		if (selectedTile == null ) {
+    			System.out.println("Selected hand space is empty");
+    		}
+    		else {
+    			System.out.println("Selected hand tile: " + selectedTile.toString());
+    		}
     	}
     };
     
@@ -158,6 +167,41 @@ public class BoardView {
         return vbox;
     }
 	
+    public void draw() {
+    	// Draw hand tiles
+    	ArrayList<Tile> handTiles = controller.getHandTiles();
+    	int index = 0;
+    	for (Tile t : handTiles) {
+    		handButtons[index].setTile(t);
+    		index++;
+    	}
+    	for (RummiButton b : handButtons) {
+    		if (b.getTile() != null) {
+    			ImageView img = new ImageView(b.getTile().getTileImage());
+        		img.setFitHeight(50);										//image resize
+                img.setFitWidth(70);										//image resize
+                b.setGraphic(img);
+    		}
+    	}
+    	
+    	// Draw board tiles
+    	HashMap<Point, Tile> boardTiles = controller.getBoardTiles();
+    	int buttonIndex = 0;
+    	for (int x = 1; x <= 12; x++) {
+    		for (int y = 1; y <= 12; y++) {
+    			boardButtons.get(buttonIndex).setTile(boardTiles.get(new Point(x,y)));
+    		}
+    	}
+    	for (RummiButton b : boardButtons) {
+    		if (b.getTile() != null) {
+    			ImageView img = new ImageView(b.getTile().getTileImage());
+        		img.setFitHeight(50);										//image resize
+                img.setFitWidth(70);										//image resize
+                b.setGraphic(img);
+    		}
+    	}
+    }
+    
     public Parent asParent() {
     	return root;
     }
