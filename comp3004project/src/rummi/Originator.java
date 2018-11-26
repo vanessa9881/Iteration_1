@@ -7,15 +7,15 @@ public class Originator {
 	private ArrayList<Object> state;
     
 	public void setState(ArrayList<Object> b) {
-		state.set(0, b.get(0));
+		//state.set(0, b.get(0));
 		state.set(1, b.get(1));
-		state.set(1, b.get(2));
-		state.set(1, b.get(3));
-		state.set(1, b.get(4));		
+		state.set(2, b.get(2));
+		state.set(3, b.get(3));
+		state.set(4, b.get(4));		
 	}
 	
 	//Adding values to current HMap(Memento)
-	public Board createMemento() {
+	public Board storeInMemento() {
 		System.out.println("From Originator: Saving board state");	
 		Board memento = new Board(state);
 		return memento;

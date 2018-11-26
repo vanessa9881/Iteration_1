@@ -33,7 +33,7 @@ public class BoardView {
     
     Caretaker caretaker;
     Originator originator;
-    int saveHMap = 0, currentHMap = 0;
+    int savedBoardNumber = 0, currentBoardNumber = 0;
     ArrayList<Object> storedBoard;
     
     //Level 4 shit
@@ -73,13 +73,16 @@ public class BoardView {
 		createHandButtons();	
 		
 		storedBoard = board.getState();
-		originator.setState(storedBoard);
-		caretaker.addMemento(originator.createMemento());
+		System.out.println("Hello");
 		
-		saveHMap++;
-		currentHMap++;
+		System.out.println(storedBoard.get(1));
+		//originator.setState(storedBoard);
+		//caretaker.addMemento(originator.storeInMemento());
+		
+		savedBoardNumber++;
+		currentBoardNumber++;
 		//resetBoard.setDisable(false);
-		System.out.println("Added the HMap to the arraylist");
+		System.out.println("Added the Initial Board objects to the arraylist");
 		
 		gameBoard.setMaxSize(1150, 1000);
 	    BorderPane.setAlignment(gameBoard, Pos.TOP_LEFT);
@@ -125,10 +128,10 @@ public class BoardView {
     EventHandler<ActionEvent> resetBoard = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		//Reset Board to precious copy (doesnt need to check if board valid, this is user activated) 
-    		if(currentHMap >= 1) {
-    			currentHMap--;
-    			ArrayList<Object> previousHMap = originator.restoreFromMemento(caretaker.getMemento(currentHMap));
-    			board.setState(previousHMap);
+    		if(currentBoardNumber >= 1) {
+    			currentBoardNumber--;
+    			ArrayList<Object> previousBoardState = originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber));
+    			board.setState(previousBoardState);
     		}
     	}
     };

@@ -25,6 +25,8 @@ public class Board {
     			boardTiles.put(new Point(x,y), null);
     		}
     	}
+    	System.out.println("This is in the default constructor " + tileDeck.getDeck());
+    	System.out.println(tileDeck);
     	// Board looks like this:
     	// [1,1] [1,2] [1,3] [1,4] [1,5] [1,6] [1,7] [1,8] [1,9] [1,10] [1,11] [1,12]
     	// [2,1] [2,2] [2,3] [2,4] [2,5] [2,6] [2,7] [2,8] [2,9] [2,10] [2,11] [2,12]
@@ -39,6 +41,7 @@ public class Board {
     	boardTiles = (HashMap<Point, Tile>) state.get(2);
     	handTiles = (ArrayList<Tile>) state.get(3);
     	melds = (ArrayList<Meld>) state.get(4);
+    	System.out.println("This is the arrayList<object> constructor " + tileDeck.getDeck());
 	}
     
 	public ArrayList<Object> getState(){
@@ -50,6 +53,15 @@ public class Board {
 		temp.add(melds);
 		return temp;
 	}
+	
+	public void setState(ArrayList<Object> b) {
+		b.set(0, playerList);
+		b.set(1, tileDeck);
+		b.set(2, boardTiles);
+		b.set(3, handTiles);
+		b.set(4, melds);		
+	}
+
 
     /*
 	public void setHMap(HashMap<Point, Tile> map) {
