@@ -32,7 +32,6 @@ public class Board {
     	// [2,1] [2,2] [2,3] [2,4] [2,5] [2,6] [2,7] [2,8] [2,9] [2,10] [2,11] [2,12]
     	// etc
     }
-    
  
     public Board(ArrayList<Object> state) {
     	// Playerlist should have players added to it with a gui button!
@@ -73,8 +72,8 @@ public class Board {
 	}
     */
     
-    public Tile drawTile() {
-		return tileDeck.dealTile();
+    public void drawTile() {
+		handTiles.add(tileDeck.dealTile());
     }
     
     public Tile drawRiggedTile(String c, String n) {
@@ -189,6 +188,7 @@ public class Board {
 		return handTiles;
 	}
 
+
 	public ArrayList<Tile> getDeck() {
 		return tileDeck.getDeck();
 	}
@@ -205,6 +205,9 @@ public class Board {
 
 	public ArrayList<Meld> getMeld() {
 		return melds;
+	}
+	public HashMap<Point, Tile> getBoardTiles() {
+		return boardTiles;
 	}
 
 }
