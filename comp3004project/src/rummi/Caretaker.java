@@ -7,6 +7,7 @@ public class Caretaker {
 	ArrayList<Board> savedStates = new ArrayList<Board>();
 	
 	public void addMemento(Board m) {
+		System.out.println("Added the Initial Board objects to the arraylist with address :  " + m.getDeckForMemento());
 		savedStates.add(m); 
 	}
 	

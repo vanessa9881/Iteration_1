@@ -73,17 +73,8 @@ public class BoardView {
 		userScrollPane.setFitToHeight(true);
 		createHandButtons();	
 		
-		storedBoard = board.getState();
-		System.out.println("Hello");
-		
-		System.out.println(storedBoard.get(1));
-		//originator.setState(storedBoard);
-		//caretaker.addMemento(originator.storeInMemento());
-		
-		savedBoardNumber++;
-		currentBoardNumber++;
+
 		//resetBoard.setDisable(false);
-		System.out.println("Added the Initial Board objects to the arraylist");
 		
 		gameBoard.setMaxSize(1150, 1000);
 	    BorderPane.setAlignment(gameBoard, Pos.TOP_LEFT);
@@ -122,17 +113,38 @@ public class BoardView {
     
     EventHandler<ActionEvent> drawTileButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
-    		controller.drawTile();
+    		
     	}
     };
     
-    EventHandler<ActionEvent> resetBoard = new EventHandler<ActionEvent>() {
+    EventHandler<ActionEvent> endTurnAction = new EventHandler<ActionEvent>() {	//saveboard just being used as a "save" button
+    	public void handle(final ActionEvent e) {
+    		storedBoard = board.getState();		
+    		originator.setState(storedBoard);
+    		caretaker.addMemento(originator.storeInMemento());
+    		
+    		savedBoardNumber++;
+    		currentBoardNumber++;
+    		//Here a new board State needs to be initialized with the previous board state????????????????? because when we delete a tile from the deck
+    		//It deletes it from the deck in the array list.
+    	}
+    };
+    
+    EventHandler<ActionEvent> resetBoardAction = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		//Reset Board to precious copy (doesnt need to check if board valid, this is user activated) 
     		if(currentBoardNumber >= 1) {
     			currentBoardNumber--;
+            	System.out.println("3--------------------------------------------------------------------");
+            	System.out.println("Now the Reset method should invoke and the deck should contain all tiles again");
     			ArrayList<Object> previousBoardState = originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber));
     			board.setState(previousBoardState);
+    			System.out.println("Address of Deck we are looking at after reset method:  " + board.getDeckForMemento());
+    			System.out.println(board.getState().get(1));
+    			/*
+    			ArrayList<Object> previousBoardState = originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber));
+    			board.setState(previousBoardState);
+    			*/
     		}
     	}
     };
@@ -142,11 +154,23 @@ public class BoardView {
         	String value = riggedTextField.getText();
         	riggedColour = Character.toString(value.charAt(0));
         	riggedNumber = Character.toString(value.charAt(1));
-        	board.drawRiggedTile(riggedColour, riggedNumber);	
+        	System.out.println("1--------------------------------------------------------------------");
+        	System.out.println("Address of Deck we are looking at before deleting:  " + board.getDeckForMemento());
+        	System.out.println(board.getDeck());
+        	/* This is in getDeck() method already ^
         	for (Tile t : controller.getDeck()) {
         		System.out.println(t);
         	}
-        	System.out.println("Pressed rigged button");
+        	*/
+        	board.drawRiggedTile(riggedColour, riggedNumber);	
+        	System.out.println("2--------------------------------------------------------------------");
+        	System.out.println("Address of Deck we are looking at after deleting:  " + board.getDeckForMemento());
+        	System.out.println(board.getDeck());
+        	/*  This is in getDeck() method already ^
+        	for (Tile t : controller.getDeck()) {
+        		System.out.println(t);
+        	}
+        	*/
     	}
     };
     
@@ -211,9 +235,11 @@ public class BoardView {
         
         //End Turn Section
         endTurnButton.setMaxWidth(Double.MAX_VALUE);
+        endTurnButton.setOnAction(endTurnAction);
         
         //ResetBoard Button Section
         resetBoard.setMaxWidth(Double.MAX_VALUE);
+        resetBoard.setOnAction(resetBoardAction);
         
         //Tile Selected Section
         tileSelectedLabel.setMaxWidth(Double.MAX_VALUE);

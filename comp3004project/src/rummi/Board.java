@@ -25,8 +25,12 @@ public class Board {
     			boardTiles.put(new Point(x,y), null);
     		}
     	}
-    	System.out.println("This is in the default constructor " + tileDeck.getDeck());
-    	System.out.println(tileDeck);
+    	//System.out.println("This Deck is in the default constructor \n" + tileDeck.getDeck());
+    	//System.out.println("Adress of Deafult PlayerList Constructor:    " + playerList);
+    	System.out.println("Address of Deafult Deck Constructor:    " + tileDeck);
+    	//System.out.println("Adress of Deafult BoardTiles Constructor:    " + boardTiles);
+    	//System.out.println("Adress of Deafult Hand Tiles Constructor:    " + handTiles);
+    	//System.out.println("Adress of Deafult Melds Constructor:    " + melds);
     	// Board looks like this:
     	// [1,1] [1,2] [1,3] [1,4] [1,5] [1,6] [1,7] [1,8] [1,9] [1,10] [1,11] [1,12]
     	// [2,1] [2,2] [2,3] [2,4] [2,5] [2,6] [2,7] [2,8] [2,9] [2,10] [2,11] [2,12]
@@ -34,13 +38,13 @@ public class Board {
     }
  
     public Board(ArrayList<Object> state) {
-    	// Playerlist should have players added to it with a gui button!
+    	//Playerlist should have players added to it with a gui button!
     	playerList = (ArrayList<Player>) state.get(0);
     	tileDeck = (Deck) state.get(1);
     	boardTiles = (HashMap<Point, Tile>) state.get(2);
     	handTiles = (ArrayList<Tile>) state.get(3);
     	melds = (ArrayList<Meld>) state.get(4);
-    	System.out.println("This is the arrayList<object> constructor " + tileDeck.getDeck());
+    	System.out.println("This is the arrayList<Object> constructor and i got invoked with my Deck address:  " + tileDeck);
 	}
     
 	public ArrayList<Object> getState(){
