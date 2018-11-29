@@ -7,12 +7,12 @@ public class Strategy1 extends Player{
 	public Strategy1() {
 	}
 	
-	public void play(RummiMain game){
+	public void play(Board game){
 		Meld meld_set;
 		Meld meld_run;
 		int initial_turn =0; 
-		while(!firstTurn()&& initial_turn==0) {
-			game.drawTile(this);
+		if(!firstTurn()&& initial_turn==0) {
+			addTile(game.drawTile());
 	}
 		if(score_of_valid_hand() >= 30) {
 			meld_set = new Meld(null);
@@ -74,7 +74,8 @@ public class Strategy1 extends Player{
 			meld_set.checkRun();
 		}
 		else {
-			game.drawTile(this);
+			//addTile(game.drawTile());
+			addTile(game.drawTile());
 		}
 	}
 
