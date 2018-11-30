@@ -81,15 +81,19 @@ public class Strategy2 extends Player {
 		
 			// for each item in the players hand start new meld for each hand item 		
 			for (Tile t : this.hand) {
-				currMeld = new Meld(t);
-				allMelds.add(currMeld);
+				if (!(t.getColour().equals('j')));
+					currMeld = new Meld(t);
+					allMelds.add(currMeld);
 			}
 		
 			// test all possible melds from each other item in hand
 			for (Meld m : allMelds) {
 				for (Tile t : this.hand) {
-					if (m.getTiles().get(0).equals(t) ==  false) {
+					if (m.getTiles().get(0).equals(t) ==  false && 
+							(!(t.getColour().equals("j")))) {
 						m.addToMeld(t);
+					} else if (t.getColour().equals("j")) {
+						t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue());
 					}
 				}
 			}

@@ -40,4 +40,8 @@ public class Number {
    public String getSymbol() {
       return symbol;
    }
+   
+   public List<Number> getVALUES(){
+	   return VALUES;
+   }
 }                                                                 

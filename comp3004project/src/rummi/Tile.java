@@ -18,11 +18,21 @@ public class Tile {
 		tileImage = t;
 		tileID = 0;
 	}
+	
+	// For Jokers
+	public Tile(Colour j, Image t) {
+		number = null;
+		colour = j;
+		tileImage = t;
+		tileID = 0;
+		
+	}
+	
+	
 
 	public static String getFilename(Colour colour, Number number) {
 	   return "file:resources/"+number.getSymbol() + colour.getSymbol() + ".gif";   
 	}
-	
 	
 	public Number getNumberValue() {
 		return number;
@@ -61,6 +71,12 @@ public class Tile {
 	
 	public int getID() {
 		return this.tileID;
+	}
+	
+	public void setJokerValue(int i) {
+		if (this.colour.equals("j")) {
+			this.number = this.number.getVALUES().get(i - 1);
+		}
 	}
 	
 	@Override
