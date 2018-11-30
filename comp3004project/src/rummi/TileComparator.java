@@ -11,6 +11,7 @@ public class TileComparator implements Comparator<Tile>{
 
 	@Override
 	public int compare(Tile t1, Tile t2) {
+		if (t1.getColour().equals("j") || t2.getColour().equals("j")) {return 1;}
 		if (t1.getValue() > t2.getValue()) {return 1;}
 		else if (t1.getValue() < t2.getValue()) {return -1;}
 		// Tiles have the same value so compare colours

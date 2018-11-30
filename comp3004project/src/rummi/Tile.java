@@ -21,7 +21,7 @@ public class Tile {
 	
 	// For Jokers
 	public Tile(Colour j, Image t) {
-		number = null;
+		number = number.ZERO;
 		colour = j;
 		tileImage = t;
 		tileID = 0;
