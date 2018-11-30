@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class Caretaker {
 
-	ArrayList<Board> savedStates = new ArrayList<Board>();
+	ArrayList<Board> savedBoards = new ArrayList<Board>();
 	
 	public void addMemento(Board m) {
-		System.out.println("Added the Initial Board objects to the arraylist with address :  " + m.getDeckForMemento());
-		savedStates.add(m); 
+		Board boardToAdd = m;
+		savedBoards.add(boardToAdd); 
 	}
 	
 	public Board getMemento(int index) {
-		return savedStates.get(index);
+		return savedBoards.get(index);
 	}
 	
 }

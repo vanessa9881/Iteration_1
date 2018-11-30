@@ -1,3 +1,4 @@
+//is getDeck wrong?
 package rummi;
 
 import java.awt.Point;
@@ -35,7 +36,8 @@ public class BoardView {
     Caretaker caretaker;
     Originator originator;
     int savedBoardNumber = 0, currentBoardNumber = 0;
-    ArrayList<Object> storedBoard;
+    ArrayList<Object> storedBoardState;
+    ArrayList<Object> tempCurrentBoardState;
     
     //Level 4 shit
     TextField riggedTextField;
@@ -47,10 +49,12 @@ public class BoardView {
     
     private BoardController controller;
     private Board board;
+    private Board tempBoard;
     
 	public BoardView(BoardController controller, Board model) {
 		this.controller = controller;
 		board = model;
+		tempBoard = model;				//????????????????????????????????????????????
 		caretaker = new Caretaker();
 		originator = new Originator();	
 		riggedTextField = new TextField();
@@ -64,6 +68,10 @@ public class BoardView {
 		userPane = new FlowPane();
 		userScrollPane = new ScrollPane();
 		tileSelectedLabel = new Label("Selected Tile");
+		
+		storedBoardState = new ArrayList<Object>();
+		tempBoard = new Board();
+		
 		
 		root.setRight(addVBox());
 		root.setBottom(userScrollPane);
@@ -113,63 +121,106 @@ public class BoardView {
     
     EventHandler<ActionEvent> drawTileButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
-    		
+    		/*
+    		System.out.println("Hello:	" + originator.restoreBoardFromMemento(caretaker.getMemento((currentBoardNumber)-1)));
+    		System.out.println("-------------------------------------------------------------------------------------------");
+    		System.out.println("Hello000:	" + originator.restoreBoardFromMemento(caretaker.getMemento((currentBoardNumber)-2)));
+    		*/
     	}
     };
     
-    EventHandler<ActionEvent> endTurnAction = new EventHandler<ActionEvent>() {	//saveboard just being used as a "save" button
+    EventHandler<ActionEvent> saveBoardAction = new EventHandler<ActionEvent>() {	
     	public void handle(final ActionEvent e) {
-    		storedBoard = board.getState();		
-    		originator.setState(storedBoard);
-    		caretaker.addMemento(originator.storeInMemento());
+    		
+    		/*
+    		board.drawTile();
+    		System.out.println(board.getDeck());
+    		System.out.println("Default board address: " + board);
+    		System.out.println("Default board.deck address: " + board.getDeckForMemento() + "\n\n\n\n");
+    		storedBoardState = board.getSavedState();
+    		originator.set(storedBoardState);		
+    		caretaker.addMemento(originator.saveToMemento());
+    		System.out.println("Currently saved state in caretaker ArrayList: \n" + caretaker.getMemento(0).getDeck() +"..." + caretaker.getMemento(0).getDeckForMemento()+"\n\n\n" );
+    		
+    		System.out.println("Caretaker memento address:" + caretaker.getMemento(0));				//A
+    		System.out.println("Caretaker Deck:" + caretaker.getMemento(0).getDeckForMemento()+ "\n");
+    		System.out.println(caretaker.getMemento(0).getDeck() +"\n");
+    		System.out.println("Board memento address:" + board);									//A
+    		System.out.println("Board deck:" + board.getDeckForMemento());
+    		//board.drawTile();
+    		//System.out.println("Currently saved state in caretaker ArrayList after removing tile from board: \n" + caretaker.getMemento(0).getDeck() +"\n\n\n" );
+    		//System.out.println("This Deck should have first tiles deleted: \n" + board.getDeck()+"\n\n\n");
+    		//originator.restoreFromMemento(caretaker.getMemento(0));
+    		//board.setState(originator.getState());
+    		//System.out.println("This Deck should have all tiles: \n" + board.getDeck()+"\n\n\n");
+    		
+    		/*
+    		//getting default board constructors state and setting it to tempCurrentBoardState and then adding that state into a blank arralist<object>
+    		//Then setting that to a new baord and adding that to the arrayList of boards.
+    		
+    		storedBoardState = board.getState();	//Setting the values of the storedBoardState to that of the board (original empty board created)
+    		originator.setState(storedBoardState);	//Creating a blank temp ArrayList<Object> and setting its values of the storedBoardState
+    		caretaker.addMemento(originator.storeInMemento());	//Creating a Board with the storesBoardState and adding that to the caretaker arrayList of boards		
+    		System.out.println("Currently saved state in caretaker ArrayList: " + originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber)).get(1));
     		
     		savedBoardNumber++;
     		currentBoardNumber++;
+    		
+    		tempCurrentBoardState = originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber));
+    		savedBoardNumber++;
+    		currentBoardNumber++;
+    		System.out.println("Saved Boards: " + savedBoardNumber + "\n\n");
+    		tempBoard = new Board();
+			tempBoard.setState(tempCurrentBoardState);
+    		tempBoard.drawTile();
+    		System.out.println("TempBoard used for editing: \n" + tempBoard.getDeck() + "..." + tempBoard.getDeckForMemento());
+    		System.out.println("-----------------------------------------------------------------------");
+ 
+    		System.out.println("Saved board in arraylist board: \n" + board.getDeck() + "..." + board.getDeckForMemento());
+    		
+    		/* attempt 1
+    		//Create a temp Board with the state of the one saved in board
+    		if(currentBoardNumber >= 1) {
+    			currentBoardNumber--;
+            	System.out.println("--------------------------------------------------------------------");
+            	tempCurrentBoardState = originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber));
+    			tempBoard.setState(tempCurrentBoardState);
+    			System.out.println("This is the State of the tempBoard: " + tempBoard.getDeck());
+    			currentBoardNumber++;
+    		}
     		//Here a new board State needs to be initialized with the previous board state????????????????? because when we delete a tile from the deck
     		//It deletes it from the deck in the array list.
+    		  
+    		  */
+    		 
     	}
     };
     
     EventHandler<ActionEvent> resetBoardAction = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		//Reset Board to precious copy (doesnt need to check if board valid, this is user activated) 
+    		/*
     		if(currentBoardNumber >= 1) {
     			currentBoardNumber--;
-            	System.out.println("3--------------------------------------------------------------------");
+            	System.out.println("--------------------------------------------------------------------");
             	System.out.println("Now the Reset method should invoke and the deck should contain all tiles again");
     			ArrayList<Object> previousBoardState = originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber));
     			board.setState(previousBoardState);
-    			System.out.println("Address of Deck we are looking at after reset method:  " + board.getDeckForMemento());
-    			System.out.println(board.getState().get(1));
-    			/*
-    			ArrayList<Object> previousBoardState = originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber));
-    			board.setState(previousBoardState);
-    			*/
+    			System.out.println("Address of Deck we are looking at after reset method:  " + board.getDeckForMemento() + "\n\n");
+    			System.out.println("Deck in Board: " + board.getState().get(1));
     		}
+    		*/
     	}
     };
       
     EventHandler<ActionEvent> rigTileButton = new EventHandler<ActionEvent>() {
-    	public void handle(final ActionEvent e) {
+    	public void handle(final ActionEvent e) {	
+    		/*
+    		System.out.println("--------------------------RIGGED TILE PRESS------------------------------------------\n\n");
         	String value = riggedTextField.getText();
         	riggedColour = Character.toString(value.charAt(0));
         	riggedNumber = Character.toString(value.charAt(1));
-        	System.out.println("1--------------------------------------------------------------------");
-        	System.out.println("Address of Deck we are looking at before deleting:  " + board.getDeckForMemento());
-        	System.out.println(board.getDeck());
-        	/* This is in getDeck() method already ^
-        	for (Tile t : controller.getDeck()) {
-        		System.out.println(t);
-        	}
-        	*/
         	board.drawRiggedTile(riggedColour, riggedNumber);	
-        	System.out.println("2--------------------------------------------------------------------");
-        	System.out.println("Address of Deck we are looking at after deleting:  " + board.getDeckForMemento());
-        	System.out.println(board.getDeck());
-        	/*  This is in getDeck() method already ^
-        	for (Tile t : controller.getDeck()) {
-        		System.out.println(t);
-        	}
         	*/
     	}
     };
@@ -217,7 +268,7 @@ public class BoardView {
 	
     private VBox addVBox() {
         Button drawTileButton = new Button("Draw Tile");
-        Button endTurnButton = new Button("End Turn");
+        Button saveBoardButton = new Button("Save Board");
         Button resetBoard = new Button("Reset Board");
         TextArea moveInfoTextArea = new TextArea();
         Button enterRiggedTile = new Button("Enter - (example r5)");
@@ -226,7 +277,7 @@ public class BoardView {
         VBox vbox = new VBox();
         Text title = new Text("Information");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 25));
-        vbox.getChildren().addAll(title,drawTileButton, endTurnButton, resetBoard, tileSelectedLabel, moveInfoTextArea, riggedTextField, enterRiggedTile);
+        vbox.getChildren().addAll(title,drawTileButton, saveBoardButton, resetBoard, tileSelectedLabel, moveInfoTextArea, riggedTextField, enterRiggedTile);
         vbox.setSpacing(20);
         
         //Draw Tile Section
@@ -234,8 +285,8 @@ public class BoardView {
         drawTileButton.setOnAction(drawTileButtonPress);
         
         //End Turn Section
-        endTurnButton.setMaxWidth(Double.MAX_VALUE);
-        endTurnButton.setOnAction(endTurnAction);
+        saveBoardButton.setMaxWidth(Double.MAX_VALUE);
+        saveBoardButton.setOnAction(saveBoardAction);
         
         //ResetBoard Button Section
         resetBoard.setMaxWidth(Double.MAX_VALUE);
