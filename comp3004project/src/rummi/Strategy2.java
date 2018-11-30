@@ -93,7 +93,16 @@ public class Strategy2 extends Player {
 							(!(t.getColour().equals("j")))) {
 						m.addToMeld(t);
 					} else if (t.getColour().equals("j")) {
-						t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue());
+						if (m.checkGroup()) {
+							// Set value to same 
+							t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue());
+							m.addToMeld(t);
+						} else if (m.checkRun()) {
+							// Set value to one above the last
+							t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue() + 1);
+							// Set colour to same 
+							t.setJokerColour(m.getTiles().get(0).getColour());
+						}
 					}
 				}
 			}

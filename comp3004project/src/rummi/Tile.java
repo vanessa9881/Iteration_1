@@ -79,6 +79,12 @@ public class Tile {
 		}
 	}
 	
+	public void setJokerColour(Colour c) {
+		if (this.colour.equals("j")) {
+			this.colour = c;
+		}
+	}
+	
 	@Override
     public boolean equals(Object o) {
 		// Overrides the equals method for tile, should check if the colour
