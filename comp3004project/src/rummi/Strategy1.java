@@ -2,6 +2,8 @@ package rummi;
 
 import rummi.Meld;
 
+//import java.util.*;
+
 public class Strategy1 extends Player{
 
 	public Strategy1() {
@@ -73,9 +75,31 @@ public class Strategy1 extends Player{
 			meld_set.checkGroup();
 			meld_set.checkRun();
 		}
+		if(initial_turn!=0) {
+			for(int i=0; i<getHandValue();i++) {
+				int count=0;
+				Tile current_tile=hand.get(i);
+				Meld current_meld=game.getMelds().get(count);
+				for(Tile t : current_meld.getTiles()) {
+					if(current_tile.getValue()== t.getValue()-1 && current_tile.getColour()==t.getColour()) {
+						//game.addBoardTile(current_tile, xpos, ypos)
+						//game.t.getTile().getPos();
+						
+					}
+					else if (current_tile.getValue()==t.getValue()&&(current_tile.getColour()!=t.getColour())){
+						//game.addBoardTile(current_tile, xpos, ypos)
+					}
+					else {
+						continue;
+					}
+				}
+				
+			}
+			
+		}
 		else {
-			//addTile(game.drawTile());
 			addTile(game.drawTile());
+			
 		}
 	}
 
@@ -89,10 +113,19 @@ public class Strategy1 extends Player{
 		}
 	}
 	
+	public boolean useJoker() {
+		if(getNumberOfTiles()<= 4) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	public int score_of_valid_hand() {
-		// TODO Auto-generated method stub
-			int count = 0;
+		// TODO Auto-generated method stub			
 			int score =0;
+			//int count = 0;
 			//int index=0;
  
 			
@@ -103,13 +136,13 @@ public class Strategy1 extends Player{
 				if(index != getHandValue() - 1) {
 				
 				if((current_tile.getValue()== next_tile.getValue()+1 && current_tile.getColour() == next_tile.getColour())){
-					count++;
+					//count++;
 					score+= current_tile.getValue()+next_tile.getValue();
 					//p1.getHand().remove(i);
 					//p1.getHand().remove(index);
 				}
 				else if((current_tile.getValue()==next_tile.getValue())&&(current_tile.getColour()!=next_tile.getColour())) {
-					count++;
+					//count++;
 					score+= current_tile.getValue()+next_tile.getValue();
 					//p1.getHand().remove(i);
 					//p1.getHand().remove(index);

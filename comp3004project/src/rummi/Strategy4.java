@@ -2,6 +2,8 @@ package rummi;
 
 import java.util.*;
 
+//Strategy 4 will 
+
 public class Strategy4 extends Player {
 
 	public Strategy4() {
@@ -13,7 +15,8 @@ public class Strategy4 extends Player {
 	//player
 	
 	public boolean higher_than_previous() {
-		return true; 
+		return true;
+		
 	}
 }
 

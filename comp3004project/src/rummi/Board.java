@@ -16,7 +16,7 @@ public class Board {
     public Board() {
     	tileDeck = new Deck();
     	handTiles = new ArrayList<Tile>();
-    	melds = new ArrayList<Meld>();
+    	setMelds(new ArrayList<Meld>());
     	handTiles = new ArrayList<Tile>();
     	
     	// Construct the board with each board space being null
@@ -50,5 +50,17 @@ public class Board {
 
 	public ArrayList<Tile> getHandTiles() {
 		return handTiles;
+	}
+	
+	public Map<Point,Tile> viewboardtiles(){
+		return boardTiles;
+	}
+
+	public ArrayList<Meld> getMelds() {
+		return melds;
+	}
+
+	public void setMelds(ArrayList<Meld> melds) {
+		this.melds = melds;
 	}
 }

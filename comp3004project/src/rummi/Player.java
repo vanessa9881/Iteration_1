@@ -36,7 +36,7 @@ public class Player {
 		return hand.indexOf(tile);
 	}
 	
-	public void play(RummiMain g) {
+	public void play(Board g) {
 		// TODO Auto-generated method stub		
 	}
 	
