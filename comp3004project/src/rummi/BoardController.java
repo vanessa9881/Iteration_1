@@ -7,9 +7,12 @@ import java.util.HashMap;
 public class BoardController {
 
 	private final Board board;
+	private final BoardView view;
+	public static final int BOARDSIZE = 15;
 	
-	public BoardController(Board model) {
+	public BoardController(Board model, BoardView view) {
 		board = model;
+		this.view = view;
 	}
 
 	public void drawTile() {
@@ -26,5 +29,14 @@ public class BoardController {
 
 	public HashMap<Point, Tile> getBoardTiles() {
 		return board.getBoardTiles();
+	}
+	
+	public void updateView() {
+		view.draw();
+	}
+
+	public void removeHandTile(Tile priorSelectedTile) {
+		board.removeHandTile(priorSelectedTile);
+		
 	}
 }

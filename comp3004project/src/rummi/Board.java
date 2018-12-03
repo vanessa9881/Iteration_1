@@ -11,6 +11,7 @@ public class Board {
     private HashMap<Point, Tile> boardTiles;
     private ArrayList<Tile> handTiles;
     private ArrayList<Meld> melds;
+    private BoardController controller;
     
     public Board() {
     	// Playerlist should have players added to it with a gui button!
@@ -21,19 +22,21 @@ public class Board {
     	boardTiles = new HashMap<Point, Tile>();
     	
     	// Construct the board with each board space being null
-    	for(int x = 1; x <= 12; x++) {
-    		for (int y = 1; y <= 12; y++) {
+    	for(int x = 1; x <= controller.BOARDSIZE; x++) {
+    		for (int y = 1; y <= controller.BOARDSIZE; y++) {
     			boardTiles.put(new Point(x,y), null);
     		}
     	}
     	// Board looks like this:
-    	// [1,1] [1,2] [1,3] [1,4] [1,5] [1,6] [1,7] [1,8] [1,9] [1,10] [1,11] [1,12]
-    	// [2,1] [2,2] [2,3] [2,4] [2,5] [2,6] [2,7] [2,8] [2,9] [2,10] [2,11] [2,12]
+    	// [1,1] [1,2] [1,3] [1,4] [1,5] [1,6] [1,7] [1,8] [1,9] [1,10] [1,11] [1,12] ...
+    	// [2,1] [2,2] [2,3] [2,4] [2,5] [2,6] [2,7] [2,8] [2,9] [2,10] [2,11] [2,12] ...
     	// etc
     }
     
     public void drawTile() {
 		handTiles.add(tileDeck.dealTile());
+		handTiles.sort(new TileComparator());
+		controller.updateView();
     }
     
     public boolean addBoardTile(Tile t, int xpos, int ypos) {
@@ -44,15 +47,15 @@ public class Board {
     	Tile rightTile;
     	if (ypos != 1) {
     		// Aka if the tile isn't at the leftmost side
-    		leftTile = boardTiles.get(new Point(xpos, ypos - 1));
+    		leftTile = boardTiles.get(new Point(xpos - 1, ypos));
     	}
     	else {
     		leftTile = null;
     	}
     	
-    	if (ypos != 12) {
+    	if (ypos != controller.BOARDSIZE) {
     		// Aka if the tile isn't at the rightmost side
-    		rightTile = boardTiles.get(new Point(xpos, ypos + 1));
+    		rightTile = boardTiles.get(new Point(xpos + 1, ypos));
     	}
     	else {
     		rightTile = null;
@@ -60,6 +63,7 @@ public class Board {
     	
     	if (leftTile != null && rightTile != null) {
     		// Can not put a tile BETWEEN TWO existing tiles!
+    		System.out.println("1");
     		return false;
     	}
     	
@@ -68,6 +72,7 @@ public class Board {
     		// Do meld stuff here
     		melds.add(new Meld(t));
     		boardTiles.put(new Point(xpos, ypos), t);
+    		controller.updateView();
     		return true;
     	}
     	
@@ -86,12 +91,14 @@ public class Board {
     			// CHANGE addToMeld to return a boolean
     			// to determine if it was actually added
     			boardTiles.put(new Point(xpos, ypos), t);
+    			controller.updateView();
     			return true;
     		}
     		else {
     			// The tile that was already on the board is
     			// somehow not found in any meld. Should not
     			// reach here!
+    			System.out.println("2");
     			return false;
     		}
     	}
@@ -113,31 +120,38 @@ public class Board {
     			// CHANGE addToMeld to return a boolean
     			// to determine if it was actually added
     			boardTiles.put(new Point(xpos, ypos), t);
+    			controller.updateView();
     			return true;
     		}
     		else {
     			// The tile that was already on the board is
     			// somehow not found in any meld. Should not
     			// reach here!
+    			System.out.println("3");
     			return false;
     		}
     	}
     	else {
     		// Should not reach here, throw an error if it does
+    		System.out.println("4");
     		return false;
     	}
     }
     
     public void moveBoardTile() {
-    	
+    	// Do something here
+    	controller.updateView();
     }
     
     public void addHandTile(Tile t) {
     	handTiles.add(t);
+    	handTiles.sort(new TileComparator());
+    	controller.updateView();
     }
     
     public void removeHandTile(Tile t) {
     	handTiles.remove(t);
+    	controller.updateView();
     }
 
 	public ArrayList<Tile> getHandTiles() {
@@ -146,5 +160,9 @@ public class Board {
 
 	public HashMap<Point, Tile> getBoardTiles() {
 		return boardTiles;
+	}
+
+	public void setController(BoardController controller) {
+		this.controller = controller;
 	}
 }
