@@ -27,6 +27,7 @@ public class BoardView {
     private Label tileSelectedLabel = new Label("Selected Tile");
     private ArrayList<RummiButton> boardButtons;
     private RummiButton[] handButtons;
+    private Button startButton;
     
     private Tile priorSelectedTile;
     private Tile selectedTile;

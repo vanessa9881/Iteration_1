@@ -28,7 +28,7 @@ public class Deck {
 					}
 				}
 			}
-				Tile joker = new Tile('j', image file);
+				Tile joker = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
 				addTile(joker);
 				addTile(joker);
 				

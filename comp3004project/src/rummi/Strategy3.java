@@ -78,9 +78,9 @@ public class Strategy3 extends Player {
 			for (Meld m : allMelds) {
 				for (Tile t : this.hand) {
 					if (m.getTiles().get(0).equals(t) ==  false && 
-							(!(t.getColour().equals("j")))) {
+							(!(t.getColour().equals(Colour.JOKER)))) {
 						m.addToMeld(t);
-					} else if (t.getColour().equals("j")) {
+					} else if (t.getColour().equals(Colour.JOKER)) {
 						if (m.checkGroup()) {
 							// Set value to same 
 							t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue());
