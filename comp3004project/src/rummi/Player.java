@@ -6,12 +6,14 @@ public class Player {
 	private int handValue;	//----------To do
 	public ArrayList<Tile> hand;	//Hand is a refrence to a players hand. (hand = players hand)
 	protected int turnNumber;
+	protected int score;
 	
 	
 	public Player() {
 		hand = new ArrayList<Tile>();
 		handValue = 0;
 		turnNumber = 0;
+		score = 0;
 	}
 	
 	public int getTurnNumber() {
@@ -49,6 +51,10 @@ public class Player {
 	//Setting the graphic of the removed tile to null
 	public void deleteTile(Tile tile) {
 		hand.remove(tile);
+	}
+	
+	protected void SetPlayerScore(Tile t) {
+		this.score = this.score + t.getValue();
 	}
 		   	
 	@Override

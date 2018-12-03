@@ -154,6 +154,11 @@ public class Strategy2 extends Player {
 				for (int i = 0; i < melds.size(); i++) {
 					b.addHandMeld(melds.get(i));
 				}
+				for (Meld m : melds) {
+					for (int i = 0; i < m.getSize(); i++) {
+						this.SetPlayerScore(m.getTiles().get(i));
+					}
+				}
 				melds.clear();
 			} else { 
 				// If unable to make new melds, use board or draw
@@ -163,6 +168,7 @@ public class Strategy2 extends Player {
 						m.addToMeld(this.hand.get(i));
 						if (m.checkValid()) {
 							toRemove.add(this.hand.get(i));
+							this.SetPlayerScore(this.hand.get(i));
 						}
 					}
 				}
@@ -184,6 +190,11 @@ public class Strategy2 extends Player {
 				// Play all possible melds
 				for (int i = 0; i< melds.size(); i ++) {
 					b.addHandMeld(melds.get(i));
+				}
+				for (Meld m : melds) {
+					for (int i = 0; i < m.getSize(); i++) {
+						this.SetPlayerScore(m.getTiles().get(i));
+					}
 				}
 				melds.clear();
 			}
