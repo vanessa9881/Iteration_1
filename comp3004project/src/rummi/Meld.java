@@ -74,15 +74,21 @@ public class Meld {
 		int groupValue = meldTiles.get(0).getValue();
 		for (Tile t : meldTiles) {
 			if (t.getValue() != groupValue) {return false;}
+			// Check if tiles all have the different colours
+			for (Tile t2 : meldTiles) {
+				if (t.getColour().getName().equals(t2.getColour().getName())) {return false;}
+			}	
 		}
-		// Now check if all the colours are the same
-		return checkColours();
+		return true;
 	}
 	
 	// Checks whether this meld is a run
 	public boolean checkRun() {		
 		// Check if tiles are the same colour
-		if (!checkColours()) {return false;}
+		String col = meldTiles.get(0).getColour().getName();
+		for (Tile t : meldTiles) {
+			if (t.getColour().getName().equals(col)) {return false;}	
+		}
 		
 		// Check if tiles are in a sequence increasing by 1
 		// We assume that they are already sorted as they should be
