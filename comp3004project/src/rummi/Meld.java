@@ -34,6 +34,9 @@ public class Meld {
 		
 		return true;
 	}
+	public Meld (int n) {
+		meldTiles = new ArrayList<Tile>();
+	}
 	
 	// Checks whether this meld is a valid rn
 	public boolean checkRun() {
@@ -61,6 +64,11 @@ public class Meld {
 	public void addToMeld(Tile addedTile) {	
 		boolean failedRun = false;
 		boolean failedGroup = false;
+		
+		if (meldTiles.isEmpty()){
+			meldTiles.add(addedTile);
+			return;
+		}
 		
 		// Check if the added tile is valid for a 'group'
 			// First check if the value is the same

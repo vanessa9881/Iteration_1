@@ -9,8 +9,7 @@ public class Player {
 	public Player() {
 		hand = new ArrayList<Tile>();
 		handValue = 0; 
-	}
-	
+	}  
 	public int getHandValue() {
 		return this.handValue;
 	}
