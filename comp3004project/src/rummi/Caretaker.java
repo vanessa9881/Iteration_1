@@ -6,12 +6,12 @@ public class Caretaker {
 
 	ArrayList<Board> savedBoards = new ArrayList<Board>();
 	
-	public void addMemento(Board m) {
+	public void addMementoBoard(Board m) {
 		Board boardToAdd = m;
 		savedBoards.add(boardToAdd); 
 	}
 	
-	public Board getMemento(int index) {
+	public Board getMementoBoard(int index) {
 		return savedBoards.get(index);
 	}
 	

@@ -14,7 +14,7 @@ public class Deck {
 	
 	public Deck() {
 		tileList = new ArrayList<Tile>();
-	
+		
 		try{
 			for(int i = 0; i<2; i++){
 				Iterator<Colour> colourIterator = Colour.VALUES.iterator();
@@ -35,6 +35,13 @@ public class Deck {
     	}
 	}
 	
+	public Deck (int n) {
+		tileList = new ArrayList<Tile>();
+	}
+	
+	public Deck(Deck d) {
+		tileList = d.getDeck();
+	}
 	public Tile getTile(int index)
 	{
 		return tileList.get(index);
@@ -86,5 +93,7 @@ public class Deck {
 	public ArrayList<Tile> getDeck() {
 		return tileList;
 	}
+
+
 
 }
