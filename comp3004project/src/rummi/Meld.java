@@ -17,11 +17,10 @@ public class Meld {
 	
 	public boolean addRightside(Tile t) {
 		Tile endTile = meldTiles.get(meldTiles.size() - 1);
-
+		System.out.println("We adding right!");
 		// Check to see if tile to add is 1 more than the previous
 		if (endTile.getValue() + 1 == t.getValue()) {
-			// Check if all colours are the same
-			if (checkColours()) {
+			if (endTile.getColour().getName().equals(t.getColour().getName())) {
 				// Add to end as a run
 				meldTiles.add(t);
 				return true;
@@ -38,11 +37,10 @@ public class Meld {
 
 	public boolean addLeftside(Tile t) {
 		Tile frontTile = meldTiles.get(0);
-
+		System.out.println("We adding left!");
 		// Check to see if tile to add is 1 less than the previous
 		if (frontTile.getValue() - 1 == t.getValue()) {
-			// Check if all colours are the same
-			if (checkColours()) {
+			if (frontTile.getColour().getName().equals(t.getColour().getName())) {
 				// Add to end as a run
 				meldTiles.add(0, t);
 				return true;
@@ -57,33 +55,38 @@ public class Meld {
 		return false;
 	}
 	
-	// Checks if all of the colours in the meld are the same
-	public boolean checkColours() {
-		HashSet<String> tempTileSet = new HashSet<String>();
-		for (Tile t : meldTiles) {
-			tempTileSet.add(t.getColour().toString());
-		}
-		if (tempTileSet.size() != 1) {
-			return false;
-		}
-		return true;
-	}
-	
-	// Checks whether this meld is a group
+	// Checks whether this meld is a valid group
 	public boolean checkGroup() {
+		// Return false if the meld isn't 3 or 4 tiles
+		if (meldTiles.size() != 3 || meldTiles.size() != 4) {return false;}
 		// Check if all tiles have the same value
 		int groupValue = meldTiles.get(0).getValue();
 		for (Tile t : meldTiles) {
 			if (t.getValue() != groupValue) {return false;}
 		}
-		// Now check if all the colours are the same
-		return checkColours();
+		// Check if tiles have different colours
+		// Adding to a hashset will return false
+		// if the element is already in the set
+		HashSet<String> tempTileSet = new HashSet<String>();
+		for (Tile t : meldTiles) {
+			if(!tempTileSet.add(t.getColour().toString())){return false;}
+		}
+		return true;
 	}
 	
-	// Checks whether this meld is a run
-	public boolean checkRun() {		
+	// Checks whether this meld is a valid run
+	public boolean checkRun() {
+		// Return false if the meld isn't 3 or more tiles
+		if (meldTiles.size() < 3) {return false;}
+		
 		// Check if tiles are the same colour
-		if (!checkColours()) {return false;}
+		// Does this by using the fact that hashsets dont allow duplicates,
+		// and therefore will only put a duplicate colour in once
+		HashSet<String> tempTileSet = new HashSet<String>();
+		for (Tile t : meldTiles) {
+			tempTileSet.add(t.getColour().toString());
+		}
+		if (tempTileSet.size() > 1) {return false;}
 		
 		// Check if tiles are in a sequence increasing by 1
 		// We assume that they are already sorted as they should be
@@ -134,22 +137,25 @@ public class Meld {
 	// Checks to see whether this tile can be added to this meld
 	// if this meld were to be a developing group
 	public boolean addAsGroup(Tile addedTile) {
+		boolean group = true;
+		
 		// Check if the added tile is valid for a 'group'
-			// First check if the value is the same as the other values
-		for (Tile t : meldTiles) {
-			if (t.getValue() != addedTile.getValue()) {
-				return false;
+			// First check if the value is the same
+		int groupValue = meldTiles.get(0).getValue();
+		if (addedTile.getValue() != groupValue) {
+			group = false;
+		}
+		else {
+			// Now check if it is a different colour from
+			// the other tiles in the meld
+			String addedTileColour = addedTile.getColour().toString();
+			for (Tile t : meldTiles) {
+				if (t.getColour().toString().equals(addedTileColour)) {
+					group = false;
+				}
 			}
 		}
-		// Now check if it is a different colour from
-		// the other tiles in the meld
-		String addedTileColour = addedTile.getColour().toString();
-		for (Tile t : meldTiles) {
-			if (t.getColour().toString().equals(addedTileColour)) {
-				return false;
-			}
-		}
-		return true;
+		return group;
 	}
 	
 	// Function for getting value of the meld 
