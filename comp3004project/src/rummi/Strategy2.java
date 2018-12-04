@@ -91,17 +91,20 @@ public class Strategy2 extends Player {
 				for (Tile t : this.hand) {
 					if (m.getTiles().get(0).equals(t) ==  false && 
 							(!(t.getColour().equals(Colour.JOKER)))) {
-						m.addToMeld(t);
+						m.addRightside(t);
+						m.addLeftside(t);
 					} else if (t.getColour().equals(Colour.JOKER)) {
 						if (m.checkGroup()) {
 							// Set value to same 
 							t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue());
-							m.addToMeld(t);
+							m.addRightside(t);
 						} else if (m.checkRun()) {
 							// Set value to one above the last
 							t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue() + 1);
 							// Set colour to same 
 							t.setJokerColour(m.getTiles().get(0).getColour());
+							m.addRightside(t);
+							m.addLeftside(t);
 						}
 					}
 				}
@@ -165,7 +168,8 @@ public class Strategy2 extends Player {
 				// Play off the board 
 				for(int i = 0; i < this.hand.size(); i++) {
 					for (Meld m : b.getMelds()) {
-						m.addToMeld(this.hand.get(i));
+						m.addLeftside(this.hand.get(i));
+						m.addRightside(this.hand.get(i));
 						if (m.checkValid()) {
 							toRemove.add(this.hand.get(i));
 							this.SetPlayerScore(this.hand.get(i));
@@ -175,7 +179,7 @@ public class Strategy2 extends Player {
 				// if there are no tiles to remove then draw tile
 				// otherwise remove tiles from hand 
 				if (toRemove.isEmpty()) {
-					this.hand.add(b.drawTile());
+					this.hand.add(b.getDeck().dealTile());
 				} else {
 					this.hand.removeAll(toRemove);
 					toRemove.clear();
@@ -184,7 +188,7 @@ public class Strategy2 extends Player {
 		} else {
 			// for first turn plays 30+ points as fast as possible 
 			if (!(this.initialTurnPlay())) {
-				this.hand.add(b.drawTile());
+				this.hand.add(b.getDeck().dealTile());
 				turnNumber = 0; 
 			} else {
 				// Play all possible melds

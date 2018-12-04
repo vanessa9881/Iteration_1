@@ -230,4 +230,8 @@ public class Board {
 	public void setController(BoardController controller) {
 		this.controller = controller;
 	}
+	
+	public Deck getDeck() {
+		return this.tileDeck;
+	}
 }
