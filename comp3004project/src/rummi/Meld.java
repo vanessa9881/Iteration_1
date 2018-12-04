@@ -124,11 +124,15 @@ public class Meld {
 		if (meldTiles.size() == 1) {
 			meldTiles.remove(removedTile);
 			// Meld is now empty and therefore should be de-referenced!
-			throw new IllegalStateException("Meld is now empty and needs to be de-referenced!");		
+			//throw new IllegalStateException("Meld is now empty and needs to be de-referenced!");		
 		}
 		// Check if removing the tile invalidates the meld
-		ArrayList<Tile> tempMeldTiles = meldTiles;
-		tempMeldTiles.remove(removedTile);
+		// ArrayList<Tile> tempMeldTiles = meldTiles;
+		// tempMeldTiles.remove(removedTile);
+		
+		// Let user instead worry about invalidating the meld when taking a tile,
+		// as they may invalidate it only for this single move and fix it next move
+		meldTiles.remove(removedTile);
 	}
 	
 	// Checks to see whether this tile can be added to this meld
