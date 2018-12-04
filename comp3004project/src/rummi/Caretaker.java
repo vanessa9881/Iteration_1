@@ -15,4 +15,9 @@ public class Caretaker {
 		return savedBoards.get(index);
 	}
 	
+	public int getLastIndex() {
+		int i = (savedBoards.size()-1);
+		return i;
+	}
+	
 }

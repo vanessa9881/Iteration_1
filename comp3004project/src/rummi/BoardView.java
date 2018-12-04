@@ -2,6 +2,7 @@
 package rummi;
 
 import java.awt.Point;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.event.ActionEvent;
@@ -23,8 +24,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
-public class BoardView implements Cloneable{
+public class BoardView {
 
 	private BorderPane root = new BorderPane();	
     private GridPane gameBoard = new GridPane();
@@ -34,12 +37,14 @@ public class BoardView implements Cloneable{
     private ArrayList<RummiButton> boardButtons;
     private RummiButton[] handButtons;
     
+    //Level 2
     Caretaker caretaker;
     Originator originator;
     int savedBoardNumber = 0, currentBoardNumber = 0;
     ArrayList<Object> storedBoardState;
+    Clock timer;
     
-    //Level 4 shit
+    //Level 4 
     TextField riggedTextField;
     String riggedColour;
     String riggedNumber;
@@ -119,63 +124,93 @@ public class BoardView implements Cloneable{
     EventHandler<ActionEvent> drawTileButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		System.out.println("-----------------------DRAW TILE BUTTON PRESSED, DELETING TILE FROM THE FRONT-------------------------------");
+    		
+    		/* ----------This is for testing through hard coding values--------------
+    		//This button was used for testing 4/5 object states not including playerList
     		board.drawTile();
-    		System.out.println("Board.Deck after deleting a tile: \n" + board.getDeck());
     		board.getBoardTiles().put(new Point(2,2), new Tile(new Colour("Red", "r"), new Number("Two", "2"), new Image("file:resources/2r.gif")));
-    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
     		board.addHandTile(new Tile(new Colour("Black", "b"), new Number("Two", "2"), new Image("file:resources/2b.gif")));
+    		board.createMeld();
+    		
+    		System.out.println("Board.Deck after deleting a tile: \n" + board.getDeck());		
+    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());		
     		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
-    		board.clearMelds();
-    		System.out.println("Board.Melds Address: 	" + board.getMeld());
+    		if (board.getMeld().size() >= 1) {
+    			System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
+    		} else {
+    			System.out.println("Board.Melds Address: 	" + board.getMeld());
+    		}
+    		-----------------------------------------------------------------------*/
     	}
     };
     
     EventHandler<ActionEvent> saveBoardAction = new EventHandler<ActionEvent>() {	
     	public void handle(final ActionEvent e) {
+    		System.out.println("----------SAVED BOARD BUTTON PRESSES--------------");
+    		/* ----------This is for testing through hard coding values--------------
     		System.out.println("Board Address: 	  " + board);
     		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
     		System.out.println("Board.deck:\n" + board.getDeck());
     		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
-    		board.addHandTile(new Tile(new Colour("Black", "b"), new Number("One", "1"), new Image("file:resources/1b.gif")));
     		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
-    		board.createMeld();
-    		System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
+    		if (board.getMeld().size() >= 1) {
+    			System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
+    		} else {
+    			System.out.println("Board.Melds Address: 	" + board.getMeld());
+    		}
+    		-----------------------------------------------------------------------*/
     		originator.set(board);
     		caretaker.addMementoBoard(originator.saveToMemento());
     		savedBoardNumber++;
     		currentBoardNumber++;
-    		System.out.println(savedBoardNumber);
     		 
     	}
     };
     
     EventHandler<ActionEvent> resetBoardAction = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
-    		if(currentBoardNumber >= 1){	//And if the board is not valid.					
-				currentBoardNumber--;
+    		if(currentBoardNumber >= 1){	//And if the board is not valid.	//Check if there is an error here with caretaker.getLatInde()				
 				System.out.println("-----------------------RESET BUTTON PRESSED-------------------------------------");
-				board.setBoard(originator.restoreFromMemento( caretaker.getMementoBoard(currentBoardNumber)));
+				board.setBoard(originator.restoreFromMemento( caretaker.getMementoBoard(caretaker.getLastIndex())));
+				/* ----------This is for testing through hard coding values--------------
 	    		System.out.println("Board Address: 	  " + board);
 	    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
 	    		System.out.println("Board.deck:\n" + board.getDeck());
-	    		System.out.println(caretaker.savedBoards.size());
 	    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
 	    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
-	    		System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
-	    		
+	    		if (board.getMeld().size() >= 1) {
+	    			System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
+	    		} else {
+	    			System.out.println("Board.Melds Address: 	" + board.getMeld());
+	    		}
+	    		-----------------------------------------------------------------------*/
     		}
     	}
     };
       
     EventHandler<ActionEvent> rigTileButton = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {	
-    		/*
+    	
     		System.out.println("--------------------------RIGGED TILE PRESS------------------------------------------\n\n");
         	String value = riggedTextField.getText();
         	riggedColour = Character.toString(value.charAt(0));
         	riggedNumber = Character.toString(value.charAt(1));
         	board.drawRiggedTile(riggedColour, riggedNumber);	
-        	*/
+    		
+    		
+    		/* ----------This is for testing through hard coding values(This part can be ignored)--------------
+    		board.addHandTile(new Tile(new Colour("Red", "r"), new Number("One", "1"), new Image("file:resources/1r.gif")));
+    		System.out.println("Board Address: 	  " + board);
+    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
+    		System.out.println("Board.deck:\n" + board.getDeck());
+    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
+    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
+    		if (board.getMeld().size() >= 1) {
+    			System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
+    		} else {
+    			System.out.println("Board.Melds Address: 	" + board.getMeld());
+    		}
+    		---------------------------------------------------------------------------------------------------*/
     	}
     };
     
