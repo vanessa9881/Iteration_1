@@ -21,7 +21,7 @@ public class Meld {
 		// Check to see if tile to add is 1 more than the previous
 		if (endTile.getValue() + 1 == t.getValue()) {
 			// Check if all colours are the same
-			if (checkColours()) {
+			if (checkColours(t)) {
 				// Add to end as a run
 				meldTiles.add(t);
 				return true;
@@ -42,7 +42,7 @@ public class Meld {
 		// Check to see if tile to add is 1 less than the previous
 		if (frontTile.getValue() - 1 == t.getValue()) {
 			// Check if all colours are the same
-			if (checkColours()) {
+			if (checkColours(t)) {
 				// Add to end as a run
 				meldTiles.add(0, t);
 				return true;
@@ -57,14 +57,13 @@ public class Meld {
 		return false;
 	}
 	
-	// Checks if all of the colours in the meld are the same
-	public boolean checkColours() {
-		HashSet<String> tempTileSet = new HashSet<String>();
-		for (Tile t : meldTiles) {
-			tempTileSet.add(t.getColour().toString());
-		}
-		if (tempTileSet.size() != 1) {
-			return false;
+	// Checks if all of the colours in the meld are the same as the tile's colour
+	public boolean checkColours(Tile t) {
+		String col = t.getColour().getName();
+		for (Tile tile : meldTiles) {
+			if (!tile.getColour().getName().equals(col)) {
+				return false;
+			}
 		}
 		return true;
 	}
