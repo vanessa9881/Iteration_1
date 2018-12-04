@@ -15,6 +15,7 @@ public class Strategy4 extends Player {
 	//player
 	
 	public boolean higher_than_previous() {
+		
 		return true;
 		
 	}

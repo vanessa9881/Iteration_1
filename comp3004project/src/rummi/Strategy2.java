@@ -130,7 +130,7 @@ public class Strategy2 extends Player {
 	
 	// Method for Turn
 	@Override
-	public void play(RummiMain g){
+	public void play(Board g){
 		
 		if (this.turnNumber > 1) {
 			if (this.makeNewMelds(g.getPlayerList())) {

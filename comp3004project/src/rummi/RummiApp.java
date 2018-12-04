@@ -11,8 +11,7 @@ public class RummiApp extends Application{
     @Override
     public void start(Stage primaryStage) {    	
         Board model = new Board();
-        BoardController controller = new BoardController(model);
-        BoardView view = new BoardView(controller, model);
+        BoardView view = new BoardView(model);
 
         Scene scene = new Scene(view.asParent(), 400, 400);
         primaryStage.setScene(scene);

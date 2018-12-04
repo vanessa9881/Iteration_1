@@ -14,7 +14,7 @@ public class Strategy1 extends Player{
 		Meld meld_run;
 		int initial_turn =0; 
 		if(!firstTurn()&& initial_turn==0) {
-			addTile(game.drawTile());
+			hand.addTile(game.drawTile());
 	}
 		if(score_of_valid_hand() >= 30) {
 			meld_set = new Meld(null);
@@ -95,6 +95,9 @@ public class Strategy1 extends Player{
 				}
 				
 			}
+			
+		}
+		if(useJoker() && score_of_valid_hand()==2) {
 			
 		}
 		else {
