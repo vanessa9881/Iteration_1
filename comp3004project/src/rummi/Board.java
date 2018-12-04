@@ -3,6 +3,10 @@ package rummi;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class Board {
 	
@@ -53,7 +57,7 @@ public class Board {
     		// Aka if the tile isn't at the leftmost side
     		leftTile = boardTiles.get(new Point(xpos - 1, ypos));
     	}    	
-    	if (ypos != controller.BOARDSIZE) {
+    	if (ypos != BoardController.BOARDSIZE) {
     		// Aka if the tile isn't at the rightmost side
     		rightTile = boardTiles.get(new Point(xpos + 1, ypos));
     	}
@@ -67,22 +71,29 @@ public class Board {
     	else if (leftTile == null && rightTile == null) {
     		// Tile is placed on the board as the start of a new meld!
     		melds.add(new Meld(t));
-    		boardTiles.put(new Point(xpos, ypos), t);
-    		controller.updateView();
-    		return true;
+    		if (boardTiles.containsValue(t)) {
+    			removeBoardTile(t);
+			}
+			else {
+				removeHandTile(t);
+			}
+			boardTiles.put(new Point(xpos, ypos), t);
+			controller.updateView();
+			return true;
     	}
     	
     	else if(leftTile != null) {
     		// Tile is added to the end of an existing meld
     		// Do meld stuff here
-    		Meld meldToAddTo = null;
-    		for (Meld m : melds) {
-    			if (m.getTiles().contains(leftTile)) {
-    				meldToAddTo = m;
-    			}
-    		}
+    		Meld meldToAddTo = findMeld(leftTile);
     		if (meldToAddTo != null) {
     			if(meldToAddTo.addRightside(t)) {
+    				if (boardTiles.containsValue(t)) {
+    					removeBoardTile(t);
+    				}
+    				else {
+    					removeHandTile(t);
+    				}
     				boardTiles.put(new Point(xpos, ypos), t);
         			controller.updateView();
         			return true;
@@ -99,18 +110,15 @@ public class Board {
     	}
     	
     	else if(rightTile != null) {
-    		// Tile is added to the beginning of an existing meld
-    		// Do meld stuff here
-    		// Tile is added to the end of an existing meld
-    		// Do meld stuff here
-    		Meld meldToAddTo = null;
-    		for (Meld m : melds) {
-    			if (m.getTiles().contains(rightTile)) {
-    				meldToAddTo = m;
-    			}
-    		}
+    		Meld meldToAddTo = findMeld(rightTile);
     		if (meldToAddTo != null) {
     			if(meldToAddTo.addLeftside(t)) {
+    				if (boardTiles.containsValue(t)) {
+    					removeBoardTile(t);
+    				}
+    				else {
+    					removeHandTile(t);
+    				}
     				boardTiles.put(new Point(xpos, ypos), t);
         			controller.updateView();
         			return true;
@@ -132,9 +140,65 @@ public class Board {
     	}
     }
     
-    public void moveBoardTile() {
-    	// Do something here
-    	controller.updateView();
+    public Meld findMeld(Tile t) {
+    	Meld meldToAddTo = null;
+		for (Meld m : melds) {
+			if (m.getTiles().contains(t)) {
+				meldToAddTo = m;
+			}
+		}
+		return meldToAddTo;
+    }
+    
+    public boolean removeBoardTile(Tile t) {
+    	// Remove tile from board tiles if it was already on board
+		// Aka a tile moved from one spot on board to another
+		Set<Entry<Point, Tile>> entrySet = boardTiles.entrySet();
+		for (Iterator<Entry<Point, Tile>> iterator = entrySet.iterator(); iterator.hasNext();) {
+			Entry<Point, Tile> entry = iterator.next();
+			if (entry.getValue() != null) {
+				if (entry.getValue().equals(t)) {
+					entry.setValue(null);
+					return true;
+				}
+			}
+		}
+		return false;
+    }
+    
+    public boolean moveBoardTile(int x, int y, Tile t) {
+    	// First find the meld the moved tile was in
+    	Meld m = findMeld(t);
+    	if (m != null) {
+    		if (m.getTiles().size() == 1) {
+    			// Meld has only this single tile, can move it freely.
+    			if (addBoardTile(t, x, y)) {
+    				melds.remove(m);
+    			}
+    		}
+    		
+    		else if (m.getTiles().indexOf(t) == 0) {
+    			// Tile is moved from the start of existing meld which means it
+    			// Will not mess up how it looks on the board
+    			if (addBoardTile(t, x, y)) {
+    				m.removeFromMeld(t);
+    			}
+    		}
+    		
+    		else if (m.getTiles().indexOf(t) == m.getSize() - 1){
+    			// Tile is moved from the end of existing meld which means it
+    			// Will not mess up how it looks on the board
+    			if (addBoardTile(t, x, y)) {
+    				m.removeFromMeld(t);
+    			}
+    		}
+    		else {
+    			// Tile is moved from the middle of a meld,
+    			// Need to split the meld into two new melds by where
+    			// the tile was moved from
+    		}
+    	}
+		return false;
     }
     
     public void addHandTile(Tile t) {
@@ -149,7 +213,6 @@ public class Board {
     
     public void removeHandTile(Tile t) {
     	handTiles.remove(t);
-    	controller.updateView();
     }
 
 	public ArrayList<Tile> getHandTiles() {

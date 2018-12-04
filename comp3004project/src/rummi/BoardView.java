@@ -41,19 +41,30 @@ public class BoardView {
     	public void handle(final ActionEvent e) {
     		priorSelectedTile = selectedTile;
     		selectedTile = ((RummiButton) e.getSource()).getTile();
-
+    		
     		if (selectedTile == null ) {
         		System.out.println("Selected board space is empty");
         		if (priorSelectedTile != null) {
-            		int x = ((RummiButton) e.getSource()).getPos()[0] + 1;
-            		int y = ((RummiButton) e.getSource()).getPos()[1] + 1;
-                	System.out.println("Column Number " + x + " and " + " Row Number " + y);	
-                	System.out.println("------------------------------------------------------------");
-                	
-                	if (controller.placeTile(x, y, priorSelectedTile)) {
-                		System.out.println("\nTile added to board");
-                		controller.removeHandTile(priorSelectedTile);
-                	}
+        			int x = ((RummiButton) e.getSource()).getPos()[0] + 1;
+    				int y = ((RummiButton) e.getSource()).getPos()[1] + 1;
+        			
+        			// Moving a tile already on board
+        			if (controller.getBoardTiles().containsValue(priorSelectedTile)) {
+        				if (controller.moveTile(x, y, priorSelectedTile)) {
+        					System.out.println("\nTile moved to new space");
+        					System.out.println("--------------------------------------------------");
+        				}
+        			}
+        			
+        			// Placing a tile from hand onto the board
+        			else {
+        				System.out.println("Column Number " + x + " and " + " Row Number " + y + " selected.");
+        				
+        				if (controller.placeTile(x, y, priorSelectedTile)) {
+        					System.out.println("Tile added to board");
+        					System.out.println("--------------------------------------------------");
+        				}
+        			}
         		}
         	}
         	else {
@@ -200,8 +211,8 @@ public class BoardView {
     	// Add tile references to the cooresponding button
     	HashMap<Point, Tile> boardTiles = controller.getBoardTiles();
     	int buttonIndex = 0;
-    	for (int x = 1; x <= controller.BOARDSIZE; x++) {
-    		for (int y = 1; y <= controller.BOARDSIZE; y++) {
+    	for (int x = 1; x <= BoardController.BOARDSIZE; x++) {
+    		for (int y = 1; y <= BoardController.BOARDSIZE; y++) {
     			boardButtons.get(buttonIndex).setTile(boardTiles.get(new Point(x,y)));
     			buttonIndex++;
     		}
