@@ -1,4 +1,4 @@
-
+//is getDeck wrong?
 package rummi;
 
 import java.awt.Point;
@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -24,7 +23,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class BoardView implements Cloneable{
+public class BoardView {
 
 	private BorderPane root = new BorderPane();	
     private GridPane gameBoard = new GridPane();
@@ -38,6 +37,7 @@ public class BoardView implements Cloneable{
     Originator originator;
     int savedBoardNumber = 0, currentBoardNumber = 0;
     ArrayList<Object> storedBoardState;
+    ArrayList<Object> tempCurrentBoardState;
     
     //Level 4 shit
     TextField riggedTextField;
@@ -49,11 +49,12 @@ public class BoardView implements Cloneable{
     
     private BoardController controller;
     private Board board;
-
+    private Board tempBoard;
     
 	public BoardView(BoardController controller, Board model) {
 		this.controller = controller;
 		board = model;
+		tempBoard = model;				//????????????????????????????????????????????
 		caretaker = new Caretaker();
 		originator = new Originator();	
 		riggedTextField = new TextField();
@@ -69,6 +70,7 @@ public class BoardView implements Cloneable{
 		tileSelectedLabel = new Label("Selected Tile");
 		
 		storedBoardState = new ArrayList<Object>();
+		tempBoard = new Board();
 		
 		
 		root.setRight(addVBox());
@@ -79,6 +81,8 @@ public class BoardView implements Cloneable{
 		userScrollPane.setFitToHeight(true);
 		createHandButtons();	
 		
+
+		//resetBoard.setDisable(false);
 		
 		gameBoard.setMaxSize(1150, 1000);
 	    BorderPane.setAlignment(gameBoard, Pos.TOP_LEFT);
@@ -114,56 +118,98 @@ public class BoardView implements Cloneable{
         	}
     	}
     };
-       
     
     EventHandler<ActionEvent> drawTileButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
-    		System.out.println("-----------------------DRAW TILE BUTTON PRESSED, DELETING TILE FROM THE FRONT-------------------------------");
-    		board.drawTile();
-    		System.out.println("Board.Deck after deleting a tile: \n" + board.getDeck());
-    		board.getBoardTiles().put(new Point(2,2), new Tile(new Colour("Red", "r"), new Number("Two", "2"), new Image("file:resources/2r.gif")));
-    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
-    		board.addHandTile(new Tile(new Colour("Black", "b"), new Number("Two", "2"), new Image("file:resources/2b.gif")));
-    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
-    		board.clearMelds();
-    		System.out.println("Board.Melds Address: 	" + board.getMeld());
+    		/*
+    		System.out.println("Hello:	" + originator.restoreBoardFromMemento(caretaker.getMemento((currentBoardNumber)-1)));
+    		System.out.println("-------------------------------------------------------------------------------------------");
+    		System.out.println("Hello000:	" + originator.restoreBoardFromMemento(caretaker.getMemento((currentBoardNumber)-2)));
+    		*/
     	}
     };
     
     EventHandler<ActionEvent> saveBoardAction = new EventHandler<ActionEvent>() {	
     	public void handle(final ActionEvent e) {
-    		System.out.println("Board Address: 	  " + board);
-    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
-    		System.out.println("Board.deck:\n" + board.getDeck());
-    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
-    		board.addHandTile(new Tile(new Colour("Black", "b"), new Number("One", "1"), new Image("file:resources/1b.gif")));
-    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
-    		board.createMeld();
-    		System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
-    		originator.set(board);
-    		caretaker.addMementoBoard(originator.saveToMemento());
+    		
+    		/*
+    		board.drawTile();
+    		System.out.println(board.getDeck());
+    		System.out.println("Default board address: " + board);
+    		System.out.println("Default board.deck address: " + board.getDeckForMemento() + "\n\n\n\n");
+    		storedBoardState = board.getSavedState();
+    		originator.set(storedBoardState);		
+    		caretaker.addMemento(originator.saveToMemento());
+    		System.out.println("Currently saved state in caretaker ArrayList: \n" + caretaker.getMemento(0).getDeck() +"..." + caretaker.getMemento(0).getDeckForMemento()+"\n\n\n" );
+    		
+    		System.out.println("Caretaker memento address:" + caretaker.getMemento(0));				//A
+    		System.out.println("Caretaker Deck:" + caretaker.getMemento(0).getDeckForMemento()+ "\n");
+    		System.out.println(caretaker.getMemento(0).getDeck() +"\n");
+    		System.out.println("Board memento address:" + board);									//A
+    		System.out.println("Board deck:" + board.getDeckForMemento());
+    		//board.drawTile();
+    		//System.out.println("Currently saved state in caretaker ArrayList after removing tile from board: \n" + caretaker.getMemento(0).getDeck() +"\n\n\n" );
+    		//System.out.println("This Deck should have first tiles deleted: \n" + board.getDeck()+"\n\n\n");
+    		//originator.restoreFromMemento(caretaker.getMemento(0));
+    		//board.setState(originator.getState());
+    		//System.out.println("This Deck should have all tiles: \n" + board.getDeck()+"\n\n\n");
+    		
+    		/*
+    		//getting default board constructors state and setting it to tempCurrentBoardState and then adding that state into a blank arralist<object>
+    		//Then setting that to a new baord and adding that to the arrayList of boards.
+    		
+    		storedBoardState = board.getState();	//Setting the values of the storedBoardState to that of the board (original empty board created)
+    		originator.setState(storedBoardState);	//Creating a blank temp ArrayList<Object> and setting its values of the storedBoardState
+    		caretaker.addMemento(originator.storeInMemento());	//Creating a Board with the storesBoardState and adding that to the caretaker arrayList of boards		
+    		System.out.println("Currently saved state in caretaker ArrayList: " + originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber)).get(1));
+    		
     		savedBoardNumber++;
     		currentBoardNumber++;
-    		System.out.println(savedBoardNumber);
+    		
+    		tempCurrentBoardState = originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber));
+    		savedBoardNumber++;
+    		currentBoardNumber++;
+    		System.out.println("Saved Boards: " + savedBoardNumber + "\n\n");
+    		tempBoard = new Board();
+			tempBoard.setState(tempCurrentBoardState);
+    		tempBoard.drawTile();
+    		System.out.println("TempBoard used for editing: \n" + tempBoard.getDeck() + "..." + tempBoard.getDeckForMemento());
+    		System.out.println("-----------------------------------------------------------------------");
+ 
+    		System.out.println("Saved board in arraylist board: \n" + board.getDeck() + "..." + board.getDeckForMemento());
+    		
+    		/* attempt 1
+    		//Create a temp Board with the state of the one saved in board
+    		if(currentBoardNumber >= 1) {
+    			currentBoardNumber--;
+            	System.out.println("--------------------------------------------------------------------");
+            	tempCurrentBoardState = originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber));
+    			tempBoard.setState(tempCurrentBoardState);
+    			System.out.println("This is the State of the tempBoard: " + tempBoard.getDeck());
+    			currentBoardNumber++;
+    		}
+    		//Here a new board State needs to be initialized with the previous board state????????????????? because when we delete a tile from the deck
+    		//It deletes it from the deck in the array list.
+    		  
+    		  */
     		 
     	}
     };
     
     EventHandler<ActionEvent> resetBoardAction = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
-    		if(currentBoardNumber >= 1){	//And if the board is not valid.					
-				currentBoardNumber--;
-				System.out.println("-----------------------RESET BUTTON PRESSED-------------------------------------");
-				board.setBoard(originator.restoreFromMemento( caretaker.getMementoBoard(currentBoardNumber)));
-	    		System.out.println("Board Address: 	  " + board);
-	    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
-	    		System.out.println("Board.deck:\n" + board.getDeck());
-	    		System.out.println(caretaker.savedBoards.size());
-	    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
-	    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
-	    		System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
-	    		
+    		//Reset Board to precious copy (doesnt need to check if board valid, this is user activated) 
+    		/*
+    		if(currentBoardNumber >= 1) {
+    			currentBoardNumber--;
+            	System.out.println("--------------------------------------------------------------------");
+            	System.out.println("Now the Reset method should invoke and the deck should contain all tiles again");
+    			ArrayList<Object> previousBoardState = originator.restoreFromMemento(caretaker.getMemento(currentBoardNumber));
+    			board.setState(previousBoardState);
+    			System.out.println("Address of Deck we are looking at after reset method:  " + board.getDeckForMemento() + "\n\n");
+    			System.out.println("Deck in Board: " + board.getState().get(1));
     		}
+    		*/
     	}
     };
       

@@ -31,10 +31,6 @@ public class Number {
       name = nameValue;
       symbol = symbolValue;
    }
-   
-   public String getNameValue() {
-	   return this.name;
-   }
 
    @Override
    public String toString() {
