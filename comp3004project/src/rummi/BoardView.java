@@ -44,6 +44,7 @@ public class BoardView {
     ArrayList<Object> storedBoardState;
     Clock timer;
     
+    
     //Level 4 
     TextField riggedTextField;
     String riggedColour;
