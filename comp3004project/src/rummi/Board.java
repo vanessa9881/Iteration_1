@@ -3,6 +3,10 @@ package rummi;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javafx.scene.image.Image;
 
@@ -13,6 +17,7 @@ public class Board {
     private HashMap<Point, Tile> boardTiles;
     private ArrayList<Tile> handTiles;
     private ArrayList<Meld> melds;
+    private BoardController controller;
     
 
     public Board() {
@@ -23,8 +28,8 @@ public class Board {
     	handTiles = new ArrayList<Tile>();
     	boardTiles = new HashMap<Point, Tile>();
     	// Construct the board with each board space being null
-    	for(int x = 1; x <= 12; x++) {
-    		for (int y = 1; y <= 12; y++) {
+    	for(int x = 1; x <= controller.BOARDSIZE; x++) {
+    		for (int y = 1; y <= controller.BOARDSIZE; y++) {
     			boardTiles.put(new Point(x,y), null);
     		}
     	}
@@ -35,8 +40,8 @@ public class Board {
 		tempMeld.addToMeld(new Tile(new Colour("Black", "b"), new Number("Five", "5"),new Image("file:resources/5b.gif")));
 		melds.add(tempMeld);
     	// Board looks like this:
-    	// [1,1] [1,2] [1,3] [1,4] [1,5] [1,6] [1,7] [1,8] [1,9] [1,10] [1,11] [1,12]
-    	// [2,1] [2,2] [2,3] [2,4] [2,5] [2,6] [2,7] [2,8] [2,9] [2,10] [2,11] [2,12]
+    	// [1,1] [1,2] [1,3] [1,4] [1,5] [1,6] [1,7] [1,8] [1,9] [1,10] [1,11] [1,12] ...
+    	// [2,1] [2,2] [2,3] [2,4] [2,5] [2,6] [2,7] [2,8] [2,9] [2,10] [2,11] [2,12] ...
     	// etc
     	 */
     }
@@ -44,7 +49,7 @@ public class Board {
 
     public Board(Board duplicate) { 	
     	//Deep copy for Deck object
-    	ArrayList<Tile> tempTileDeck = duplicate.getDeck();
+    	ArrayList<Tile> tempTileDeck = duplicate.getDeckTiles();
     	tileDeck = new Deck(0);
     	for(Tile t: tempTileDeck) {
     		Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
@@ -69,7 +74,7 @@ public class Board {
     		 boardTiles.put(entry.getKey(), entry.getValue());
     	}
     	//Deep copy for meld object
-    	ArrayList<Meld> tempMeld = duplicate.getMeld();
+    	ArrayList<Meld> tempMeld = duplicate.getMelds();
     	melds = new ArrayList<Meld>();	
     	for(Meld m: tempMeld) {
     		Meld n = new Meld(0);
@@ -77,7 +82,7 @@ public class Board {
 	    		Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
 	    		Colour color = new Colour(t.getColour().getName(), t.getColour().getSymbol());
 	    		Image image = new Image(t.getFilename(color, numb));
-	    		n.addToMeld(new Tile(color, numb, image));	
+	    		n.addRightside(new Tile(color, numb, image));	
 	    	}
 	    	melds.add(n);
     	}
@@ -89,29 +94,23 @@ public class Board {
     }
     
 
-    
-	public ArrayList<Object> getSavedState(){
-		ArrayList<Object> temp = new ArrayList<Object>();
-		temp.add(playerList);
-		temp.add(tileDeck);
-		temp.add(boardTiles);
-		temp.add(handTiles);
-		temp.add(melds);
-		return temp;
-	}
-	
 	public void setBoard(Board b) {
 		
 		playerList = b.getPlayerList();
 		tileDeck = b.getDeckForMemento();
 		boardTiles = b.getBoardTiles();
 		handTiles = b.getHandTiles();
-		melds = b.getMeld();
+		melds = b.getMelds();
 	}
 
+    public ArrayList<Player> getPlayerList() {
+    	return this.playerList;
+    }
     
     public void drawTile() {
 		handTiles.add(tileDeck.dealTile());
+		handTiles.sort(new TileComparator());
+		controller.updateView();
     }
     
     public Tile drawRiggedTile(String c, String n) {
@@ -122,100 +121,164 @@ public class Board {
     	// The space the tile is going has already been checked that it's empty
     	// Now we check the spaces to the left and right to see if we're adding
     	// to an existing meld or creating a new one
-    	Tile leftTile;
-    	Tile rightTile;
+    	Tile leftTile = null;
+    	Tile rightTile = null;
     	if (ypos != 1) {
     		// Aka if the tile isn't at the leftmost side
-    		leftTile = boardTiles.get(new Point(xpos, ypos - 1));
-    	}
-    	else {
-    		leftTile = null;
-    	}
-    	
-    	if (ypos != 12) {
+    		leftTile = boardTiles.get(new Point(xpos - 1, ypos));
+    	}    	
+    	if (ypos != BoardController.BOARDSIZE) {
     		// Aka if the tile isn't at the rightmost side
-    		rightTile = boardTiles.get(new Point(xpos, ypos + 1));
-    	}
-    	else {
-    		rightTile = null;
+    		rightTile = boardTiles.get(new Point(xpos + 1, ypos));
     	}
     	
     	if (leftTile != null && rightTile != null) {
     		// Can not put a tile BETWEEN TWO existing tiles!
+    		System.out.println("1");
     		return false;
     	}
     	
     	else if (leftTile == null && rightTile == null) {
     		// Tile is placed on the board as the start of a new meld!
-    		// Do meld stuff here
     		melds.add(new Meld(t));
-    		boardTiles.put(new Point(xpos, ypos), t);
-    		return true;
+    		if (boardTiles.containsValue(t)) {
+    			removeBoardTile(t);
+			}
+			else {
+				removeHandTile(t);
+			}
+			boardTiles.put(new Point(xpos, ypos), t);
+			controller.updateView();
+			return true;
     	}
     	
     	else if(leftTile != null) {
     		// Tile is added to the end of an existing meld
     		// Do meld stuff here
-    		Meld meldToAddTo = null;
-    		for (Meld m : melds) {
-    			if (m.getTiles().contains(leftTile)) {
-    				meldToAddTo = m;
-    			}
-    		}
+    		Meld meldToAddTo = findMeld(leftTile);
     		if (meldToAddTo != null) {
-    			meldToAddTo.addToMeld(t);
-    			//TODO:
-    			// CHANGE addToMeld to return a boolean
-    			// to determine if it was actually added
-    			boardTiles.put(new Point(xpos, ypos), t);
-    			return true;
+    			if(meldToAddTo.addRightside(t)) {
+    				if (boardTiles.containsValue(t)) {
+    					removeBoardTile(t);
+    				}
+    				else {
+    					removeHandTile(t);
+    				}
+    				boardTiles.put(new Point(xpos, ypos), t);
+        			controller.updateView();
+        			return true;
+    			}
+    			return false;
     		}
     		else {
     			// The tile that was already on the board is
     			// somehow not found in any meld. Should not
     			// reach here!
+    			System.out.println("2");
     			return false;
     		}
     	}
     	
     	else if(rightTile != null) {
-    		// Tile is added to the beginning of an existing meld
-    		// Do meld stuff here
-    		// Tile is added to the end of an existing meld
-    		// Do meld stuff here
-    		Meld meldToAddTo = null;
-    		for (Meld m : melds) {
-    			if (m.getTiles().contains(leftTile)) {
-    				meldToAddTo = m;
-    			}
-    		}
+    		Meld meldToAddTo = findMeld(rightTile);
     		if (meldToAddTo != null) {
-    			meldToAddTo.addToMeld(t);
-    			//TODO:
-    			// CHANGE addToMeld to return a boolean
-    			// to determine if it was actually added
-    			boardTiles.put(new Point(xpos, ypos), t);
-    			return true;
+    			if(meldToAddTo.addLeftside(t)) {
+    				if (boardTiles.containsValue(t)) {
+    					removeBoardTile(t);
+    				}
+    				else {
+    					removeHandTile(t);
+    				}
+    				boardTiles.put(new Point(xpos, ypos), t);
+        			controller.updateView();
+        			return true;
+    			}
+    			return false;
     		}
     		else {
     			// The tile that was already on the board is
     			// somehow not found in any meld. Should not
     			// reach here!
+    			System.out.println("3");
     			return false;
     		}
     	}
     	else {
     		// Should not reach here, throw an error if it does
+    		System.out.println("4");
     		return false;
     	}
     }
     
-    public void moveBoardTile() {
-    	
+    public Meld findMeld(Tile t) {
+    	Meld meldToAddTo = null;
+		for (Meld m : melds) {
+			if (m.getTiles().contains(t)) {
+				meldToAddTo = m;
+			}
+		}
+		return meldToAddTo;
+    }
+    
+    public boolean removeBoardTile(Tile t) {
+    	// Remove tile from board tiles if it was already on board
+		// Aka a tile moved from one spot on board to another
+		Set<Entry<Point, Tile>> entrySet = boardTiles.entrySet();
+		for (Iterator<Entry<Point, Tile>> iterator = entrySet.iterator(); iterator.hasNext();) {
+			Entry<Point, Tile> entry = iterator.next();
+			if (entry.getValue() != null) {
+				if (entry.getValue().equals(t)) {
+					entry.setValue(null);
+					return true;
+				}
+			}
+		}
+		return false;
+    }
+    
+    public boolean moveBoardTile(int x, int y, Tile t) {
+    	// First find the meld the moved tile was in
+    	Meld m = findMeld(t);
+    	if (m != null) {
+    		if (m.getTiles().size() == 1) {
+    			// Meld has only this single tile, can move it freely.
+    			if (addBoardTile(t, x, y)) {
+    				melds.remove(m);
+    			}
+    		}
+    		
+    		else if (m.getTiles().indexOf(t) == 0) {
+    			// Tile is moved from the start of existing meld which means it
+    			// Will not mess up how it looks on the board
+    			if (addBoardTile(t, x, y)) {
+    				m.removeFromMeld(t);
+    			}
+    		}
+    		
+    		else if (m.getTiles().indexOf(t) == m.getSize() - 1){
+    			// Tile is moved from the end of existing meld which means it
+    			// Will not mess up how it looks on the board
+    			if (addBoardTile(t, x, y)) {
+    				m.removeFromMeld(t);
+    			}
+    		}
+    		else {
+    			// Tile is moved from the middle of a meld,
+    			// Need to split the meld into two new melds by where
+    			// the tile was moved from
+    		}
+    	}
+		return false;
     }
     
     public void addHandTile(Tile t) {
     	handTiles.add(t);
+    	handTiles.sort(new TileComparator());
+    	controller.updateView();
+    }
+    
+    public void addHandMeld(Meld m) {
+    	melds.add(m);
     }
     
     public void removeHandTile(Tile t) {
@@ -232,39 +295,41 @@ public class Board {
 	
 	public void createMeld() {
 		Meld tempMeld = new Meld(0);
-		tempMeld.addToMeld(new Tile(new Colour("Yellow", "y"), new Number("Five", "5"),new Image("file:resources/5y.gif")));
-		tempMeld.addToMeld(new Tile(new Colour("Red", "r"), new Number("Five", "5"),new Image("file:resources/5r.gif")));
-		tempMeld.addToMeld(new Tile(new Colour("Black", "b"), new Number("Five", "5"),new Image("file:resources/5b.gif")));
+		tempMeld.addLeftside(new Tile(new Colour("Yellow", "y"), new Number("Five", "5"),new Image("file:resources/5y.gif")));
+		tempMeld.addLeftside(new Tile(new Colour("Red", "r"), new Number("Five", "5"),new Image("file:resources/5r.gif")));
+		tempMeld.addLeftside(new Tile(new Colour("Black", "b"), new Number("Five", "5"),new Image("file:resources/5b.gif")));
 		melds.add(tempMeld);
+
 	}
 	
 	public void clearMelds() {
 		melds.clear();
 	}
 	//This returns all tiles in deck
-	public ArrayList<Tile> getDeck() {
+	public ArrayList<Tile> getDeckTiles() {
 		return tileDeck.getDeck();
 	}
 	
-	public Deck getDeckForMemento() {
+	public Deck getDeckForMemento() {	//Redundant
 		return tileDeck;
 	}
 
-
-	public ArrayList<Player> getPlayerList() {
-		return playerList;
-	}
-
-
-	public ArrayList<Meld> getMeld() {
+	public ArrayList<Meld> getMelds(){
 		return melds;
 	}
-	
 	public ArrayList<Tile> getMeldTiles() {
 		return melds.get(0).getTiles();
 	}
 	
 	public HashMap<Point, Tile> getBoardTiles() {
 		return boardTiles;
+	}
+
+	public void setController(BoardController controller) {
+		this.controller = controller;
+	}
+	
+	public Deck getDeck() {
+		return this.tileDeck;
 	}
 }

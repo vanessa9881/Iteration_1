@@ -36,6 +36,7 @@ public class BoardView {
     private Label tileSelectedLabel = new Label("Selected Tile");
     private ArrayList<RummiButton> boardButtons;
     private RummiButton[] handButtons;
+    private Button startButton;
     
     //Level 2
     Caretaker caretaker;
@@ -55,17 +56,6 @@ public class BoardView {
     
     private BoardController controller;
     private Board board;
-
-    
-	public BoardView(BoardController controller, Board model) {
-		this.controller = controller;
-		board = model;
-		caretaker = new Caretaker();
-		originator = new Originator();	
-		riggedTextField = new TextField();
-		
-		initView();
-	}
     
 	private void initView() {
 		root = new BorderPane();	
@@ -92,27 +82,34 @@ public class BoardView {
 	    createBoardButtons();
 	}
     
-    
     EventHandler<ActionEvent> boardButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		priorSelectedTile = selectedTile;
     		selectedTile = ((RummiButton) e.getSource()).getTile();
-
+    		
     		if (selectedTile == null ) {
         		System.out.println("Selected board space is empty");
         		if (priorSelectedTile != null) {
-            		int x = ((RummiButton) e.getSource()).getPos()[0];
-            		int y = ((RummiButton) e.getSource()).getPos()[1];
-                	System.out.println("Column Number " + x + " and " + " Row Number " + y);	
-                	System.out.println("------------------------------------------------------------");
-                	// Controller will call a method in Board that checks whether the tile can be added
-                	// Will probably change the return type of this method to boolean,
-                	// so that if true that means the tile was added and that the board button
-                	// can have it's graphic changed
-                	
-                	if (controller.placeTile(x, y, priorSelectedTile)) {
-                		// Update the button's graphic!
-                	}
+        			int x = ((RummiButton) e.getSource()).getPos()[0] + 1;
+    				int y = ((RummiButton) e.getSource()).getPos()[1] + 1;
+        			
+        			// Moving a tile already on board
+        			if (controller.getBoardTiles().containsValue(priorSelectedTile)) {
+        				if (controller.moveTile(x, y, priorSelectedTile)) {
+        					System.out.println("\nTile moved to new space");
+        					System.out.println("--------------------------------------------------");
+        				}
+        			}
+        			
+        			// Placing a tile from hand onto the board
+        			else {
+        				System.out.println("Column Number " + x + " and " + " Row Number " + y + " selected.");
+        				
+        				if (controller.placeTile(x, y, priorSelectedTile)) {
+        					System.out.println("Tile added to board");
+        					System.out.println("--------------------------------------------------");
+        				}
+        			}
         		}
         	}
         	else {
@@ -228,7 +225,13 @@ public class BoardView {
     		}
     	}
     };
-    
+
+	public BoardView(Board model) {
+		controller = new BoardController(model, this);
+		model.setController(controller);
+		
+		initView();
+	}
 	
 	public void createHandButtons() {
 		handButtons = new RummiButton[64];
@@ -243,8 +246,8 @@ public class BoardView {
 	
 	public void createBoardButtons() {
 		boardButtons = new ArrayList<RummiButton>();
-		for (int x = 0; x < 12; x++) {
-			for(int y = 0; y < 12; y++) {		
+		for (int x = 0; x < controller.BOARDSIZE; x++) {
+			for(int y = 0; y < controller.BOARDSIZE; y++) {		
 				RummiButton newButton = new RummiButton(x,y);
 				newButton.setPrefSize(100, 100);
 				newButton.setOnAction(boardButtonPress);
@@ -301,6 +304,15 @@ public class BoardView {
 	
     public void draw() {
     	// Draw hand tiles
+    	// Remove all images and tile references from buttons first
+    	// Aka reset it to a blank canvas
+    	int i = 0;
+    	while (i < 64) {
+    		handButtons[i].setTile(null);
+    		handButtons[i].setGraphic(null);
+    		i++;
+    	}
+    	// Add cooresponding tile reference to buttons
     	ArrayList<Tile> handTiles = controller.getHandTiles();
     	int index = 0;
     	for (Tile t : handTiles) {
@@ -317,11 +329,19 @@ public class BoardView {
     	}
     	
     	// Draw board tiles
+    	// Remove all images and tile references from buttons first
+    	// Aka reset it to a blank canvas
+    	for (RummiButton b : boardButtons) {
+    		b.setTile(null);
+    		b.setGraphic(null);
+    	}
+    	// Add tile references to the cooresponding button
     	HashMap<Point, Tile> boardTiles = controller.getBoardTiles();
     	int buttonIndex = 0;
-    	for (int x = 1; x <= 12; x++) {
-    		for (int y = 1; y <= 12; y++) {
+    	for (int x = 1; x <= BoardController.BOARDSIZE; x++) {
+    		for (int y = 1; y <= BoardController.BOARDSIZE; y++) {
     			boardButtons.get(buttonIndex).setTile(boardTiles.get(new Point(x,y)));
+    			buttonIndex++;
     		}
     	}
     	for (RummiButton b : boardButtons) {
@@ -343,3 +363,4 @@ public class BoardView {
 	}
 	
 }
+

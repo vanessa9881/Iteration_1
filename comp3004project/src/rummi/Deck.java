@@ -28,6 +28,10 @@ public class Deck {
 					}
 				}
 			}
+				Tile joker = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
+				addTile(joker);
+				addTile(joker);
+				
 			shuffle(); 
 		} 
 		catch (Exception exception){

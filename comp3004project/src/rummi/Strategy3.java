@@ -2,46 +2,33 @@ package rummi;
 
 import java.util.*;
 
-// Actually Strategy 3
-public class Strategy2 extends Player {
+// Actually strategy 2 
+public class Strategy3 extends Player {
 	
 	//Add constructors, etc... 
-	private ArrayList<Meld> melds = new ArrayList<Meld>(); 
+	private int turnNumber = 0;
+	public ArrayList<Meld> melds = new ArrayList<Meld>(); 
 	
-	public Strategy2() {
+	public Strategy3() {
 	}
 	
 	public ArrayList<Meld> getMelds(){
 		return this.melds;
 	}
 	
-	// Method to show if P3 can make new melds based on hands of other players
-	public boolean makeNewMelds(ArrayList<Player> players) {
-		boolean makenew = false;
-		
-		for (Player player : players) {
-			int handDifference = 0; 
-			if (player.equals(this)) {
-				// Do nothing
-			} else if (player.getHandValue() > this.getHandValue()) {
-				makenew =  true; 
-			} else {
-				handDifference = this.getHandValue() - player.getHandValue();
-				if (handDifference >= 3) {
-					makenew = false;
-				} else {
-					makenew = true; 
-				}
-			}
-		}
-		return makenew;
-	}
-	
 	
 	// Method for initial 30+ point turn 
-	public boolean initialTurnPlay() {
+	public boolean initialTurnPlay(Board b) {
 		int meldTotal = 0;
 		boolean play = true;
+		// If another player has not played their initial 
+		// Then play = false 
+		
+		for (Player p : b.getPlayerList()) {
+			if ((p.getTurnNumber() > 1) && (!(p.equals(this)))) {
+		  play = false;}	 
+		}
+		
 		// if hand melds total >= 30 then 
 		// play all available melds in hand
 		// check hand
@@ -51,12 +38,13 @@ public class Strategy2 extends Player {
 		if (meldTotal < 30) {
 			play = false; 
 		}
+		
 		return play; 
 		
 	}
 	
 	// Method for getting highest meld available 
-	public Meld highestMeld(ArrayList<Meld> melds) {
+	private Meld highestMeld(ArrayList<Meld> melds) {
 		Meld highMeld = melds.get(0); 
 		for (Meld m : melds) {
 			if (m.getValue() > highMeld.getValue()) {
@@ -91,20 +79,20 @@ public class Strategy2 extends Player {
 				for (Tile t : this.hand) {
 					if (m.getTiles().get(0).equals(t) ==  false && 
 							(!(t.getColour().equals(Colour.JOKER)))) {
-						m.addRightside(t);
 						m.addLeftside(t);
+						m.addRightside(t);
 					} else if (t.getColour().equals(Colour.JOKER)) {
 						if (m.checkGroup()) {
 							// Set value to same 
 							t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue());
-							m.addRightside(t);
+							m.addLeftside(t);
 						} else if (m.checkRun()) {
 							// Set value to one above the last
 							t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue() + 1);
 							// Set colour to same 
 							t.setJokerColour(m.getTiles().get(0).getColour());
-							m.addRightside(t);
 							m.addLeftside(t);
+							m.addRightside(t);
 						}
 					}
 				}
@@ -143,17 +131,17 @@ public class Strategy2 extends Player {
 		}
 		
 	}
-
 	
 	// Method for Turn
 	public void play(Board b){
-		this.getMeldsFromHand();
 		ArrayList<Tile> toRemove = new ArrayList<Tile>();
-		
+		this.getMeldsFromHand();
 		
 		if (this.turnNumber > 1) {
-			if (this.makeNewMelds(b.getPlayerList())) {
-				//play turn while able to make new melds 
+			// Play next turn 
+			// Checks if all tiles can be played
+			if (this.hand.isEmpty()) {
+				// Play all melds and wins 
 				for (int i = 0; i < melds.size(); i++) {
 					b.addHandMeld(melds.get(i));
 				}
@@ -163,8 +151,7 @@ public class Strategy2 extends Player {
 					}
 				}
 				melds.clear();
-			} else { 
-				// If unable to make new melds, use board or draw
+			} else {
 				// Play off the board 
 				for(int i = 0; i < this.hand.size(); i++) {
 					for (Meld m : b.getMelds()) {
@@ -184,15 +171,15 @@ public class Strategy2 extends Player {
 					this.hand.removeAll(toRemove);
 					toRemove.clear();
 				}
-			} 
+			}
 		} else {
 			// for first turn plays 30+ points as fast as possible 
-			if (!(this.initialTurnPlay())) {
+			if (!(this.initialTurnPlay(b))) {
 				this.hand.add(b.getDeck().dealTile());
 				turnNumber = 0; 
 			} else {
 				// Play all possible melds
-				for (int i = 0; i< melds.size(); i ++) {
+				for (int i = 0; i < melds.size(); i++) {
 					b.addHandMeld(melds.get(i));
 				}
 				for (Meld m : melds) {
@@ -206,4 +193,5 @@ public class Strategy2 extends Player {
 		this.turnNumber++;
 		this.sort();
 	}
+
 }
