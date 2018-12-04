@@ -1,17 +1,22 @@
 package rummi;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BoardController {
 
 	private final Board board;
+	private final BoardView view;
+	public static final int BOARDSIZE = 15;
 	
-	public BoardController(Board model) {
+	public BoardController(Board model, BoardView view) {
 		board = model;
+		this.view = view;
 	}
 
-	public Tile drawTile() {
-		return board.drawTile();
+	public void drawTile() {
+		board.drawTile();
 	}
 	
 	public boolean placeTile(int xpos, int ypos, Tile t) {
@@ -20,5 +25,18 @@ public class BoardController {
 
 	public ArrayList<Tile> getHandTiles() {
 		return board.getHandTiles();
+	}
+
+	public HashMap<Point, Tile> getBoardTiles() {
+		return board.getBoardTiles();
+	}
+	
+	public void updateView() {
+		view.draw();
+	}
+
+	public void removeHandTile(Tile priorSelectedTile) {
+		board.removeHandTile(priorSelectedTile);
+		
 	}
 }
