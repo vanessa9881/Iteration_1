@@ -43,22 +43,15 @@ public class Board {
     	// The space the tile is going has already been checked that it's empty
     	// Now we check the spaces to the left and right to see if we're adding
     	// to an existing meld or creating a new one
-    	Tile leftTile;
-    	Tile rightTile;
+    	Tile leftTile = null;
+    	Tile rightTile = null;
     	if (ypos != 1) {
     		// Aka if the tile isn't at the leftmost side
     		leftTile = boardTiles.get(new Point(xpos - 1, ypos));
-    	}
-    	else {
-    		leftTile = null;
-    	}
-    	
+    	}    	
     	if (ypos != controller.BOARDSIZE) {
     		// Aka if the tile isn't at the rightmost side
     		rightTile = boardTiles.get(new Point(xpos + 1, ypos));
-    	}
-    	else {
-    		rightTile = null;
     	}
     	
     	if (leftTile != null && rightTile != null) {
@@ -69,7 +62,6 @@ public class Board {
     	
     	else if (leftTile == null && rightTile == null) {
     		// Tile is placed on the board as the start of a new meld!
-    		// Do meld stuff here
     		melds.add(new Meld(t));
     		boardTiles.put(new Point(xpos, ypos), t);
     		controller.updateView();
@@ -86,13 +78,12 @@ public class Board {
     			}
     		}
     		if (meldToAddTo != null) {
-    			meldToAddTo.addToMeld(t);
-    			//TODO:
-    			// CHANGE addToMeld to return a boolean
-    			// to determine if it was actually added
-    			boardTiles.put(new Point(xpos, ypos), t);
-    			controller.updateView();
-    			return true;
+    			if(meldToAddTo.addRightside(t)) {
+    				boardTiles.put(new Point(xpos, ypos), t);
+        			controller.updateView();
+        			return true;
+    			}
+    			return false;
     		}
     		else {
     			// The tile that was already on the board is
@@ -110,18 +101,17 @@ public class Board {
     		// Do meld stuff here
     		Meld meldToAddTo = null;
     		for (Meld m : melds) {
-    			if (m.getTiles().contains(leftTile)) {
+    			if (m.getTiles().contains(rightTile)) {
     				meldToAddTo = m;
     			}
     		}
     		if (meldToAddTo != null) {
-    			meldToAddTo.addToMeld(t);
-    			//TODO:
-    			// CHANGE addToMeld to return a boolean
-    			// to determine if it was actually added
-    			boardTiles.put(new Point(xpos, ypos), t);
-    			controller.updateView();
-    			return true;
+    			if(meldToAddTo.addLeftside(t)) {
+    				boardTiles.put(new Point(xpos, ypos), t);
+        			controller.updateView();
+        			return true;
+    			}
+    			return false;
     		}
     		else {
     			// The tile that was already on the board is

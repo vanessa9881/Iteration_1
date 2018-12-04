@@ -15,10 +15,50 @@ public class Meld {
 		meldTiles.add(initialTile);
 	}
 	
+	public boolean addRightside(Tile t) {
+		Tile endTile = meldTiles.get(meldTiles.size() - 1);
+		System.out.println("We adding right!");
+		// Check to see if tile to add is 1 more than the previous
+		if (endTile.getValue() + 1 == t.getValue()) {
+			if (endTile.getColour().getName().equals(t.getColour().getName())) {
+				// Add to end as a run
+				meldTiles.add(t);
+				return true;
+			}
+		}
+		
+		if (addAsGroup(t)) {
+			// Add to end as a group
+			meldTiles.add(t);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean addLeftside(Tile t) {
+		Tile frontTile = meldTiles.get(0);
+		System.out.println("We adding left!");
+		// Check to see if tile to add is 1 less than the previous
+		if (frontTile.getValue() - 1 == t.getValue()) {
+			if (frontTile.getColour().getName().equals(t.getColour().getName())) {
+				// Add to end as a run
+				meldTiles.add(0, t);
+				return true;
+			}
+		}
+		
+		if (addAsGroup(t)) {
+			// Add to end as a group
+			meldTiles.add(0, t);
+			return true;
+		}
+		return false;
+	}
+	
 	// Checks whether this meld is a valid group
 	public boolean checkGroup() {
 		// Return false if the meld isn't 3 or 4 tiles
-		if (meldTiles.size() < 3 || meldTiles.size() > 4) {return false;}
+		if (meldTiles.size() != 3 || meldTiles.size() != 4) {return false;}
 		// Check if all tiles have the same value
 		int groupValue = meldTiles.get(0).getValue();
 		for (Tile t : meldTiles) {
@@ -31,16 +71,17 @@ public class Meld {
 		for (Tile t : meldTiles) {
 			if(!tempTileSet.add(t.getColour().toString())){return false;}
 		}
-		
 		return true;
 	}
 	
-	// Checks whether this meld is a valid rn
+	// Checks whether this meld is a valid run
 	public boolean checkRun() {
 		// Return false if the meld isn't 3 or more tiles
 		if (meldTiles.size() < 3) {return false;}
 		
 		// Check if tiles are the same colour
+		// Does this by using the fact that hashsets dont allow duplicates,
+		// and therefore will only put a duplicate colour in once
 		HashSet<String> tempTileSet = new HashSet<String>();
 		for (Tile t : meldTiles) {
 			tempTileSet.add(t.getColour().toString());
@@ -57,61 +98,18 @@ public class Meld {
 		return true;
 	}
 	
-	// Method for adding a tile to the meld
-	public void addToMeld(Tile addedTile) {	
-		boolean failedRun = false;
-		boolean failedGroup = false;
-		
-		// Check if the added tile is valid for a 'group'
-			// First check if the value is the same
-		int groupValue = meldTiles.get(0).getValue();
-		if (addedTile.getValue() != groupValue) {
-			failedGroup = true;
-			//System.out.println("Failed at value check");
+	// Checks a meld to see if it is valid.
+	public boolean checkValid() {
+		// Check if the meld is too small
+		if (meldTiles.size() < 3) {
+			return false;
 		}
-			// Now check if it is a different colour from
-			// the other tiles in the meld
-		String addedTileColour = addedTile.getColour().toString();
-		for (Tile t : meldTiles) {
-			if (t.getColour().toString().equals(addedTileColour)) {
-				failedGroup = true;
-				//System.out.println("Failed at colour test");
-				//System.out.println("Initial tile colour: " +t.getColour() + " Added tile colour: " + addedTileColour);
-			}
+		// Check if it is either a valid group or run
+		else if(!this.checkGroup() && !this.checkRun()){
+			return false;
 		}
-		// Check if the added tile is valid for a 'run'
-		// This expects tiles to be placed down in the 
-		// correct sequence, as out of sequence placement
-		// of tiles for a run is not supported!
-			// First check if the tile's value is one
-			// more than the previous tile
-		Tile priorTile = meldTiles.get(meldTiles.size() - 1);
-		if (priorTile.getValue()  + 1 != addedTile.getValue()) {
-			// Tile is not valid when added to the right
-			// Now check if it is valid when added to the left
-			if (meldTiles.get(0).getValue() == 1 || meldTiles.get(0).getValue() != addedTile.getValue() + 1) {
-				// Left most tile was a 1 or the added tile's
-				// value is not in sequence!
-				failedRun = true;
-			}
-		}
-			// Now check if the tile is the same colour
-			// as the previous tile
-		if (!(priorTile.getColour().equals(addedTile.getColour()))) {
-			failedRun = true;
-		}
-		
-		// Now we check the boolean conditions.
-		// If both are true, that means adding this
-		// tile is not possible as it invalidates the meld
-		if (failedGroup && failedRun) {
-			//System.out.println("Wrong");
-		}
-		// If we're here, that means the tile does not
-		// invalidate the meld and can be added
 		else {
-			meldTiles.add(addedTile);
-			meldTiles.sort(new TileComparator());
+			return true;
 		}
 	}
 	
@@ -136,19 +134,28 @@ public class Meld {
 		tempMeldTiles.remove(removedTile);
 	}
 	
-	// Checks a meld to see if it is valid.
-	public boolean checkValid() {
-		// Check if the meld is too small
-		if (meldTiles.size() < 3) {
-			return false;
-		}
-		// Check if it is either a valid group or run
-		else if(!this.checkGroup() && !this.checkRun()){
-			return false;
+	// Checks to see whether this tile can be added to this meld
+	// if this meld were to be a developing group
+	public boolean addAsGroup(Tile addedTile) {
+		boolean group = true;
+		
+		// Check if the added tile is valid for a 'group'
+			// First check if the value is the same
+		int groupValue = meldTiles.get(0).getValue();
+		if (addedTile.getValue() != groupValue) {
+			group = false;
 		}
 		else {
-			return true;
+			// Now check if it is a different colour from
+			// the other tiles in the meld
+			String addedTileColour = addedTile.getColour().toString();
+			for (Tile t : meldTiles) {
+				if (t.getColour().toString().equals(addedTileColour)) {
+					group = false;
+				}
+			}
 		}
+		return group;
 	}
 	
 	// Function for getting value of the meld 
