@@ -521,7 +521,7 @@ public class Board {
 		}
 			if (strat1 > 0) {
 				for (int i = 0; i < strat1; i++) {
-					this.playerList.add(new Strategy1());
+					//this.playerList.add(new Strategy1));
 				}
 			}
 			if (strat2 > 0) {
@@ -536,7 +536,7 @@ public class Board {
 			}
 			if (strat4 > 0) {
 				for (int i = 0; i < strat1; i++) {
-					this.playerList.add(new Strategy4());
+					//this.playerList.add(new Strategy4());
 				}
 			}
 			
