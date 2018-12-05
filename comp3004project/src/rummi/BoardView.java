@@ -255,6 +255,7 @@ public class BoardView {
       
     EventHandler<ActionEvent> rigTileButton = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {	
+    		if (riggedTextField.getText().length() >= 2) {
     		Tile temp;
     		System.out.println("--------------------------RIGGED TILE PRESS------------------------------------------\n\n");
         	String value = riggedTextField.getText();
@@ -278,6 +279,7 @@ public class BoardView {
         	} else if (value.length() == 2) {
         		controller.returnBoard().addHandTile(temp);
         	}
+    		}
         	
         	//Level 4 point 2 for AI *********************************************************************************
         	//Level 4 point 2 for AI *********************************************************************************
