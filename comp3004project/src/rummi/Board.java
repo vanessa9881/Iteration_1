@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Random;
 
 public class Board {
 	
@@ -233,5 +234,50 @@ public class Board {
 	
 	public Deck getDeck() {
 		return this.tileDeck;
+	}
+	
+	// Sets number of human players then number of AI players 
+	public void setPlayers(int numPlayersHuman, int numPlayersAI) {
+		Random rand = new Random();
+		int randNum = rand.nextInt(3) + 1;
+		
+		if (!(numPlayersHuman == 0)) {
+			for (int i = 0; i < numPlayersHuman; i++){this.playerList.add(new HumanPlayer());}
+		}
+		if (!(numPlayersAI == 0)) {
+			for (int i = 0; i < numPlayersAI; i++){
+				randNum = rand.nextInt(3) + 1;
+				if (randNum == 1) {this.playerList.add(new Strategy2());}
+				if (randNum == 2) {this.playerList.add(new Strategy2());}
+				if (randNum == 3) {this.playerList.add(new Strategy3());}
+				//if (randNum == 4) {this.playerList.add(new Strategy4());}
+			}
+		}
+	}
+	
+	// Deals initial hands to all players
+	public void dealInitialPlayerHands() {
+		int temp = 0;
+		System.out.println("This is the deck size before dealing: " + this.tileDeck.deckSize());
+		for (Player p : this.playerList) {
+			temp++;
+			for (int i = 0; i < 14; i ++) {
+				p.hand.add(this.tileDeck.dealTile());
+			}
+			p.sort();
+			System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
+			System.out.println("_______________________________________________");
+		}
+		//System.out.println(this.tileDeck.deckSize());
+	}
+	
+	public void turns() {
+		int temp = 0;
+		for (Player p : this.playerList) {
+			temp++;
+			p.play(this);
+			System.out.println("Player " + temp + "'s melds: " + p.getMelds());
+			System.out.println("_______________________________________________");
+		}
 	}
 }

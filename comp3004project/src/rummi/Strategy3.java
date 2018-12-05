@@ -7,14 +7,10 @@ public class Strategy3 extends Player {
 	
 	//Add constructors, etc... 
 	private int turnNumber = 0;
-	public ArrayList<Meld> melds = new ArrayList<Meld>(); 
 	
 	public Strategy3() {
 	}
 	
-	public ArrayList<Meld> getMelds(){
-		return this.melds;
-	}
 	
 	
 	// Method for initial 30+ point turn 

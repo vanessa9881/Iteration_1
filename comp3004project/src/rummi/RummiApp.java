@@ -16,6 +16,13 @@ public class RummiApp extends Application{
         Scene scene = new Scene(view.asParent(), 400, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        model.setPlayers(0, 4);
+        model.dealInitialPlayerHands();
+        while (true) {
+        	model.turns();
+        	break;
+        }
     }
 
     public static void main(String[] args) {
