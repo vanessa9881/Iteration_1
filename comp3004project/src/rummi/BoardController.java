@@ -8,7 +8,7 @@ public class BoardController {
 
 	private final Board board;
 	private final BoardView view;
-	public static final int BOARDSIZE = 15;
+	public static final int BOARDSIZE = 20;
 	
 	public BoardController(Board model, BoardView view) {
 		board = model;

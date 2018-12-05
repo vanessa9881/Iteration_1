@@ -27,17 +27,25 @@ public class Meld {
 	public boolean addRightside(Tile t) {
 		Tile endTile = meldTiles.get(meldTiles.size() - 1);
 
+		// First check if the added tile is a joker
+		if (t.getID() > 9) {
+			return addJoker(t, 1);
+		}
+		
 		// Check to see if tile to add is 1 more than the previous
 		if (endTile.getValue() + 1 == t.getValue()) {
 			// Check if all colours are the same
 			if (checkColours(t)) {
-				// Add to end as a run
 				meldTiles.add(t);
 				return true;
 			}
 		}
 		
 		if (addAsGroup(t)) {
+			// Now check group size
+			if (meldTiles.size() == 4) {
+				return false;
+			}
 			// Add to end as a group
 			meldTiles.add(t);
 			return true;
@@ -48,6 +56,11 @@ public class Meld {
 	public boolean addLeftside(Tile t) {
 		Tile frontTile = meldTiles.get(0);
 
+		// First check if the added tile is a joker
+		if (t.getID() > 9) {
+			return addJoker(t, 0);
+		}
+		
 		// Check to see if tile to add is 1 less than the previous
 		if (frontTile.getValue() - 1 == t.getValue()) {
 			// Check if all colours are the same
@@ -59,11 +72,86 @@ public class Meld {
 		}
 		
 		if (addAsGroup(t)) {
+			// Now check group size
+			if (meldTiles.size() == 4) {
+				return false;
+			}
 			// Add to end as a group
 			meldTiles.add(0, t);
 			return true;
 		}
 		return false;
+	}
+	
+	// Adds a joker and sets it attributes to the tile it was added as
+	// 0 means leftside add, 1 means rightside add
+	private boolean addJoker(Tile t, int i) {
+		if (meldTiles.size() == 1) {
+			if (meldTiles.get(0).getID() > 9) {
+				System.out.print("Error! Cannot put two jokers beside eachother!");
+				return false;
+			}
+			else {
+				if (i == 0) {
+					meldTiles.add(0, t);
+				}
+				else {
+					meldTiles.add(t);
+				}
+				return true;
+			}
+		}
+		
+		if (i == 0) {
+			if (meldTiles.get(0).getValue() == 1) {
+				if (!this.checkGroup()) {
+					// This meld is a run that starts at 1. Cannot add
+					// any more tiles to the beginning
+					System.out.println("Not group!!");
+					return false;
+				}
+			}
+			
+			if (this.checkGroup()) {
+				if (meldTiles.size() == 4) {
+					return false;
+				}
+				// don't change colour, as if it's a group it can be a few colours
+				t.setJokerValue(meldTiles.get(0).getValue());
+			}
+			else {
+				t.setJokerColour(meldTiles.get(0).getColour());
+				t.setJokerValue(meldTiles.get(0).getValue() - 1);
+			}
+			meldTiles.add(0, t);
+			return true;
+		}
+		
+		if (i == 1) {
+			if (meldTiles.get(meldTiles.size() - 1).getValue() == 13) {
+				if (!this.checkGroup()) {
+					// This meld is a run that ends at 13. Cannot add
+					// any more tiles to the end
+					return false;
+				}
+			}
+			
+			if (this.checkGroup()) {
+				if (meldTiles.size() == 4) {
+					return false;
+				}
+				// don't change colour, as if it's a group it can be a few colours
+				t.setJokerValue(meldTiles.get(0).getValue());
+			}
+			else {
+				t.setJokerColour(meldTiles.get(0).getColour());
+				t.setJokerValue(meldTiles.get(meldTiles.size() - 1).getValue() + 1);
+			}
+			meldTiles.add(t);
+			return true;
+		}
+		return false;
+		
 	}
 	
 	// Checks if all of the colours in the meld are the same as the tile's colour
