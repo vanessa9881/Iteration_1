@@ -6,13 +6,13 @@ import java.util.*;
 public class Strategy2 extends Player {
 	
 	//Add constructors, etc... 
-	private ArrayList<Meld> melds = new ArrayList<Meld>(); 
-	
 	public Strategy2() {
 	}
-	
+
+	@Override
 	public ArrayList<Meld> getMelds(){
-		return this.melds;
+		getMeldsFromHand();
+		return melds;
 	}
 	
 	// Method to show if P3 can make new melds based on hands of other players

@@ -7,15 +7,15 @@ public class Strategy3 extends Player {
 	
 	//Add constructors, etc... 
 	private int turnNumber = 0;
-	public ArrayList<Meld> melds = new ArrayList<Meld>(); 
 	
 	public Strategy3() {
 	}
 	
+	@Override
 	public ArrayList<Meld> getMelds(){
-		return this.melds;
+		getMeldsFromHand();
+		return melds;
 	}
-	
 	
 	// Method for initial 30+ point turn 
 	public boolean initialTurnPlay(Board b) {

@@ -1,9 +1,7 @@
 package rummi;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class RummiApp extends Application{
@@ -18,6 +16,9 @@ public class RummiApp extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
         
+        model.setPlayers(0, 4);
+        model.startOrder();
+
     }
     
 

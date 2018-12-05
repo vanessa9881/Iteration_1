@@ -51,7 +51,6 @@ public class BoardController {
 	}
 
 	public boolean moveTile(int x, int y, Tile priorSelectedTile) {
-		return board.moveBoardTile(x, y, priorSelectedTile);
-		
+		return board.moveBoardTile(x, y, priorSelectedTile);	
 	}
 }

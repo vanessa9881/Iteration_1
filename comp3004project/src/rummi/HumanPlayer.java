@@ -3,7 +3,7 @@ package rummi;
 public class HumanPlayer extends Player{
 
 	@Override
-	public void play(RummiApp g){
+	public void play(Board g){
 		//GUIclass.doSomething()
 	}
 }

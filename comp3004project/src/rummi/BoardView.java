@@ -27,7 +27,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-
 public class BoardView {
 
 	private BorderPane root = new BorderPane();	
@@ -130,8 +129,7 @@ public class BoardView {
     	public void handle(final ActionEvent e) {
     		System.out.println("-----------------------DRAW TILE BUTTON PRESSED, DELETING TILE FROM THE FRONT-------------------------------");
     		controller.drawTile();
-    		Player testp = new Strategy2();
-    		testp.hand.add(controller.returnBoard().getDeck().dealTile());
+    		//testp.hand.add(controller.returnBoard().getDeck().dealTile());
     		System.out.println("----------SAVED BOARD BUTTON PRESSES--------------");
     		///* ----------This is for testing through hard coding values--------------
     		System.out.println("Board Address: 	  " + controller.returnBoard());
@@ -225,7 +223,7 @@ public class BoardView {
     		System.out.println("--------------------------RIGGED TILE PRESS------------------------------------------\n\n");
         	String value = riggedTextField.getText();
         	riggedColour = Character.toString(value.charAt(0));
-        	riggedNumber = Character.toString(value.charAt(1));
+        	riggedNumber = Character.toString(value.charAt(1));		//FIX example r13**********************************
         	Tile temp = controller.returnBoard().drawRiggedTile(riggedColour, riggedNumber);
         	if (temp == null ) {
         		moveInfoTextArea.appendText("No more of " + riggedColour + riggedNumber + " in Deck\n");
@@ -237,7 +235,6 @@ public class BoardView {
         	//Level 4 point 2 for AI *********************************************************************************
         	//Level 4 point 2 for AI *********************************************************************************
         	//Level 4 point 2 for AI *********************************************************************************
-        	
     		
     		/* ----------This is for testing through hard coding values(This part can be ignored)--------------
     		board.addHandTile(new Tile(new Colour("Red", "r"), new Number("One", "1"), new Image("file:resources/1r.gif")));
@@ -330,8 +327,8 @@ public class BoardView {
 	
 	public void createBoardButtons() {
 		boardButtons = new ArrayList<RummiButton>();
-		for (int x = 0; x < controller.BOARDSIZE; x++) {
-			for(int y = 0; y < controller.BOARDSIZE; y++) {		
+		for (int x = 0; x < BoardController.BOARDSIZE; x++) {
+			for(int y = 0; y < BoardController.BOARDSIZE; y++) {		
 				RummiButton newButton = new RummiButton(x,y);
 				newButton.setPrefSize(100, 100);
 				newButton.setOnAction(boardButtonPress);
