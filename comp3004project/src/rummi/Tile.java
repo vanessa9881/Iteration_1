@@ -16,7 +16,7 @@ public class Tile {
 		number = i;
 		colour = c;
 		tileImage = t;
-		tileID = 0;
+		tileID = 1;
 	}
 
 	public static String getFilename(Colour colour, Number number) {
@@ -80,7 +80,7 @@ public class Tile {
            
         Tile t = (Tile) o;   
 
-        // Compare the char and int  
+        // Compare the char and int and id
         return (t.getValue() == this.getValue()) && (t.getColour().toString().equals(this.getColour().toString()) && (t.getID() == this.getID()));
 	}
 }

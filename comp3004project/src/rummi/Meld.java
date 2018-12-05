@@ -21,7 +21,7 @@ public class Meld {
 		// Check to see if tile to add is 1 more than the previous
 		if (endTile.getValue() + 1 == t.getValue()) {
 			// Check if all colours are the same
-			if (checkColours()) {
+			if (checkColours(t)) {
 				// Add to end as a run
 				meldTiles.add(t);
 				return true;
@@ -42,7 +42,7 @@ public class Meld {
 		// Check to see if tile to add is 1 less than the previous
 		if (frontTile.getValue() - 1 == t.getValue()) {
 			// Check if all colours are the same
-			if (checkColours()) {
+			if (checkColours(t)) {
 				// Add to end as a run
 				meldTiles.add(0, t);
 				return true;
@@ -57,14 +57,13 @@ public class Meld {
 		return false;
 	}
 	
-	// Checks if all of the colours in the meld are the same
-	public boolean checkColours() {
-		HashSet<String> tempTileSet = new HashSet<String>();
-		for (Tile t : meldTiles) {
-			tempTileSet.add(t.getColour().toString());
-		}
-		if (tempTileSet.size() != 1) {
-			return false;
+	// Checks if all of the colours in the meld are the same as the tile's colour
+	public boolean checkColours(Tile t) {
+		String col = t.getColour().getName();
+		for (Tile tile : meldTiles) {
+			if (!tile.getColour().getName().equals(col)) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -75,15 +74,21 @@ public class Meld {
 		int groupValue = meldTiles.get(0).getValue();
 		for (Tile t : meldTiles) {
 			if (t.getValue() != groupValue) {return false;}
+			// Check if tiles all have the different colours
+			for (Tile t2 : meldTiles) {
+				if (t.getColour().getName().equals(t2.getColour().getName())) {return false;}
+			}	
 		}
-		// Now check if all the colours are the same
-		return checkColours();
+		return true;
 	}
 	
 	// Checks whether this meld is a run
 	public boolean checkRun() {		
 		// Check if tiles are the same colour
-		if (!checkColours()) {return false;}
+		String col = meldTiles.get(0).getColour().getName();
+		for (Tile t : meldTiles) {
+			if (t.getColour().getName().equals(col)) {return false;}	
+		}
 		
 		// Check if tiles are in a sequence increasing by 1
 		// We assume that they are already sorted as they should be
@@ -124,11 +129,15 @@ public class Meld {
 		if (meldTiles.size() == 1) {
 			meldTiles.remove(removedTile);
 			// Meld is now empty and therefore should be de-referenced!
-			throw new IllegalStateException("Meld is now empty and needs to be de-referenced!");		
+			//throw new IllegalStateException("Meld is now empty and needs to be de-referenced!");		
 		}
 		// Check if removing the tile invalidates the meld
-		ArrayList<Tile> tempMeldTiles = meldTiles;
-		tempMeldTiles.remove(removedTile);
+		// ArrayList<Tile> tempMeldTiles = meldTiles;
+		// tempMeldTiles.remove(removedTile);
+		
+		// Let user instead worry about invalidating the meld when taking a tile,
+		// as they may invalidate it only for this single move and fix it next move
+		meldTiles.remove(removedTile);
 	}
 	
 	// Checks to see whether this tile can be added to this meld

@@ -39,4 +39,9 @@ public class BoardController {
 		board.removeHandTile(priorSelectedTile);
 		
 	}
+
+	public boolean moveTile(int x, int y, Tile priorSelectedTile) {
+		return board.moveBoardTile(x, y, priorSelectedTile);
+		
+	}
 }
