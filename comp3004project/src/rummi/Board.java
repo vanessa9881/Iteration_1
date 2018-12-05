@@ -55,7 +55,6 @@ public class Board {
     	}
 		return true;
     }
-    
 
     public Board(Board duplicate) { 	
     	//Deep copy for Deck object
@@ -238,6 +237,12 @@ public class Board {
     			return true;
     		}
     		
+    		if(leftTile.getID() > 9) {
+    			// First tile of meld to add to is a joker
+    			
+    			
+    		}
+    		
     		Meld meldToAddTo = findMeld(leftTile);
     		if (meldToAddTo != null) {
     			if(meldToAddTo.addRightside(t)) {
@@ -263,7 +268,6 @@ public class Board {
     	}
     	
     	else if(rightTile != null) {
-    		
     		if (rightTile.equals(t)) {
     			if (findMeld(t).getSize() == 1) {
     				melds.remove(findMeld(t));
@@ -296,6 +300,12 @@ public class Board {
         			controller.updateView();
         			return true;
     			}
+    			System.out.print("We get here >:");
+    			System.out.print(t.getValue());
+    			System.out.print(t.getColour().getName());
+    			
+    			System.out.println(rightTile.getValue());
+    			System.out.println(rightTile.getColour().getName());
     			return false;
     		}
     		else {
@@ -385,6 +395,7 @@ public class Board {
     				melds.remove(m);
     				return true;
     			}
+    			return false;
     		}
     		
     		else if (m.getTiles().indexOf(t) == 0) {
@@ -394,6 +405,7 @@ public class Board {
     				m.removeFromMeld(t);
     				return true;
     			}
+    			return false;
     		}
     		
     		else if (m.getTiles().indexOf(t) == m.getSize() - 1){
@@ -403,6 +415,7 @@ public class Board {
     				m.removeFromMeld(t);
     				return true;
     			}
+    			return false;
     		}
     		else {
     			// Tile is moved from the middle of a meld,
@@ -582,7 +595,6 @@ public class Board {
 		for (Player p : this.playerList) {
 			temp++;
 			p.hand.add(tempDeck.dealTile());
-			System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
 		}
 		
 		while (playerList.isEmpty() == false) {	
@@ -590,7 +602,6 @@ public class Board {
 			for(Player i : playerList) {
 				if (i.getHandValue() > min.getHandValue()) {min = i;}
 			}
-			System.out.println("LOWEST VALUE: " + min.getHandValue());
 			highPlayerList.add(min);
 			playerList.remove(min);
 		}
@@ -598,51 +609,10 @@ public class Board {
 		temp = 0; 
 		for(Player p : this.playerList) {
 			temp++;
-			System.out.println("Before Clear,  Player " + temp + "'s hand: " + p.getHandTiles());
 		}
 		
-		System.out.println("_____________________________________________________________________");
 		for (Player p : playerList) {
 			p.hand.clear();
-		}	
-		
-		temp = 0;
-		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Ten", "10"), new Image("file:resources/10r.gif")));
-		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Eleven", "11"), new Image("file:resources/11r.gif")));
-		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Twelve", "12"), new Image("file:resources/12r.gif")));
-		testPlayer.hand.add(new Tile(new Colour("Yellow", "y"), new Number("Ten", "10"), new Image("file:resources/10y.gif")));
-		testPlayer.hand.add(new Tile(new Colour("Yellow", "y"), new Number("Eleven", "11"), new Image("file:resources/11y.gif")));
-		testPlayer.hand.add(new Tile(new Colour("Yellow", "y"), new Number("Twelve", "12"), new Image("file:resources/12y.gif")));
-		testPlayer.hand.add(new Tile(new Colour("Yellow", "y"), new Number("Seven", "7"), new Image("file:resources/7y.gif")));
-		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Thirteen", "13"), new Image("file:resources/13r.gif")));
-		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("One", "1"), new Image("file:resources/1r.gif")));
-		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Two", "2"), new Image("file:resources/2r.gif")));
-		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Three", "3"), new Image("file:resources/3r.gif")));
-		
-		testPlayer.sort();
-		
-		//testPlayer.play(this);
-		
-		testPlayer.getMeldsFromHand();
-		
-		System.out.println("Player's hand: " + testPlayer.getHandTiles());
-		
-		testPlayer.printMelds();
-		
-		this.addMeldToBoard(testPlayer.getMelds().get(0));
-		this.addMeldToBoard(testPlayer.getMelds().get(1));
-		this.addMeldToBoard(testPlayer.getMelds().get(2));
-		
-		
-		for (Meld m : this.getMelds()) {
-			m.printMeld();
-		}
-		
-		//for(Player p : this.playerList) {
-		//	temp++;
-		//	System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
-		//}
-		
-		//System.out.println("Player melds: " + playerList.get(0).getMelds());
+		}		
 	}
 }
