@@ -25,7 +25,6 @@ public class Strategy1 extends Player{
 				Tile current_tile = hand.get(i);
 				Tile next_tile = hand.get(index);
 				if(index != getHandValue() - 1) {
-				
 				if((current_tile.getValue()== next_tile.getValue()+1 && current_tile.getColour() == next_tile.getColour())){
 					meld_run.addRightside(hand.remove(i));
 					meld_run.addRightside(hand.remove(index));
@@ -42,7 +41,39 @@ public class Strategy1 extends Player{
 				i++;
 			}
 			meld_set.checkGroup();
-			meld_set.checkRun();
+			for(int i=0; i<meld_set.getSize();i++) {
+				int x=1;
+				int y=1;
+				if(game.addBoardTile(meld_set.getTiles().get(i),x,y)){
+					game.addBoardTile(meld_set.getTiles().get(i),x,y);
+					//x++;
+					y++;
+				}
+				else if(game.addBoardTile(meld_set.getTiles().get(i),x,y)==false){
+					if(y>=15) {
+						x++;
+					}
+					y++;
+				}
+				
+			}
+			meld_run.checkRun();
+			for(int i=0; i<meld_run.getSize();i++) {
+				int x=1;
+				int y=1;
+				if(game.addBoardTile(meld_run.getTiles().get(i),x,y)){
+					game.addBoardTile(meld_run.getTiles().get(i),x,y);
+					//x++;
+					y++;
+				}
+				else if(game.addBoardTile(meld_run.getTiles().get(i),x,y)==false){
+					if(y>=15) {
+						x++;
+					}
+					y++;
+				}
+				
+			}
 			
 		}
 		if(score_of_valid_hand() > 3) {
@@ -73,20 +104,54 @@ public class Strategy1 extends Player{
 			
 		}
 			meld_set.checkGroup();
+			for(int i=0; i<meld_set.getSize();i++) {
+				int x=1;
+				int y=1;
+				if(game.addBoardTile(meld_set.getTiles().get(i),x,y)){
+					game.addBoardTile(meld_set.getTiles().get(i),x,y);
+					//x++;
+					y++;
+				}
+				else if(game.addBoardTile(meld_set.getTiles().get(i),x,y)==false){
+					if(y>=15) {
+						x++;
+					}
+					y++;
+				}
+				
+			}
 			meld_set.checkRun();
+			for(int i=0; i<meld_run.getSize();i++) {
+				int x=1;
+				int y=1;
+				if(game.addBoardTile(meld_run.getTiles().get(i),x,y)){
+					game.addBoardTile(meld_run.getTiles().get(i),x,y);
+					//x++;
+					y++;
+				}
+				else if(game.addBoardTile(meld_run.getTiles().get(i),x,y)==false){
+					if(y>=15) {
+						x++;
+					}
+					y++;
+				}
+				
+			}
+			
 		}
+		
 		if(initial_turn!=0) {
 			for(int i=0; i<getHandValue();i++) {
 				int count=0;
 				Tile current_tile=hand.get(i);
 				Tile current_meld=game.getBoardTiles().get(count);
-				for(Tile t : current_meld.getTiles()) {
-					if(current_tile.getValue()== t.getValue()-1 && current_tile.getColour()==t.getColour()) {
+				for(int j=0; j<game.getBoardTiles().size();j++) {
+					if(current_tile.getValue()== current_meld.getValue()-1 && current_tile.getColour()==current_meld.getColour()) {
 						//game.addBoardTile(current_tile, xpos, ypos)
 						//game.t.getTile().getPos();
 						
 					}
-					else if (current_tile.getValue()==t.getValue()&&(current_tile.getColour()!=t.getColour())){
+					else if (current_tile.getValue()==current_meld.getValue()&&(current_tile.getColour()!=current_meld.getColour())){
 						//game.addBoardTile(current_tile, xpos, ypos)
 					}
 					else {
