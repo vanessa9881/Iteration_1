@@ -122,6 +122,20 @@ public class BoardView {
     	public void handle(final ActionEvent e) {
     		System.out.println("-----------------------DRAW TILE BUTTON PRESSED, DELETING TILE FROM THE FRONT-------------------------------");
     		controller.drawTile();
+    		Player testp = new Strategy2();
+    		testp.hand.add(controller.returnBoard().getDeck().dealTile());
+    		System.out.println("----------SAVED BOARD BUTTON PRESSES--------------");
+    		///* ----------This is for testing through hard coding values--------------
+    		System.out.println("Board Address: 	  " + controller.returnBoard());
+    		System.out.println("Board.deck Address: 	" + controller.returnBoard().getDeckTiles());
+    		System.out.println("Board.deck: " + controller.returnBoard().getDeck());
+    		System.out.println("Board.HasMap Address: 	" + controller.returnBoard().getBoardTiles());
+    		System.out.println("Board.HandTiles Address: 	" + controller.returnBoard().getHandTiles());
+    		if (controller.returnBoard().getMelds().size() >= 1) {
+    			System.out.println("Board.Melds Address: 	" + controller.returnBoard().getMeldTiles());
+    		} else {
+    			System.out.println("Board.Melds Address: 	" + controller.returnBoard().getMelds());
+    		}
     		/* ----------This is for testing through hard coding values--------------
     		//This button was used for testing 4/5 object states not including playerList
     		board.drawTile();
@@ -144,18 +158,18 @@ public class BoardView {
     EventHandler<ActionEvent> saveBoardAction = new EventHandler<ActionEvent>() {	
     	public void handle(final ActionEvent e) {
     		System.out.println("----------SAVED BOARD BUTTON PRESSES--------------");
-    		/* ----------This is for testing through hard coding values--------------
-    		System.out.println("Board Address: 	  " + board);
-    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
-    		System.out.println("Board.deck:\n" + board.getDeck());
-    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
-    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
-    		if (board.getMeld().size() >= 1) {
-    			System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
+    		///* ----------This is for testing through hard coding values--------------
+    		System.out.println("Board Address: 	  " + controller.returnBoard());
+    		System.out.println("Board.deck Address: 	" + controller.returnBoard().getDeckTiles());
+    		System.out.println("Board.deck: " + controller.returnBoard().getDeck());
+    		System.out.println("Board.HasMap Address: 	" + controller.returnBoard().getBoardTiles());
+    		System.out.println("Board.HandTiles Address: 	" + controller.returnBoard().getHandTiles());
+    		if (controller.returnBoard().getMelds().size() >= 1) {
+    			System.out.println("Board.Melds Address: 	" + controller.returnBoard().getMeldTiles());
     		} else {
-    			System.out.println("Board.Melds Address: 	" + board.getMeld());
+    			System.out.println("Board.Melds Address: 	" + controller.returnBoard().getMelds());
     		}
-    		-----------------------------------------------------------------------*/
+    		//-----------------------------------------------------------------------*/
     		originator.set(controller.returnBoard());
     		caretaker.addMementoBoard(originator.saveToMemento());
     		savedBoardNumber++;
@@ -168,6 +182,18 @@ public class BoardView {
     		if(currentBoardNumber >= 1){	//And if the board is not valid.	//Check if there is an error here with caretaker.getLatInde()				
 				System.out.println("-----------------------RESET BUTTON PRESSED-------------------------------------");
 				controller.returnBoard().setBoard(originator.restoreFromMemento( caretaker.getMementoBoard(caretaker.getLastIndex())));
+				draw();
+	    		///* ----------This is for testing through hard coding values--------------
+	    		System.out.println("Board Address: 	  " + controller.returnBoard());
+	    		System.out.println("Board.deck Address: 	" + controller.returnBoard().getDeckTiles());
+	    		System.out.println("Board.deck: " + controller.returnBoard().getDeck());
+	    		System.out.println("Board.HasMap Address: 	" + controller.returnBoard().getBoardTiles());
+	    		System.out.println("Board.HandTiles Address: 	" + controller.returnBoard().getHandTiles());
+	    		if (controller.returnBoard().getMelds().size() >= 1) {
+	    			System.out.println("Board.Melds Address: 	" + controller.returnBoard().getMeldTiles());
+	    		} else {
+	    			System.out.println("Board.Melds Address: 	" + controller.returnBoard().getMelds());
+	    		}
 				/* ----------This is for testing through hard coding values--------------
 	    		System.out.println("Board Address: 	  " + board);
 	    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
@@ -180,6 +206,7 @@ public class BoardView {
 	    			System.out.println("Board.Melds Address: 	" + board.getMeld());
 	    		}
 	    		-----------------------------------------------------------------------*/
+	    		
     		}
     	}
     };
