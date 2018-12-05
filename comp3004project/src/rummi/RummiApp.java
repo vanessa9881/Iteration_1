@@ -53,14 +53,6 @@ public class RummiApp extends Application{
 		} while (totalNumber < 2 || totalNumber > 4);
     	sc.close();
 
-    	
-
-    	
-    	/*
-    	 * if (enter is pressed){
-    	 * start = true;
-    	 * }
-    	 */
     }
     
 

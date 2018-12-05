@@ -59,46 +59,16 @@ public class Board {
     public Board(Board duplicate) { 	
     	//Deep copy for Deck object
     	ArrayList<Tile> tempTileDeck = duplicate.getDeckTiles();
-    	tileDeck = new Deck();
+    	tileDeck = new Deck(0);
+    	Deck deckToTakeFrom = new Deck();
     	for(Tile t: tempTileDeck) {
-    		if (t.getID() > 9) {
-    			if (tileDeck.getDeck().contains(new Tile(Colour.JOKER, new Image("file:resources/joker.gif")))){
-    				Tile joke = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
-    				joke.setID(11);
-    				tileDeck.addTile(joke);
-    			}
-    			else {
-    				tileDeck.addTile(new Tile(Colour.JOKER, new Image("file:resources/joker.gif")));
-    			}
-    		}
-    		else {
-    			Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
-        		Colour color = new Colour(t.getColour().getName(), t.getColour().getSymbol());
-        		Image image = new Image(t.getFilename(color, numb));
-        		tileDeck.addTile(new Tile(color, numb, image));
-    		}    		
+    		tileDeck.addTile(deckToTakeFrom.dealRiggedTile(t));   		
     	}
     	//Deep copy for handTiles object
     	ArrayList<Tile> tempHandTiles = duplicate.getHandTiles();
     	handTiles = new ArrayList<Tile>();
     	for(Tile t: tempHandTiles) {
-    		if (t.getID() > 9) {
-    			if (handTiles.contains(new Tile(Colour.JOKER, new Image("file:resources/joker.gif")))){
-    				Tile joke = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
-    				joke.setID(11);
-    				handTiles.add(joke);
-    			}
-    			else {
-    				handTiles.add(new Tile(Colour.JOKER, new Image("file:resources/joker.gif")));
-    			}
-    			handTiles.add(new Tile(Colour.JOKER, new Image("file:resources/joker.gif")));
-    		}
-    		else {
-    			Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
-        		Colour color = new Colour(t.getColour().getName(), t.getColour().getSymbol());
-        		Image image = new Image(t.getFilename(color, numb));
-        		handTiles.add(new Tile(color, numb, image));
-    		} 		
+    		handTiles.add(deckToTakeFrom.dealRiggedTile(t));
     	}
     	
     	//Deep copy for boardTiles object
@@ -528,22 +498,36 @@ public class Board {
 	}
 	
 	// Sets number of human players then number of AI players 
-	public void setPlayers(int numPlayersHuman, int numPlayersAI) {
-		Random rand = new Random();
-		int randNum = rand.nextInt(3) + 1;
+	public void setPlayers(int numPlayersHuman, int strat1, int strat2, int strat3, int strat4) {
+		
+		
 		
 		if (!(numPlayersHuman == 0)) {
 			for (int i = 0; i < numPlayersHuman; i++){this.playerList.add(new HumanPlayer());}
 		}
-		if (!(numPlayersAI == 0)) {
-			for (int i = 0; i < numPlayersAI; i++){
-				randNum = rand.nextInt(3) + 1;
-				if (randNum == 1) {this.playerList.add(new Strategy2());}
-				if (randNum == 2) {this.playerList.add(new Strategy2());}
-				if (randNum == 3) {this.playerList.add(new Strategy3());}
-				//if (randNum == 4) {this.playerList.add(new Strategy4());}
+			if (strat1 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy3());	//Strat "1"
+				}
 			}
-		}
+			if (strat2 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy3());
+				}
+			}
+			if (strat3 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy2());
+				}
+			}
+			if (strat4 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy2()); 	//Strat "4"
+				}
+			}
+			
+			this.startOrder();
+			dealInitialPlayerHands();
 	}
 	
 	
