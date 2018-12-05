@@ -45,7 +45,6 @@ public class Board {
     	// etc
     	 */
     }
-    
 
     public Board(Board duplicate) { 	
     	//Deep copy for Deck object
@@ -228,6 +227,12 @@ public class Board {
     			return true;
     		}
     		
+    		if(leftTile.getID() > 9) {
+    			// First tile of meld to add to is a joker
+    			
+    			
+    		}
+    		
     		Meld meldToAddTo = findMeld(leftTile);
     		if (meldToAddTo != null) {
     			if(meldToAddTo.addRightside(t)) {
@@ -253,7 +258,6 @@ public class Board {
     	}
     	
     	else if(rightTile != null) {
-    		
     		if (rightTile.equals(t)) {
     			if (findMeld(t).getSize() == 1) {
     				melds.remove(findMeld(t));
@@ -286,6 +290,12 @@ public class Board {
         			controller.updateView();
         			return true;
     			}
+    			System.out.print("We get here >:");
+    			System.out.print(t.getValue());
+    			System.out.print(t.getColour().getName());
+    			
+    			System.out.println(rightTile.getValue());
+    			System.out.println(rightTile.getColour().getName());
     			return false;
     		}
     		else {
@@ -375,6 +385,7 @@ public class Board {
     				melds.remove(m);
     				return true;
     			}
+    			return false;
     		}
     		
     		else if (m.getTiles().indexOf(t) == 0) {
@@ -384,6 +395,7 @@ public class Board {
     				m.removeFromMeld(t);
     				return true;
     			}
+    			return false;
     		}
     		
     		else if (m.getTiles().indexOf(t) == m.getSize() - 1){
@@ -393,6 +405,7 @@ public class Board {
     				m.removeFromMeld(t);
     				return true;
     			}
+    			return false;
     		}
     		else {
     			// Tile is moved from the middle of a meld,

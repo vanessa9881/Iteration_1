@@ -338,6 +338,12 @@ public class BoardView {
     	ArrayList<Tile> handTiles = controller.getHandTiles();
     	int index = 0;
     	for (Tile t : handTiles) {
+    		if (index > 64) {
+    			System.out.print("Error, can't have more than 64 tiles in hand");
+    			controller.returnBoard().getDeck().addTile(t);
+    			handTiles.remove(t);
+    			return;
+    		}
     		handButtons[index].setTile(t);
     		index++;
     	}
@@ -369,8 +375,8 @@ public class BoardView {
     	for (RummiButton b : boardButtons) {
     		if (b.getTile() != null) {
     			ImageView img = new ImageView(b.getTile().getTileImage());
-        		img.setFitHeight(50);										//image resize
-                img.setFitWidth(70);										//image resize
+        		img.setFitHeight(30);										//image resize
+                img.setFitWidth(40);										//image resize
                 b.setGraphic(img);
     		}
     	}
