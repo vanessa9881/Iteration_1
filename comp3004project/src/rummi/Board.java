@@ -24,7 +24,6 @@ public class Board {
     	// Playerlist should have players added to it with a gui button!
     	playerList = new ArrayList<Player>();
     	tileDeck = new Deck();
-
     	melds = new ArrayList<Meld>();
     	handTiles = new ArrayList<Tile>();
     	boardTiles = new HashMap<Point, Tile>();
@@ -34,39 +33,35 @@ public class Board {
     			boardTiles.put(new Point(x,y), null);
     		}
     	}
-    	/*
-		Meld tempMeld = new Meld(0);
-		tempMeld.addToMeld(new Tile(new Colour("Yellow", "y"), new Number("Five", "5"),new Image("file:resources/5y.gif")));
-		tempMeld.addToMeld(new Tile(new Colour("Red", "r"), new Number("Five", "5"),new Image("file:resources/5r.gif")));
-		tempMeld.addToMeld(new Tile(new Colour("Black", "b"), new Number("Five", "5"),new Image("file:resources/5b.gif")));
-		melds.add(tempMeld);
     	// Board looks like this:
     	// [1,1] [1,2] [1,3] [1,4] [1,5] [1,6] [1,7] [1,8] [1,9] [1,10] [1,11] [1,12] ...
     	// [2,1] [2,2] [2,3] [2,4] [2,5] [2,6] [2,7] [2,8] [2,9] [2,10] [2,11] [2,12] ...
     	// etc
-    	 */
     }
     
+    public Boolean checkBoardState() {
+    	for (Meld m: melds) {
+    		m.checkValid();
+    		if (m.checkValid() == false) {
+    			return false;
+    		} 
+    	}
+		return true;
+    }
 
     public Board(Board duplicate) { 	
     	//Deep copy for Deck object
     	ArrayList<Tile> tempTileDeck = duplicate.getDeckTiles();
-    	tileDeck = new Deck();
+    	tileDeck = new Deck(0);
+    	Deck deckToTakeFrom = new Deck();
     	for(Tile t: tempTileDeck) {
-    		Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
-    		Colour color = new Colour(t.getColour().getName(), t.getColour().getSymbol());
-    		Image image = new Image(t.getFilename(color, numb));
-    		tileDeck.addTile(new Tile(color, numb, image));
-    		
+    		tileDeck.addTile(deckToTakeFrom.dealRiggedTile(t));   		
     	}
     	//Deep copy for handTiles object
     	ArrayList<Tile> tempHandTiles = duplicate.getHandTiles();
-    	handTiles= new ArrayList<Tile>();
+    	handTiles = new ArrayList<Tile>();
     	for(Tile t: tempHandTiles) {
-    		Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
-    		Colour color = new Colour(t.getColour().getName(), t.getColour().getSymbol());
-    		Image image = new Image(t.getFilename(color, numb));
-    		handTiles.add(new Tile(color, numb, image)); 		
+    		handTiles.add(deckToTakeFrom.dealRiggedTile(t));
     	}
     	
     	//Deep copy for boardTiles object
@@ -78,7 +73,7 @@ public class Board {
     	ArrayList<Meld> tempMeld = duplicate.getMelds();
     	melds = new ArrayList<Meld>();	
     	for(Meld m: tempMeld) {
-    		Meld n = new Meld(0);
+    		Meld n = new Meld();
 	    	for(Tile t: m.getTiles()) {
 	    		Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
 	    		Colour color = new Colour(t.getColour().getName(), t.getColour().getSymbol());
@@ -88,13 +83,11 @@ public class Board {
 	    	melds.add(n);
     	}
     	
-    	
     	//Deep copy for playerList object
     	playerList = new ArrayList<Player>();
-   
-    }
-    
-    public void setBoard(Board b) {
+    } 
+
+	public void setBoard(Board b) {
 		
 		playerList = b.getPlayerList();
 		tileDeck = b.getDeck();
@@ -228,6 +221,21 @@ public class Board {
     			return true;
     		}
     		
+    		if(leftTile.getID() > 9) {
+    			// First tile of meld to add to is a joker
+    			if (findMeld(leftTile).getSize() == 2) {
+    				// Just the joker and another tile in the meld
+    				// Can change the joker's value now to reflect the newly
+    				// added tile
+    				if(findMeld(leftTile).setMeld(t, 0)) {
+    					boardTiles.put(new Point(xpos, ypos), t);
+    	    			controller.updateView();
+    					return true;
+    				}
+    				return false;
+    			}
+    		}
+    		
     		Meld meldToAddTo = findMeld(leftTile);
     		if (meldToAddTo != null) {
     			if(meldToAddTo.addRightside(t)) {
@@ -253,7 +261,6 @@ public class Board {
     	}
     	
     	else if(rightTile != null) {
-    		
     		if (rightTile.equals(t)) {
     			if (findMeld(t).getSize() == 1) {
     				melds.remove(findMeld(t));
@@ -273,6 +280,21 @@ public class Board {
     			return true;
     		}
     		
+    		if(rightTile.getID() > 9) {
+    			// First tile of meld to add to is a joker
+    			if (findMeld(rightTile).getSize() == 2) {
+    				// Just the joker and another tile in the meld
+    				// Can change the joker's value now to reflect the newly
+    				// added tile
+    				if(findMeld(rightTile).setMeld(t, 1)) {
+    					boardTiles.put(new Point(xpos, ypos), t);
+    	    			controller.updateView();
+    					return true;
+    				}
+    				return false;
+    			}
+    		}
+    		
     		Meld meldToAddTo = findMeld(rightTile);
     		if (meldToAddTo != null) {
     			if(meldToAddTo.addLeftside(t)) {
@@ -286,6 +308,12 @@ public class Board {
         			controller.updateView();
         			return true;
     			}
+    			System.out.print("We get here >:");
+    			System.out.print(t.getValue());
+    			System.out.print(t.getColour().getName());
+    			
+    			System.out.println(rightTile.getValue());
+    			System.out.println(rightTile.getColour().getName());
     			return false;
     		}
     		else {
@@ -373,7 +401,9 @@ public class Board {
     			// Meld has only this single tile, can move it freely.
     			if (addBoardTile(t, x, y)) {
     				melds.remove(m);
+    				return true;
     			}
+    			return false;
     		}
     		
     		else if (m.getTiles().indexOf(t) == 0) {
@@ -381,7 +411,9 @@ public class Board {
     			// Will not mess up how it looks on the board
     			if (addBoardTile(t, x, y)) {
     				m.removeFromMeld(t);
+    				return true;
     			}
+    			return false;
     		}
     		
     		else if (m.getTiles().indexOf(t) == m.getSize() - 1){
@@ -389,12 +421,33 @@ public class Board {
     			// Will not mess up how it looks on the board
     			if (addBoardTile(t, x, y)) {
     				m.removeFromMeld(t);
+    				return true;
     			}
+    			return false;
     		}
     		else {
     			// Tile is moved from the middle of a meld,
     			// Need to split the meld into two new melds by where
     			// the tile was moved from
+    			if (addBoardTile(t, x, y)) {
+        			int i;
+        			int splitIndex =  m.getTiles().indexOf(t);
+        			
+        			Meld leftMeld = new Meld(m.getTiles().get(0));
+        			for (i = 1; i < splitIndex; i++) {
+        				leftMeld.add((m.getTiles().get(i)));
+        			}
+        			
+        			Meld rightMeld = new Meld(m.getTiles().get(splitIndex + 1));
+        			for (i = splitIndex + 1; i < m.getSize(); i++) {
+        				rightMeld.add((m.getTiles().get(i)));
+        			}
+        			
+        			melds.remove(m);
+        			melds.add(leftMeld);
+        			melds.add(rightMeld);
+        			return true;
+    			}    			
     		}
     	}
 		return false;
@@ -438,7 +491,7 @@ public class Board {
 	public ArrayList<Tile> getDeckTiles() {
 		return tileDeck.getDeck();
 	}
-	
+
 	public ArrayList<Meld> getMelds(){
 		return melds;
 	}
@@ -459,22 +512,35 @@ public class Board {
 	}
 	
 	// Sets number of human players then number of AI players 
-	public void setPlayers(int numPlayersHuman, int numPlayersAI) {
-		Random rand = new Random();
-		int randNum = rand.nextInt(3) + 1;
+	public void setPlayers(int numPlayersHuman, int strat1, int strat2, int strat3, int strat4) {
+		
+		
 		
 		if (!(numPlayersHuman == 0)) {
 			for (int i = 0; i < numPlayersHuman; i++){this.playerList.add(new HumanPlayer());}
 		}
-		if (!(numPlayersAI == 0)) {
-			for (int i = 0; i < numPlayersAI; i++){
-				randNum = rand.nextInt(3) + 1;
-				if (randNum == 1) {this.playerList.add(new Strategy1());}
-				if (randNum == 2) {this.playerList.add(new Strategy2());}
-				if (randNum == 3) {this.playerList.add(new Strategy3());}
-				if (randNum == 4) {this.playerList.add(new Strategy4());}
+			if (strat1 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy1());
+				}
 			}
-		}
+			if (strat2 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy3());
+				}
+			}
+			if (strat3 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy2());
+				}
+			}
+			if (strat4 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy4());
+				}
+			}
+			
+			this.startOrder();
 	}
 	
 	
@@ -508,15 +574,48 @@ public class Board {
 		}
 	}
 	
+	public void addMeldToBoard(Meld m) {
+		int size = m.getSize();
+		int tempsize = 0;
+		//boardTiles = new HashMap<Point, Tile>(); 
+		
+		Set<Entry<Point, Tile>> entrySet = boardTiles.entrySet();
+		for (Iterator<Entry<Point, Tile>> iterator = entrySet.iterator(); iterator.hasNext();) {
+			Entry<Point, Tile> entry = iterator.next();
+			if (entry.getValue() == null) {
+				int x = (int)(entry.getKey().getX());
+				int availTiles = 0;
+				ArrayList<Integer> xs = new ArrayList<Integer>();
+				while (x < BoardController.BOARDSIZE) {
+					if ((boardTiles.get(new Point(x + 1, (int) entry.getKey().getY())) == null)) {
+						x++;
+						xs.add(x);
+						availTiles++;
+						if (availTiles == size) {
+							for (int i = 0; i < m.getSize(); i++) {
+								System.out.println(addBoardTile(m.getTiles().get(i), i + 1, (int)entry.getKey().getY()));
+								controller.updateView();
+							}
+							return;
+						}
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
+	}
+	
 	// Determines start order of game
 	public void startOrder() {
 		Deck tempDeck = new Deck();
 		ArrayList<Player> highPlayerList = new ArrayList<Player>();
+		Strategy3 testPlayer = new Strategy3();
 		int temp = 0;
 		for (Player p : this.playerList) {
 			temp++;
 			p.hand.add(tempDeck.dealTile());
-			System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
 		}
 		
 		while (playerList.isEmpty() == false) {	
@@ -524,7 +623,6 @@ public class Board {
 			for(Player i : playerList) {
 				if (i.getHandValue() > min.getHandValue()) {min = i;}
 			}
-			System.out.println("LOWEST VALUE: " + min.getHandValue());
 			highPlayerList.add(min);
 			playerList.remove(min);
 		}
@@ -532,26 +630,10 @@ public class Board {
 		temp = 0; 
 		for(Player p : this.playerList) {
 			temp++;
-			System.out.println("Before Clear,  Player " + temp + "'s hand: " + p.getHandTiles());
 		}
 		
-		System.out.println("_____________________________________________________________________");
 		for (Player p : playerList) {
 			p.hand.clear();
-		}
-		
-		temp = 0;
-		playerList.get(0).hand.add(new Tile(new Colour("Red", "r"), new Number("Ten", "10"), new Image("file:resources/10r.gif")));
-		playerList.get(0).hand.add(new Tile(new Colour("Red", "r"), new Number("Eleven", "11"), new Image("file:resources/11r.gif")));
-		playerList.get(0).hand.add(new Tile(new Colour("Red", "r"), new Number("Twelve", "12"), new Image("file:resources/12r.gif")));
-		playerList.get(0).sort();
-		
-		for(Player p : this.playerList) {
-			temp++;
-			System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
-		}
-		
-		System.out.println("Player melds: " + playerList.get(0).getMelds());
-	
+		}		
 	}
 }
