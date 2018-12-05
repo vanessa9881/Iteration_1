@@ -24,6 +24,10 @@ public class Player {
 		return this.turnNumber;
 	}
 	public int getHandValue() {
+		this.handValue = 0;
+		for(int i = 0; i < this.hand.size(); i++) {
+			this.handValue += this.hand.get(i).getValue();
+		}
 		return this.handValue;
 	}
 	

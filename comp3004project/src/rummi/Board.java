@@ -1,6 +1,7 @@
 package rummi;
 
 import java.awt.Point;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -357,6 +358,7 @@ public class Board {
 	public void dealInitialPlayerHands() {
 		int temp = 0;
 		System.out.println("This is the deck size before dealing: " + this.tileDeck.deckSize());
+		System.out.println("_______________________________________________");
 		for (Player p : this.playerList) {
 			temp++;
 			for (int i = 0; i < 14; i ++) {
@@ -369,13 +371,48 @@ public class Board {
 		//System.out.println(this.tileDeck.deckSize());
 	}
 	
+	// Method for player turns 
 	public void turns() {
 		int temp = 0;
+		this.startOrder();
+		System.out.println("_______________________________________________");
 		for (Player p : this.playerList) {
 			temp++;
 			p.play(this);
-			System.out.println("Player " + temp + "'s melds: " + p.getMelds());
+			//System.out.println("Player " + temp + "'s melds: " + p.getMelds());
 			System.out.println("_______________________________________________");
+		}
+	}
+	
+	// Determines start order of game
+	public void startOrder() {
+		Deck tempDeck = new Deck();
+		ArrayList<Player> highPlayerList = new ArrayList<Player>();
+		int temp = 0;
+		for (Player p : this.playerList) {
+			temp++;
+			p.hand.add(tempDeck.dealTile());
+			System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
+		}
+		
+		while (playerList.isEmpty() == false) {	
+			Player min = playerList.get(0);
+			for(Player i : playerList) {
+				if (i.getHandValue() > min.getHandValue()) {min = i;}
+			}
+			System.out.println("LOWEST VALUE: " + min.getHandValue());
+			highPlayerList.add(min);
+			playerList.remove(min);
+		}
+		this.playerList = highPlayerList;	
+		temp = 0; 
+		for(Player p : this.playerList) {
+			temp++;
+			System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
+		}
+				
+		for (Player p : playerList) {
+			p.hand.clear();
 		}
 	}
 }
