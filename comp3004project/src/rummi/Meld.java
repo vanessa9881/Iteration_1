@@ -25,6 +25,11 @@ public class Meld {
 	}
 	
 	public boolean addRightside(Tile t) {
+		if (meldTiles.size() == 0) {
+			meldTiles.add(t);
+			return true;
+		}
+		
 		Tile endTile = meldTiles.get(meldTiles.size() - 1);
 
 		// First check if the added tile is a joker
@@ -54,6 +59,11 @@ public class Meld {
 	}
 
 	public boolean addLeftside(Tile t) {
+		if (meldTiles.size() == 0) {
+			meldTiles.add(t);
+			return true;
+		}
+		
 		Tile frontTile = meldTiles.get(0);
 
 		// First check if the added tile is a joker
