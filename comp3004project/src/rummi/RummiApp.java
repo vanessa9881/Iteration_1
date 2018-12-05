@@ -9,7 +9,8 @@ import javafx.stage.Stage;
 public class RummiApp extends Application{
 	
     @Override
-    public void start(Stage primaryStage) {    
+    public void start(Stage primaryStage) {
+    	
         Board model = new Board();
         BoardView view = new BoardView(model);
 

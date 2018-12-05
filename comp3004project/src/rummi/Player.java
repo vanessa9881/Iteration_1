@@ -23,7 +23,6 @@ public class Player {
 	public int getTurnNumber() {
 		return this.turnNumber;
 	}
-	
 	public int getHandValue() {
 		return this.handValue;
 	}

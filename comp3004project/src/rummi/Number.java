@@ -28,9 +28,13 @@ public class Number {
       Collections.unmodifiableList( Arrays.asList( new Number[] { ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN,
                                      EIGHT, NINE, TEN, ELEVEN, TWELVE, THIRTEEN } ) );
    
-   private Number(String nameValue, String symbolValue) {
+   public Number(String nameValue, String symbolValue) {
       name = nameValue;
       symbol = symbolValue;
+   }
+   
+   public String getNameValue() {
+	   return this.name;
    }
 
    @Override

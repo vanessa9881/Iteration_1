@@ -1,6 +1,7 @@
 package rummi;
 
 import java.awt.Point;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.event.ActionEvent;
@@ -11,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -20,6 +23,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 public class BoardView {
 
@@ -32,10 +37,49 @@ public class BoardView {
     private RummiButton[] handButtons;
     private Button startButton;
     
+    //Level 2
+    Caretaker caretaker;
+    Originator originator;
+    int savedBoardNumber = 0, currentBoardNumber = 0;
+    ArrayList<Object> storedBoardState;
+    Clock timer;
+    
+    
+    //Level 4 
+    TextField riggedTextField;
+    String riggedColour;
+    String riggedNumber;
+    
     private Tile priorSelectedTile;
     private Tile selectedTile;
     
     private BoardController controller;
+    
+	private void initView() {
+		root = new BorderPane();	
+		gameBoard = new GridPane();
+		userPane = new FlowPane();
+		userScrollPane = new ScrollPane();
+		tileSelectedLabel = new Label("Selected Tile");
+		riggedTextField = new TextField();
+		
+		originator = new Originator();
+		caretaker = new Caretaker();
+		
+		root.setRight(addVBox());
+		root.setBottom(userScrollPane);
+		userScrollPane.setContent(userPane);
+		userScrollPane.setMaxHeight(100);
+		userScrollPane.setFitToWidth(true);
+		userScrollPane.setFitToHeight(true);
+		createHandButtons();	
+		
+		
+		gameBoard.setMaxSize(1150, 1000);
+	    BorderPane.setAlignment(gameBoard, Pos.TOP_LEFT);
+	    root.setCenter(gameBoard);	
+	    createBoardButtons();
+	}
     
     EventHandler<ActionEvent> boardButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
@@ -72,10 +116,97 @@ public class BoardView {
         	}
     	}
     };
+       
     
     EventHandler<ActionEvent> drawTileButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
+    		System.out.println("-----------------------DRAW TILE BUTTON PRESSED, DELETING TILE FROM THE FRONT-------------------------------");
     		controller.drawTile();
+    		/* ----------This is for testing through hard coding values--------------
+    		//This button was used for testing 4/5 object states not including playerList
+    		board.drawTile();
+    		board.getBoardTiles().put(new Point(2,2), new Tile(new Colour("Red", "r"), new Number("Two", "2"), new Image("file:resources/2r.gif")));
+    		board.addHandTile(new Tile(new Colour("Black", "b"), new Number("Two", "2"), new Image("file:resources/2b.gif")));
+    		board.createMeld();
+    		
+    		System.out.println("Board.Deck after deleting a tile: \n" + board.getDeck());		
+    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());		
+    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
+    		if (board.getMeld().size() >= 1) {
+    			System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
+    		} else {
+    			System.out.println("Board.Melds Address: 	" + board.getMeld());
+    		}
+    		-----------------------------------------------------------------------*/
+    	}
+    };
+    
+    EventHandler<ActionEvent> saveBoardAction = new EventHandler<ActionEvent>() {	
+    	public void handle(final ActionEvent e) {
+    		System.out.println("----------SAVED BOARD BUTTON PRESSES--------------");
+    		/* ----------This is for testing through hard coding values--------------
+    		System.out.println("Board Address: 	  " + board);
+    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
+    		System.out.println("Board.deck:\n" + board.getDeck());
+    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
+    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
+    		if (board.getMeld().size() >= 1) {
+    			System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
+    		} else {
+    			System.out.println("Board.Melds Address: 	" + board.getMeld());
+    		}
+    		-----------------------------------------------------------------------*/
+    		originator.set(controller.returnBoard());
+    		caretaker.addMementoBoard(originator.saveToMemento());
+    		savedBoardNumber++;
+    		currentBoardNumber++;
+    		}
+    };
+    
+    EventHandler<ActionEvent> resetBoardAction = new EventHandler<ActionEvent>() {
+    	public void handle(final ActionEvent e) {
+    		if(currentBoardNumber >= 1){	//And if the board is not valid.	//Check if there is an error here with caretaker.getLatInde()				
+				System.out.println("-----------------------RESET BUTTON PRESSED-------------------------------------");
+				controller.returnBoard().setBoard(originator.restoreFromMemento( caretaker.getMementoBoard(caretaker.getLastIndex())));
+				/* ----------This is for testing through hard coding values--------------
+	    		System.out.println("Board Address: 	  " + board);
+	    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
+	    		System.out.println("Board.deck:\n" + board.getDeck());
+	    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
+	    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
+	    		if (board.getMeld().size() >= 1) {
+	    			System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
+	    		} else {
+	    			System.out.println("Board.Melds Address: 	" + board.getMeld());
+	    		}
+	    		-----------------------------------------------------------------------*/
+    		}
+    	}
+    };
+      
+    EventHandler<ActionEvent> rigTileButton = new EventHandler<ActionEvent>() {
+    	public void handle(final ActionEvent e) {	
+    	
+    		System.out.println("--------------------------RIGGED TILE PRESS------------------------------------------\n\n");
+        	String value = riggedTextField.getText();
+        	riggedColour = Character.toString(value.charAt(0));
+        	riggedNumber = Character.toString(value.charAt(1));
+        	controller.returnBoard().drawRiggedTile(riggedColour, riggedNumber);	
+    		
+    		
+    		/* ----------This is for testing through hard coding values(This part can be ignored)--------------
+    		board.addHandTile(new Tile(new Colour("Red", "r"), new Number("One", "1"), new Image("file:resources/1r.gif")));
+    		System.out.println("Board Address: 	  " + board);
+    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
+    		System.out.println("Board.deck:\n" + board.getDeck());
+    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
+    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
+    		if (board.getMeld().size() >= 1) {
+    			System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
+    		} else {
+    			System.out.println("Board.Melds Address: 	" + board.getMeld());
+    		}
+    		---------------------------------------------------------------------------------------------------*/
     	}
     };
     
@@ -92,7 +223,7 @@ public class BoardView {
     		}
     	}
     };
-    
+
 	public BoardView(Board model) {
 		controller = new BoardController(model, this);
 		model.setController(controller);
@@ -100,27 +231,6 @@ public class BoardView {
 		initView();
 	}
 	
-	private void initView() {
-		root = new BorderPane();	
-		gameBoard = new GridPane();
-		userPane = new FlowPane();
-		userScrollPane = new ScrollPane();
-		tileSelectedLabel = new Label("Selected Tile");
-		
-		root.setRight(addVBox());
-		root.setBottom(userScrollPane);
-		userScrollPane.setContent(userPane);
-		userScrollPane.setMaxHeight(100);
-		userScrollPane.setFitToWidth(true);
-		userScrollPane.setFitToHeight(true);
-		createHandButtons();
-		
-		gameBoard.setMaxSize(1150, 1000);
-	    BorderPane.setAlignment(gameBoard, Pos.TOP_LEFT);
-	    root.setCenter(gameBoard);	
-	    createBoardButtons();
-	}
-    
 	public void createHandButtons() {
 		handButtons = new RummiButton[64];
 		//Always have more buttons than tiles or null
@@ -149,13 +259,16 @@ public class BoardView {
 	
     private VBox addVBox() {
         Button drawTileButton = new Button("Draw Tile");
-        Button endTurnButton = new Button("End Turn");
+        Button saveBoardButton = new Button("Save Board");
+        Button resetBoard = new Button("Reset Board");
         TextArea moveInfoTextArea = new TextArea();
+        Button enterRiggedTile = new Button("Enter - (example r5)");
+        enterRiggedTile.setOnAction(rigTileButton);
         
         VBox vbox = new VBox();
         Text title = new Text("Information");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 25));
-        vbox.getChildren().addAll(title,drawTileButton, endTurnButton, tileSelectedLabel, moveInfoTextArea);
+        vbox.getChildren().addAll(title,drawTileButton, saveBoardButton, resetBoard, tileSelectedLabel, moveInfoTextArea, riggedTextField, enterRiggedTile);
         vbox.setSpacing(20);
         
         //Draw Tile Section
@@ -163,7 +276,12 @@ public class BoardView {
         drawTileButton.setOnAction(drawTileButtonPress);
         
         //End Turn Section
-        endTurnButton.setMaxWidth(Double.MAX_VALUE);
+        saveBoardButton.setMaxWidth(Double.MAX_VALUE);
+        saveBoardButton.setOnAction(saveBoardAction);
+        
+        //ResetBoard Button Section
+        resetBoard.setMaxWidth(Double.MAX_VALUE);
+        resetBoard.setOnAction(resetBoardAction);
         
         //Tile Selected Section
         tileSelectedLabel.setMaxWidth(Double.MAX_VALUE);
@@ -172,6 +290,13 @@ public class BoardView {
         moveInfoTextArea.setMaxWidth(200);
         moveInfoTextArea.setText("Move Information");
         moveInfoTextArea.setEditable(false);      
+        
+        //RiggedTextField section
+        riggedTextField.setMaxWidth(Double.MAX_VALUE);
+        
+        //enterRiggedTile button Section
+        enterRiggedTile.setMaxWidth(Double.MAX_VALUE);
+        
         return vbox;
     }
 	
@@ -234,10 +359,6 @@ public class BoardView {
 	public BoardController getController() {
 		return controller;
 	}
-
-	//public Parent asParent() {
-	//	return gameBoard;
-	//}
 	
 }
 

@@ -56,6 +56,9 @@ public class Meld {
 		}
 		return false;
 	}
+	public Meld (int n) {
+		meldTiles = new ArrayList<Tile>();
+	}
 	
 	// Checks if all of the colours in the meld are the same
 	public boolean checkColours() {
@@ -94,7 +97,7 @@ public class Meld {
 		}
 		return true;
 	}
-	
+
 	// Checks a meld to see if it is valid.
 	public boolean checkValid() {
 		// Check if the meld is too small

@@ -138,7 +138,7 @@ public class Strategy2 extends Player {
 		}
 		
 	}
-	
+
 	
 	// Method for Turn
 	public void play(Board b){
@@ -201,5 +201,4 @@ public class Strategy2 extends Player {
 		this.turnNumber++;
 		this.sort();
 	}
-	
 }
