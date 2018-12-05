@@ -385,6 +385,7 @@ public class Board {
 	public void startOrder() {
 		Deck tempDeck = new Deck();
 		ArrayList<Player> highPlayerList = new ArrayList<Player>();
+		Strategy3 testPlayer = new Strategy3();
 		int temp = 0;
 		for (Player p : this.playerList) {
 			temp++;
@@ -414,15 +415,17 @@ public class Board {
 		}
 		
 		temp = 0;
-		playerList.get(0).hand.add(new Tile(new Colour("Red", "r"), new Number("Ten", "10"), new Image("file:resources/10r.gif")));
-		playerList.get(0).hand.add(new Tile(new Colour("Red", "r"), new Number("Eleven", "11"), new Image("file:resources/11r.gif")));
-		playerList.get(0).hand.add(new Tile(new Colour("Red", "r"), new Number("Twelve", "12"), new Image("file:resources/12r.gif")));
-		playerList.get(0).sort();
+		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Ten", "10"), new Image("file:resources/10r.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Eleven", "11"), new Image("file:resources/11r.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Twelve", "12"), new Image("file:resources/12r.gif")));
+		testPlayer.sort();
 		
-		for(Player p : this.playerList) {
-			temp++;
-			System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
-		}
+		testPlayer.getMeldsFromHand();
+		
+		//for(Player p : this.playerList) {
+		//	temp++;
+		//	System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
+		//}
 		
 		System.out.println("Player melds: " + playerList.get(0).getMelds());
 	

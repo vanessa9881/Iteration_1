@@ -69,16 +69,19 @@ public class Strategy3 extends Player {
 		
 			// for each item in the players hand start new meld for each hand item 		
 			for (Tile t : this.hand) {
+				System.out.println("This is the tile being melded: " + t);
 				if (!(t.getColour().equals('j')));
 					currMeld = new Meld(t);
 					allMelds.add(currMeld);
 			}
+			System.out.println("This is all the melds initially created: " + allMelds.get(0).getTiles());
 		
 			// test all possible melds from each other item in hand
 			for (Meld m : allMelds) {
 				for (Tile t : this.hand) {
 					if (m.getTiles().get(0).equals(t) ==  false && 
 							(!(t.getColour().equals(Colour.JOKER)))) {
+						System.out.println("This is the tile being added to created meld: " + t);
 						m.addLeftside(t);
 						m.addRightside(t);
 					} else if (t.getColour().equals(Colour.JOKER)) {
