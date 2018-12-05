@@ -24,7 +24,7 @@ public class Tile {
 		number = Number.ZERO;
 		colour = j;
 		tileImage = t;
-		tileID = 0;
+		tileID = 10;
 		
 	}
 	
@@ -74,14 +74,14 @@ public class Tile {
 	}
 	
 	public void setJokerValue(int i) {
-		if (this.colour.equals("j")) {
-			this.number = this.number.getVALUES().get(i - 1);
+		if (tileID > 9) {
+			number = number.getVALUES().get(i - 1);
 		}
 	}
 	
 	public void setJokerColour(Colour c) {
-		if (this.colour.equals("j")) {
-			this.colour = c;
+		if (tileID > 9) {
+			colour = c;
 		}
 	}
 	

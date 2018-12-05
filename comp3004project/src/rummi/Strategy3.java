@@ -69,34 +69,20 @@ public class Strategy3 extends Player {
 		
 			// for each item in the players hand start new meld for each hand item 		
 			for (Tile t : this.hand) {
-				if (!(t.getColour().equals('j')));
-					currMeld = new Meld(t);
-					allMelds.add(currMeld);
+				currMeld = new Meld(t);
+				allMelds.add(currMeld);
 			}
 		
 			// test all possible melds from each other item in hand
 			for (Meld m : allMelds) {
 				for (Tile t : this.hand) {
-					if (m.getTiles().get(0).equals(t) ==  false && 
-							(!(t.getColour().equals(Colour.JOKER)))) {
+					if (m.getTiles().get(0).equals(t) ==  false) {
 						m.addLeftside(t);
 						m.addRightside(t);
-					} else if (t.getColour().equals(Colour.JOKER)) {
-						if (m.checkGroup()) {
-							// Set value to same 
-							t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue());
-							m.addLeftside(t);
-						} else if (m.checkRun()) {
-							// Set value to one above the last
-							t.setJokerValue(m.getTiles().get(m.getSize() - 1).getValue() + 1);
-							// Set colour to same 
-							t.setJokerColour(m.getTiles().get(0).getColour());
-							m.addLeftside(t);
-							m.addRightside(t);
-						}
-					}
+					} 		
 				}
 			}
+			
 		
 			// checks if all melds assembled are valid 
 			for (Meld m : allMelds) {
@@ -116,6 +102,8 @@ public class Strategy3 extends Player {
 		
 			// Add highest melds to be played 
 			this.melds.add(highMeld);
+			
+			this.printMelds();
 			
 			// remove tiles that exist in meld from hand
 			for (int i = 0; i < highMeld.getSize(); i++) {
@@ -144,6 +132,7 @@ public class Strategy3 extends Player {
 				// Play all melds and wins 
 				for (int i = 0; i < melds.size(); i++) {
 					b.addHandMeld(melds.get(i));
+					b.addMeldToBoard(melds.get(i));
 				}
 				for (Meld m : melds) {
 					for (int i = 0; i < m.getSize(); i++) {
@@ -181,6 +170,7 @@ public class Strategy3 extends Player {
 				// Play all possible melds
 				for (int i = 0; i < melds.size(); i++) {
 					b.addHandMeld(melds.get(i));
+					b.addMeldToBoard(melds.get(i));
 				}
 				for (Meld m : melds) {
 					for (int i = 0; i < m.getSize(); i++) {

@@ -31,11 +31,12 @@ public class Deck {
 						addTile(tile);
 					}
 				}
+				Tile joke = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
+				if (tileList.contains(joke)) {
+					joke.setID(11);
+				}
+				tileList.add(joke);
 			}
-				Tile joker = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
-				addTile(joker);
-				addTile(joker);
-				
 			shuffle(); 
 		} 
 		catch (Exception exception){
@@ -43,7 +44,7 @@ public class Deck {
     	}
 	}
 	
-	public Deck (int n) {
+	public Deck (int i) {
 		tileList = new ArrayList<Tile>();
 	}
 	
@@ -63,6 +64,13 @@ public class Deck {
 		    return tileList.size();
 	 }
 
+	 public Tile dealRiggedTile(Tile t) {
+		 if (t != null) {
+			 return tileList.get(tileList.indexOf(t));
+		 }
+		 return null;
+	 }
+	 
 	public Tile dealTile() {
 		   if (deckSize() == 0) {
 			   throw new NullPointerException("Deck is empty!");
@@ -79,20 +87,13 @@ public class Deck {
 			if (t.getColour().getSymbol().equals(c) && t.getValue() == Integer.parseInt(n)){
 				Tile rigged = t;
 				//Add this tile to the hand before removing it from the deck. the level 5 shit goes in here?
-				deleteTile(tileList.indexOf(t));
+				tileList.remove(t);
 				return rigged;
 			}
 		}
 		return null;
 	}
 	
-	
-	
-	public Tile deleteTile(int index) {
-		Tile tileToDelete = tileList.get(index);
-		tileList.remove(index);
-		return tileToDelete;
-	}
 
 	public void shuffle() {
 		Collections.shuffle(tileList);

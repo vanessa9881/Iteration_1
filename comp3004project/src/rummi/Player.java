@@ -20,6 +20,12 @@ public class Player {
 		return this.melds;
 	}
 	
+	public void printMelds() {
+		for (Meld m : melds) {
+			m.printMeld();
+		}
+	}
+	
 	public int getTurnNumber() {
 		return this.turnNumber;
 	}

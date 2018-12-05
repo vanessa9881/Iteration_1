@@ -476,7 +476,7 @@ public class Board {
 	}
 	
 	public void createMeld() {
-		Meld tempMeld = new Meld(0);
+		Meld tempMeld = new Meld();
 		tempMeld.addLeftside(new Tile(new Colour("Yellow", "y"), new Number("Five", "5"),new Image("file:resources/5y.gif")));
 		tempMeld.addLeftside(new Tile(new Colour("Red", "r"), new Number("Five", "5"),new Image("file:resources/5r.gif")));
 		tempMeld.addLeftside(new Tile(new Colour("Black", "b"), new Number("Five", "5"),new Image("file:resources/5b.gif")));
