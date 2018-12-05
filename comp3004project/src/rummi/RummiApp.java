@@ -16,8 +16,7 @@ public class RummiApp extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        model.setPlayers(0, 4);
-        model.startOrder();
+        
 
     }
     
