@@ -2,7 +2,9 @@ package rummi;
 
 import rummi.Meld;
 
-//import java.util.*;
+import java.awt.Point;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class Strategy1 extends Player{
 
@@ -159,15 +161,18 @@ public class Strategy1 extends Player{
 			}
 			
 		}
-		
-		if(initial_turn!=0) {
-			for(int i=0; i<getHandValue();i++) {
-				int count=0;
+		//if not the first turn and have gotten the initial 30 tiles
+		if(initial_turn!=0){
+			//iterate through the hand and boardtiles to see if any valid melds can be made 
+			for(int i=0; i<getNumberOfTiles();i++) {
+				//int count=0;
 				Tile current_tile=hand.get(i);
-				Tile current_meld=game.getBoardTiles().get(count);
+				for(Entry<Point, Tile> b: game.getBoardTiles().entrySet()) {
+				Tile current_meld= b.getValue();
+				Point current_point=b.getKey();
 				for(int j=0; j<game.getBoardTiles().size();j++) {
 					if(current_tile.getValue()== current_meld.getValue()-1 && current_tile.getColour()==current_meld.getColour()) {
-						//game.addBoardTile(current_tile, xpos, ypos)
+						game.addBoardTile(current_tile, (current_point.x), (current_point.y)-1);
 						//game.t.getTile().getPos();
 						
 					}
@@ -179,19 +184,23 @@ public class Strategy1 extends Player{
 					}
 				}
 				
+				}
+				//Tile current_meld=game.getBoardTiles().get(count);
+				
 			}
 			
 		}
+		
 		if(useJoker() && score_of_valid_hand()==2) {
 			
 		}
+		//if none of the above conditions are met, no tile can be placed therefore must draw a tile
 		else {
 			game.drawTile();
-			
 		}
 	}
 
-	
+	//method to verify if player has a score of 30 or over
 	public boolean firstTurn() {
 		if(score_of_valid_hand()>=30) {
 			return true;
@@ -210,6 +219,7 @@ public class Strategy1 extends Player{
 		}
 	}
 	
+	//checks the score of a valid hand in player's hand tiles
 	public int score_of_valid_hand() {
 		// TODO Auto-generated method stub			
 			int score =0;
