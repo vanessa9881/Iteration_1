@@ -540,10 +540,44 @@ public class Board {
 		}
 	}
 	
+	public void addMeldToBoard(Meld m) {
+		int size = m.getSize();
+		int tempsize = 0;
+		//boardTiles = new HashMap<Point, Tile>(); 
+		
+		Set<Entry<Point, Tile>> entrySet = boardTiles.entrySet();
+		for (Iterator<Entry<Point, Tile>> iterator = entrySet.iterator(); iterator.hasNext();) {
+			Entry<Point, Tile> entry = iterator.next();
+			if (entry.getValue() == null) {
+				int x = (int)(entry.getKey().getX());
+				int availTiles = 0;
+				ArrayList<Integer> xs = new ArrayList<Integer>();
+				while (x < BoardController.BOARDSIZE) {
+					if ((boardTiles.get(new Point(x + 1, (int) entry.getKey().getY())) == null)) {
+						x++;
+						xs.add(x);
+						availTiles++;
+						if (availTiles == size) {
+							for (int i = 0; i < m.getSize(); i++) {
+								System.out.println(addBoardTile(m.getTiles().get(i), i + 1, (int)entry.getKey().getY()));
+								controller.updateView();
+							}
+							return;
+						}
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
+	}
+	
 	// Determines start order of game
 	public void startOrder() {
 		Deck tempDeck = new Deck();
 		ArrayList<Player> highPlayerList = new ArrayList<Player>();
+		Strategy3 testPlayer = new Strategy3();
 		int temp = 0;
 		for (Player p : this.playerList) {
 			temp++;
@@ -571,13 +605,44 @@ public class Board {
 		for (Player p : playerList) {
 			p.hand.clear();
 		}	
-		temp =0;
-		for(Player p : this.playerList) {
-			temp++;
-			System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
+		
+		temp = 0;
+		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Ten", "10"), new Image("file:resources/10r.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Eleven", "11"), new Image("file:resources/11r.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Twelve", "12"), new Image("file:resources/12r.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Yellow", "y"), new Number("Ten", "10"), new Image("file:resources/10y.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Yellow", "y"), new Number("Eleven", "11"), new Image("file:resources/11y.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Yellow", "y"), new Number("Twelve", "12"), new Image("file:resources/12y.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Yellow", "y"), new Number("Seven", "7"), new Image("file:resources/7y.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Thirteen", "13"), new Image("file:resources/13r.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("One", "1"), new Image("file:resources/1r.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Two", "2"), new Image("file:resources/2r.gif")));
+		testPlayer.hand.add(new Tile(new Colour("Red", "r"), new Number("Three", "3"), new Image("file:resources/3r.gif")));
+		
+		testPlayer.sort();
+		
+		//testPlayer.play(this);
+		
+		testPlayer.getMeldsFromHand();
+		
+		System.out.println("Player's hand: " + testPlayer.getHandTiles());
+		
+		testPlayer.printMelds();
+		
+		this.addMeldToBoard(testPlayer.getMelds().get(0));
+		this.addMeldToBoard(testPlayer.getMelds().get(1));
+		this.addMeldToBoard(testPlayer.getMelds().get(2));
+		
+		
+		for (Meld m : this.getMelds()) {
+			m.printMeld();
 		}
 		
-			//System.out.println("Player melds: " + playerList.get(0).getMelds());
-	
+		//for(Player p : this.playerList) {
+		//	temp++;
+		//	System.out.println("Player " + temp + "'s hand: " + p.getHandTiles());
+		//}
+		
+		//System.out.println("Player melds: " + playerList.get(0).getMelds());
 	}
 }
