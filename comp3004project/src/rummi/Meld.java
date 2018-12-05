@@ -297,4 +297,8 @@ public class Meld {
 		}
 	}
 	
+	public void printMeld() {
+		System.out.println(this.getTiles());
+	}
+	
 }

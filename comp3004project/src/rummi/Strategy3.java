@@ -117,6 +117,8 @@ public class Strategy3 extends Player {
 			// Add highest melds to be played 
 			this.melds.add(highMeld);
 			
+			this.printMelds();
+			
 			// remove tiles that exist in meld from hand
 			for (int i = 0; i < highMeld.getSize(); i++) {
 				if (this.hand.contains(highMeld.getTiles().get(i))) {
@@ -144,6 +146,7 @@ public class Strategy3 extends Player {
 				// Play all melds and wins 
 				for (int i = 0; i < melds.size(); i++) {
 					b.addHandMeld(melds.get(i));
+					b.addMeldToBoard(melds.get(i));
 				}
 				for (Meld m : melds) {
 					for (int i = 0; i < m.getSize(); i++) {
@@ -181,6 +184,7 @@ public class Strategy3 extends Player {
 				// Play all possible melds
 				for (int i = 0; i < melds.size(); i++) {
 					b.addHandMeld(melds.get(i));
+					b.addMeldToBoard(melds.get(i));
 				}
 				for (Meld m : melds) {
 					for (int i = 0; i < m.getSize(); i++) {
