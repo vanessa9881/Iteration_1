@@ -1,4 +1,3 @@
-
 package rummi;
 
 import java.awt.Point;
@@ -55,7 +54,6 @@ public class BoardView {
     private Tile selectedTile;
     
     private BoardController controller;
-    private Board board;
     
 	private void initView() {
 		root = new BorderPane();	
@@ -63,9 +61,10 @@ public class BoardView {
 		userPane = new FlowPane();
 		userScrollPane = new ScrollPane();
 		tileSelectedLabel = new Label("Selected Tile");
+		riggedTextField = new TextField();
 		
-		storedBoardState = new ArrayList<Object>();
-		
+		originator = new Originator();
+		caretaker = new Caretaker();
 		
 		root.setRight(addVBox());
 		root.setBottom(userScrollPane);
@@ -122,7 +121,7 @@ public class BoardView {
     EventHandler<ActionEvent> drawTileButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		System.out.println("-----------------------DRAW TILE BUTTON PRESSED, DELETING TILE FROM THE FRONT-------------------------------");
-    		
+    		controller.drawTile();
     		/* ----------This is for testing through hard coding values--------------
     		//This button was used for testing 4/5 object states not including playerList
     		board.drawTile();
@@ -157,19 +156,18 @@ public class BoardView {
     			System.out.println("Board.Melds Address: 	" + board.getMeld());
     		}
     		-----------------------------------------------------------------------*/
-    		originator.set(board);
+    		originator.set(controller.returnBoard());
     		caretaker.addMementoBoard(originator.saveToMemento());
     		savedBoardNumber++;
     		currentBoardNumber++;
-    		 
-    	}
+    		}
     };
     
     EventHandler<ActionEvent> resetBoardAction = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		if(currentBoardNumber >= 1){	//And if the board is not valid.	//Check if there is an error here with caretaker.getLatInde()				
 				System.out.println("-----------------------RESET BUTTON PRESSED-------------------------------------");
-				board.setBoard(originator.restoreFromMemento( caretaker.getMementoBoard(caretaker.getLastIndex())));
+				controller.returnBoard().setBoard(originator.restoreFromMemento( caretaker.getMementoBoard(caretaker.getLastIndex())));
 				/* ----------This is for testing through hard coding values--------------
 	    		System.out.println("Board Address: 	  " + board);
 	    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
@@ -193,7 +191,7 @@ public class BoardView {
         	String value = riggedTextField.getText();
         	riggedColour = Character.toString(value.charAt(0));
         	riggedNumber = Character.toString(value.charAt(1));
-        	board.drawRiggedTile(riggedColour, riggedNumber);	
+        	controller.returnBoard().drawRiggedTile(riggedColour, riggedNumber);	
     		
     		
     		/* ----------This is for testing through hard coding values(This part can be ignored)--------------

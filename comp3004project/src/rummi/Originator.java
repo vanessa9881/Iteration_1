@@ -6,9 +6,10 @@ import java.util.HashMap;
 
 
 public class Originator {
-	private Board boardState = new Board();
+	private Board boardState;
     
 	public void set(Board b ) {
+		System.out.println("I get here");
 		boardState = b;
 	}
     

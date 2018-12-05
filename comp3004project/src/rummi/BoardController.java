@@ -19,6 +19,10 @@ public class BoardController {
 		board.drawTile();
 	}
 	
+	public Board returnBoard() {
+		return board;
+	}
+	
 	/*
 	public ArrayList<Tile> getDeck() {
 		return board.getDeckTiles();

@@ -1,5 +1,5 @@
 package rummi;
-
+/*
 import rummi.Meld;
 
 public class Strategy1 extends Player{
@@ -113,8 +113,6 @@ public class Strategy1 extends Player{
 			
 		return score;
 	}
-
-	
-
 	
 }
+*/
