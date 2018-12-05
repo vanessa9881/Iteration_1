@@ -512,22 +512,35 @@ public class Board {
 	}
 	
 	// Sets number of human players then number of AI players 
-	public void setPlayers(int numPlayersHuman, int numPlayersAI) {
-		Random rand = new Random();
-		int randNum = rand.nextInt(3) + 1;
+	public void setPlayers(int numPlayersHuman, int strat1, int strat2, int strat3, int strat4) {
+		
+		
 		
 		if (!(numPlayersHuman == 0)) {
 			for (int i = 0; i < numPlayersHuman; i++){this.playerList.add(new HumanPlayer());}
 		}
-		if (!(numPlayersAI == 0)) {
-			for (int i = 0; i < numPlayersAI; i++){
-				randNum = rand.nextInt(3) + 1;
-				if (randNum == 1) {this.playerList.add(new Strategy2());}
-				if (randNum == 2) {this.playerList.add(new Strategy2());}
-				if (randNum == 3) {this.playerList.add(new Strategy3());}
-				//if (randNum == 4) {this.playerList.add(new Strategy4());}
+			if (strat1 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy1());
+				}
 			}
-		}
+			if (strat2 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy3());
+				}
+			}
+			if (strat3 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy2());
+				}
+			}
+			if (strat4 > 0) {
+				for (int i = 0; i < strat1; i++) {
+					this.playerList.add(new Strategy4());
+				}
+			}
+			
+			this.startOrder();
 	}
 	
 	
