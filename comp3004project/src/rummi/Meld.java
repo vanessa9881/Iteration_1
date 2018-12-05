@@ -130,7 +130,7 @@ public class Meld {
 		// First, check to see if the meld even contains
 		// the tile of interest!
 		if (!meldTiles.contains(removedTile)) {
-			throw new IllegalArgumentException("Tile was never in the meld!");
+			//throw new IllegalArgumentException("Tile was never in the meld!");
 		}
 		// Meld only had one tile
 		// Maybe someone misplaced a tile and would
