@@ -14,7 +14,7 @@ public class Strategy1 extends Player{
 		Meld meld_run;
 		int initial_turn =0; 
 		if(!firstTurn()&& initial_turn==0) {
-			hand.addTile(game.drawTile());
+			game.drawTile();
 	}
 		if(score_of_valid_hand() >= 30) {
 			meld_set = new Meld(null);
@@ -27,12 +27,12 @@ public class Strategy1 extends Player{
 				if(index != getHandValue() - 1) {
 				
 				if((current_tile.getValue()== next_tile.getValue()+1 && current_tile.getColour() == next_tile.getColour())){
-					meld_run.addToMeld(hand.remove(i));
-					meld_run.addToMeld(hand.remove(index));
+					meld_run.addRightside(hand.remove(i));
+					meld_run.addRightside(hand.remove(index));
 				}
 				else if((current_tile.getValue()==next_tile.getValue())&&(current_tile.getColour()!=next_tile.getColour())) {
-					meld_set.addToMeld(hand.remove(i));
-					meld_set.addToMeld(hand.remove(index));
+					meld_set.addRightside(hand.remove(i));
+					meld_set.addRightside(hand.remove(index));
 				}
 				else {
 					continue;
@@ -55,13 +55,13 @@ public class Strategy1 extends Player{
 				if(index != getHandValue() - 1) {
 				
 				if((current_tile.getValue() == next_tile.getValue() + 1 && current_tile.getColour() == next_tile.getColour())){
-					meld_run.addToMeld(hand.remove(i));
-					meld_run.addToMeld(hand.remove(index));
+					meld_run.addRightside(hand.remove(i));
+					meld_run.addRightside(hand.remove(index));
 					meld_run.checkGroup();
 				}
 				else if((current_tile.getValue()==next_tile.getValue())&&(current_tile.getColour()!=next_tile.getColour())) {
-					meld_set.addToMeld(hand.remove(i));
-					meld_set.addToMeld(hand.remove(index));
+					meld_set.addRightside(hand.remove(i));
+					meld_set.addRightside(hand.remove(index));
 					meld_set.checkGroup();
 				}
 				else {
@@ -79,7 +79,7 @@ public class Strategy1 extends Player{
 			for(int i=0; i<getHandValue();i++) {
 				int count=0;
 				Tile current_tile=hand.get(i);
-				Meld current_meld=game.getMelds().get(count);
+				Tile current_meld=game.getBoardTiles().get(count);
 				for(Tile t : current_meld.getTiles()) {
 					if(current_tile.getValue()== t.getValue()-1 && current_tile.getColour()==t.getColour()) {
 						//game.addBoardTile(current_tile, xpos, ypos)
@@ -101,7 +101,7 @@ public class Strategy1 extends Player{
 			
 		}
 		else {
-			addTile(game.drawTile());
+			game.drawTile();
 			
 		}
 	}

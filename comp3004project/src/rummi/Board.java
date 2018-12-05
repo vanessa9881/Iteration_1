@@ -17,6 +17,7 @@ public class Board {
     	// Playerlist should have players added to it with a gui button!
     	playerList = new ArrayList<Player>();
     	tileDeck = new Deck();
+
     	melds = new ArrayList<Meld>();
     	handTiles = new ArrayList<Tile>();
     	boardTiles = new HashMap<Point, Tile>();
@@ -147,6 +148,7 @@ public class Board {
 	public ArrayList<Tile> getHandTiles() {
 		return handTiles;
 	}
+
 
 	public HashMap<Point, Tile> getBoardTiles() {
 		return boardTiles;
