@@ -4,6 +4,10 @@ import java.awt.Point;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -13,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -23,8 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
+
 
 public class BoardView {
 
@@ -32,18 +34,21 @@ public class BoardView {
     private GridPane gameBoard = new GridPane();
 	private FlowPane userPane = new FlowPane();
 	private ScrollPane userScrollPane = new ScrollPane();
-    private Label tileSelectedLabel = new Label("Selected Tile");
+    private Button setTimer;
     private ArrayList<RummiButton> boardButtons;
     private RummiButton[] handButtons;
-    private Button startButton;
     
     //Level 2
     Caretaker caretaker;
     Originator originator;
     int savedBoardNumber = 0, currentBoardNumber = 0;
     ArrayList<Object> storedBoardState;
-    Clock timer;
     
+    private Label displayTimer = new Label();
+    static int interval = 120;
+    static Timer timer = new Timer();
+    Boolean setTimerBoolean = false;
+ 
     
     //Level 4 
     TextField riggedTextField;
@@ -52,6 +57,7 @@ public class BoardView {
     
     private Tile priorSelectedTile;
     private Tile selectedTile;
+    TextArea moveInfoTextArea;
     
     private BoardController controller;
     
@@ -60,8 +66,8 @@ public class BoardView {
 		gameBoard = new GridPane();
 		userPane = new FlowPane();
 		userScrollPane = new ScrollPane();
-		tileSelectedLabel = new Label("Selected Tile");
 		riggedTextField = new TextField();
+
 		
 		originator = new Originator();
 		caretaker = new Caretaker();
@@ -81,6 +87,7 @@ public class BoardView {
 	    createBoardButtons();
 	}
     
+	
     EventHandler<ActionEvent> boardButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		priorSelectedTile = selectedTile;
@@ -112,6 +119,7 @@ public class BoardView {
         		}
         	}
         	else {
+        		moveInfoTextArea.appendText("Selected Board tile: " + selectedTile.toString() + "\n");
         		System.out.println("Selected board space is occupied");
         	}
     	}
@@ -218,8 +226,18 @@ public class BoardView {
         	String value = riggedTextField.getText();
         	riggedColour = Character.toString(value.charAt(0));
         	riggedNumber = Character.toString(value.charAt(1));
-        	controller.returnBoard().drawRiggedTile(riggedColour, riggedNumber);	
-    		
+        	Tile temp = controller.returnBoard().drawRiggedTile(riggedColour, riggedNumber);
+        	if (temp == null ) {
+        		moveInfoTextArea.appendText("No more of " + riggedColour + riggedNumber + " in Deck\n");
+        	} else {
+        		controller.returnBoard().addHandTile(temp);
+        	}
+        	
+        	//Level 4 point 2 for AI *********************************************************************************
+        	//Level 4 point 2 for AI *********************************************************************************
+        	//Level 4 point 2 for AI *********************************************************************************
+        	//Level 4 point 2 for AI *********************************************************************************
+        	
     		
     		/* ----------This is for testing through hard coding values(This part can be ignored)--------------
     		board.addHandTile(new Tile(new Colour("Red", "r"), new Number("One", "1"), new Image("file:resources/1r.gif")));
@@ -237,6 +255,47 @@ public class BoardView {
     	}
     };
     
+    EventHandler<ActionEvent> toggleTimer = new EventHandler<ActionEvent>() {
+    	public void handle(final ActionEvent e) {
+    	//	If (timerSetEnabled == true) { *******************************************************************************
+    		if (setTimerBoolean == false) {
+    			setTimerBoolean = true;
+    		} else {
+    			setTimerBoolean = false;
+    			timer.cancel();
+    			interval = 121;
+    		} 
+    		if (setTimerBoolean == true) {
+    		    timer = new Timer();
+    		    timer.scheduleAtFixedRate(new TimerTask() {
+    		        public void run() {
+    		            if(interval > 0) {
+    		                Platform.runLater(() -> displayTimer.setText("Time : "+interval));
+    		                System.out.println(interval);
+    		                interval--;
+    		            } else {
+    		            	//Time is up, Check valid State of Board, if valid reset timer and go to the next player turn (If ai, disable timer)
+    		            	//If human player start timer again. 
+    		            	//********************************************************End Turn*****************************************************************************************************
+    		            	//********************************************************End Turn*****************************************************************************************************
+    		            	//********************************************************End Turn*****************************************************************************************************
+    		            	//********************************************************End Turn*****************************************************************************************************
+    		            	//********************************************************End Turn*****************************************************************************************************
+    		            	//********************************************************End Turn*****************************************************************************************************
+    		            	//********************************************************End Turn*****************************************************************************************************
+    		            	//********************************************************End Turn*****************************************************************************************************
+    		            	//********************************************************End Turn*****************************************************************************************************
+    		            	//********************************************************End Turn*****************************************************************************************************
+    		            }
+    		        }
+    		    }, 1000,1000);
+    			} 
+    		//  } *******************************************************************************
+    		}
+    		
+    	};
+
+    
     EventHandler<ActionEvent> handButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		priorSelectedTile = selectedTile;
@@ -246,7 +305,7 @@ public class BoardView {
     			System.out.println("Selected hand space is empty");
     		}
     		else {
-    			System.out.println("Selected hand tile: " + selectedTile.toString());
+    			moveInfoTextArea.appendText("Selected hand tile: " + selectedTile.toString() + "\n");
     		}
     	}
     };
@@ -288,14 +347,17 @@ public class BoardView {
         Button drawTileButton = new Button("Draw Tile");
         Button saveBoardButton = new Button("Save Board");
         Button resetBoard = new Button("Reset Board");
-        TextArea moveInfoTextArea = new TextArea();
+        
+        moveInfoTextArea = new TextArea();
+        
+        setTimer = new Button("Enable/Disable timer");
+        
         Button enterRiggedTile = new Button("Enter - (example r5)");
-        enterRiggedTile.setOnAction(rigTileButton);
         
         VBox vbox = new VBox();
         Text title = new Text("Information");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 25));
-        vbox.getChildren().addAll(title,drawTileButton, saveBoardButton, resetBoard, tileSelectedLabel, moveInfoTextArea, riggedTextField, enterRiggedTile);
+        vbox.getChildren().addAll(title,drawTileButton, saveBoardButton, resetBoard, setTimer, displayTimer, moveInfoTextArea, riggedTextField, enterRiggedTile);
         vbox.setSpacing(20);
         
         //Draw Tile Section
@@ -310,15 +372,19 @@ public class BoardView {
         resetBoard.setMaxWidth(Double.MAX_VALUE);
         resetBoard.setOnAction(resetBoardAction);
         
-        //Tile Selected Section
-        tileSelectedLabel.setMaxWidth(Double.MAX_VALUE);
+        //Timer Section
+        setTimer.setMaxWidth(Double.MAX_VALUE);
+        setTimer.setOnAction(toggleTimer);
         
         //TextArea Section
+        moveInfoTextArea.setWrapText(true);
+        moveInfoTextArea.setFont(Font.font("Verdana", 10));
         moveInfoTextArea.setMaxWidth(200);
-        moveInfoTextArea.setText("Move Information");
-        moveInfoTextArea.setEditable(false);      
+        moveInfoTextArea.setText("Move Information\n");
+        moveInfoTextArea.setEditable(false); 
         
         //RiggedTextField section
+        enterRiggedTile.setOnAction(rigTileButton);
         riggedTextField.setMaxWidth(Double.MAX_VALUE);
         
         //enterRiggedTile button Section

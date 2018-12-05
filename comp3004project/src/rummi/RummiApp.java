@@ -17,7 +17,9 @@ public class RummiApp extends Application{
         Scene scene = new Scene(view.asParent(), 400, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
+    
 
     public static void main(String[] args) {
         launch(args);

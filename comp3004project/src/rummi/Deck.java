@@ -74,21 +74,15 @@ public class Deck {
 		for (Tile t : tileList) {
 			if (t.getColour().getSymbol().equals(c) && t.getValue() == Integer.parseInt(n)){
 				Tile rigged = t;
+				System.out.println(rigged);
 				//Add this tile to the hand before removing it from the deck. the level 5 shit goes in here?
-				deleteTile(tileList.indexOf(t));
+				tileList.remove(t);
 				return rigged;
 			}
 		}
 		return null;
 	}
 	
-	
-	
-	public Tile deleteTile(int index) {
-		Tile tileToDelete = tileList.get(index);
-		tileList.remove(index);
-		return tileToDelete;
-	}
 
 	public void shuffle() {
 		Collections.shuffle(tileList);
