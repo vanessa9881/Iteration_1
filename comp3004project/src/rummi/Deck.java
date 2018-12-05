@@ -14,7 +14,7 @@ public class Deck {
 	
 	public Deck() {
 		tileList = new ArrayList<Tile>();
-	
+		
 		try{
 			for(int i = 0; i<2; i++){
 				Iterator<Colour> colourIterator = Colour.VALUES.iterator();
@@ -32,6 +32,10 @@ public class Deck {
 					}
 				}
 			}
+				Tile joker = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
+				addTile(joker);
+				addTile(joker);
+				
 			shuffle(); 
 		} 
 		catch (Exception exception){
@@ -39,6 +43,13 @@ public class Deck {
     	}
 	}
 	
+	public Deck (int n) {
+		tileList = new ArrayList<Tile>();
+	}
+	
+	public Deck(Deck d) {
+		tileList = d.getDeck();
+	}
 	public Tile getTile(int index)
 	{
 		return tileList.get(index);
@@ -63,6 +74,20 @@ public class Deck {
 		   }
 	}
 	
+	public Tile dealRiggedTile(String c, String n) {
+		for (Tile t : tileList) {
+			if (t.getColour().getSymbol().equals(c) && t.getValue() == Integer.parseInt(n)){
+				Tile rigged = t;
+				//Add this tile to the hand before removing it from the deck. the level 5 shit goes in here?
+				deleteTile(tileList.indexOf(t));
+				return rigged;
+			}
+		}
+		return null;
+	}
+	
+	
+	
 	public Tile deleteTile(int index) {
 		Tile tileToDelete = tileList.get(index);
 		tileList.remove(index);
@@ -72,5 +97,11 @@ public class Deck {
 	public void shuffle() {
 		Collections.shuffle(tileList);
 	}
+	
+	public ArrayList<Tile> getDeck() {
+		return tileList;
+	}
+
+
 
 }

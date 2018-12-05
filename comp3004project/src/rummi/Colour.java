@@ -12,11 +12,12 @@ public final class Colour {
    public final static Colour BLACK = new Colour("Black","b");
    public final static Colour BLUE = new Colour("Blue","g");
    public final static Colour YELLOW = new Colour("Yellow","y");
+   public final static Colour JOKER = new Colour ("Joker", "j");
    
    public final static List<Colour> VALUES = Collections.unmodifiableList(
 		   Arrays.asList(new Colour[] { RED, BLACK, BLUE, YELLOW } ) );
 
-   private Colour(String nameValue, String symbolValue) {
+   public Colour(String nameValue, String symbolValue) {
       name = nameValue;
       symbol = symbolValue;
    }

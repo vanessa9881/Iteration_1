@@ -4,14 +4,30 @@ import java.util.ArrayList;
 
 public class Player {
 	private int handValue;	//----------To do
-	protected ArrayList<Tile> hand;	//Hand is a refrence to a players hand. (hand = players hand)
+	public ArrayList<Tile> hand;	//Hand is a refrence to a players hand. (hand = players hand)
+	protected int turnNumber;
+	protected int score;
+	protected ArrayList<Meld> melds = new ArrayList<Meld>(); 
 	
 	public Player() {
 		hand = new ArrayList<Tile>();
-		handValue = 0; 
+		handValue = 0;
+		turnNumber = 0;
+		score = 0;
 	}
 	
+	public ArrayList<Meld> getMelds(){
+		return this.melds;
+	}
+	
+	public int getTurnNumber() {
+		return this.turnNumber;
+	}
 	public int getHandValue() {
+		this.handValue = 0;
+		for(int i = 0; i < this.hand.size(); i++) {
+			this.handValue += this.hand.get(i).getValue();
+		}
 		return this.handValue;
 	}
 	
@@ -25,6 +41,10 @@ public class Player {
 	
 	public int getNumberOfTiles() {
 		return hand.size();
+	}
+	
+	public ArrayList<Tile> getHandTiles(){
+		return this.hand;
 	}
 	
 	public void sort() {
@@ -43,9 +63,17 @@ public class Player {
 	public void deleteTile(Tile tile) {
 		hand.remove(tile);
 	}
+	
+	protected void SetPlayerScore(Tile t) {
+		this.score = this.score + t.getValue();
+	}
 		   	
 	@Override
 	public String toString() {
 		return hand.toString();
+	}
+	
+	public void endTurn() {
+		
 	}
 }

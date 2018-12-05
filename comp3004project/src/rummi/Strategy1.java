@@ -3,7 +3,7 @@ package rummi;
 import rummi.Meld;
 
 import java.awt.Point;
-import java.util.*;
+//import java.util.*;
 import java.util.Map.Entry;
 
 public class Strategy1 extends Player{
@@ -16,7 +16,6 @@ public class Strategy1 extends Player{
 	
 	//Game Play
 	public void play(Board game){
-		//Creating list of sets and runs
 		Meld meld_set;
 		Meld meld_run;
 		//Tracking turn for initial 30 tiles
@@ -177,6 +176,7 @@ public class Strategy1 extends Player{
 						
 					}
 					else if (current_tile.getValue()==current_meld.getValue()&&(current_tile.getColour()!=current_meld.getColour())){
+						game.addBoardTile(current_tile, (current_point.x), (current_point.y)-1);
 						//game.addBoardTile(current_tile, xpos, ypos)
 					}
 					else {
@@ -191,9 +191,70 @@ public class Strategy1 extends Player{
 			
 		}
 		
-		if(useJoker() && score_of_valid_hand()==2) {
+		if(hasJoker() && score_of_valid_hand()==2 && useJoker() && initial_turn!=0) {
+			meld_run = new Meld(null);
+			meld_set = new Meld(null);
+			Tile joker = null;
+			for(int i=0; i < getNumberOfTiles();i++) {
+				int index= i+1;
+				Tile current_tile = hand.get(i);
+				Tile next_tile = hand.get(index);
+				while(index != getHandValue() - 1) {
+				if(current_tile.getID()==0) {
+					joker = hand.remove(i);
+					continue;
+				}
+				if((current_tile.getValue() == next_tile.getValue() + 1 && current_tile.getColour() == next_tile.getColour())){
+					meld_run.addRightside(hand.remove(i));
+					meld_run.addRightside(hand.remove(index));
+					meld_run.checkGroup();
+				}
+				else if((current_tile.getValue()==next_tile.getValue())&&(current_tile.getColour()!=next_tile.getColour())) {
+					meld_set.addRightside(hand.remove(i));
+					meld_set.addRightside(hand.remove(index));
+					meld_set.checkGroup();
+				}
+				else {
+					continue;
+				}
+				index++; 
+			}
+				i++;
 			
 		}
+			for(int i=0;i<meld_run.getSize();i++) {
+				if(meld_run.getTiles().get(meld_run.getSize()-1).getValue()==13 && meld_run.getTiles().get(0).getValue()!=1) {
+					//Tile joker=hand.remove(findTile());
+					joker.setJokerColour(meld_run.getTiles().get(meld_run.getSize()-1).getColour());
+					joker.setJokerValue(meld_run.getTiles().get(0).getValue()-1);
+					meld_run.addLeftside(joker);
+				}
+				else {
+					joker.setJokerColour(meld_run.getTiles().get(meld_run.getSize()-1).getColour());
+					joker.setJokerValue(meld_run.getTiles().get(meld_run.getSize()-1).getValue());
+					meld_run.addRightside(joker);
+				}
+				
+				
+			}
+			for(int i=0; i<meld_run.getSize();i++) {
+				int x=1;
+				int y=1;
+				if(game.addBoardTile(meld_run.getTiles().get(i),x,y)){
+					game.addBoardTile(meld_run.getTiles().get(i),x,y);
+					//x++;
+					y++;
+				}
+				else if(game.addBoardTile(meld_run.getTiles().get(i),x,y)==false){
+					if(y>=15) {
+						x++;
+					}
+					y++;
+				}
+				
+			}
+		}
+		
 		//if none of the above conditions are met, no tile can be placed therefore must draw a tile
 		else {
 			game.drawTile();
@@ -210,6 +271,26 @@ public class Strategy1 extends Player{
 		}
 	}
 	
+	//checks if there are one or more jokers in hand
+	public boolean hasJoker() {
+		int x=0;
+		for(int i=0; i< getNumberOfTiles();i++) {
+			if(hand.get(i).getID() == 0) {
+				x++;
+			}
+			else {
+				continue;
+			}
+		}
+		if(x>0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	//will only use joker if has 4 or less tiles
 	public boolean useJoker() {
 		if(getNumberOfTiles()<= 4) {
 			return true;
@@ -236,12 +317,16 @@ public class Strategy1 extends Player{
 				if((current_tile.getValue()== next_tile.getValue()+1 && current_tile.getColour() == next_tile.getColour())){
 					//count++;
 					score+= current_tile.getValue()+next_tile.getValue();
+					SetPlayerScore(current_tile);
+					SetPlayerScore(next_tile);
 					//p1.getHand().remove(i);
 					//p1.getHand().remove(index);
 				}
 				else if((current_tile.getValue()==next_tile.getValue())&&(current_tile.getColour()!=next_tile.getColour())) {
 					//count++;
 					score+= current_tile.getValue()+next_tile.getValue();
+					SetPlayerScore(current_tile);
+					SetPlayerScore(next_tile);
 					//p1.getHand().remove(i);
 					//p1.getHand().remove(index);
 				}
@@ -255,8 +340,6 @@ public class Strategy1 extends Player{
 			
 		return score;
 	}
-
-	
-
 	
 }
+

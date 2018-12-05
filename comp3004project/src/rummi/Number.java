@@ -8,7 +8,8 @@ import java.util.List;
 public class Number {
    private String name;
    private String symbol;
-    
+   
+   final static Number ZERO = new Number("Zero", "0");
    final static Number ONE = new Number( "One", "1" );
    final static Number TWO = new Number( "Two", "2" );
    final static Number THREE = new Number( "Three", "3" );
@@ -27,9 +28,13 @@ public class Number {
       Collections.unmodifiableList( Arrays.asList( new Number[] { ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN,
                                      EIGHT, NINE, TEN, ELEVEN, TWELVE, THIRTEEN } ) );
    
-   private Number(String nameValue, String symbolValue) {
+   public Number(String nameValue, String symbolValue) {
       name = nameValue;
       symbol = symbolValue;
+   }
+   
+   public String getNameValue() {
+	   return this.name;
    }
 
    @Override
@@ -39,5 +44,9 @@ public class Number {
 
    public String getSymbol() {
       return symbol;
+   }
+   
+   public List<Number> getVALUES(){
+	   return VALUES;
    }
 }                                                                 

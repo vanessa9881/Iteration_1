@@ -19,6 +19,16 @@ public class BoardController {
 		board.drawTile();
 	}
 	
+	public Board returnBoard() {
+		return board;
+	}
+	
+	/*
+	public ArrayList<Tile> getDeck() {
+		return board.getDeckTiles();
+	}
+	*/
+	
 	public boolean placeTile(int xpos, int ypos, Tile t) {
 		return board.addBoardTile(t, xpos, ypos);
 	}
@@ -41,7 +51,6 @@ public class BoardController {
 	}
 
 	public boolean moveTile(int x, int y, Tile priorSelectedTile) {
-		return board.moveBoardTile(x, y, priorSelectedTile);
-		
+		return board.moveBoardTile(x, y, priorSelectedTile);	
 	}
 }
