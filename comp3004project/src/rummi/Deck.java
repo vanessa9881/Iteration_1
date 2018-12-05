@@ -31,13 +31,12 @@ public class Deck {
 						addTile(tile);
 					}
 				}
+				Tile joke = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
+				if (tileList.contains(joke)) {
+					joke.setID(11);
+				}
+				tileList.add(joke);
 			}
-				Tile joker1 = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
-				Tile joker2 = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
-				joker2.setID(11);
-				addTile(joker1);
-				addTile(joker2);
-				
 			shuffle(); 
 		} 
 		catch (Exception exception){
@@ -65,6 +64,13 @@ public class Deck {
 		    return tileList.size();
 	 }
 
+	 public Tile dealRiggedTile(Tile t) {
+		 if (t != null) {
+			 return tileList.get(tileList.indexOf(t));
+		 }
+		 return null;
+	 }
+	 
 	public Tile dealTile() {
 		   if (deckSize() == 0) {
 			   throw new NullPointerException("Deck is empty!");

@@ -59,46 +59,16 @@ public class Board {
     public Board(Board duplicate) { 	
     	//Deep copy for Deck object
     	ArrayList<Tile> tempTileDeck = duplicate.getDeckTiles();
-    	tileDeck = new Deck();
+    	tileDeck = new Deck(0);
+    	Deck deckToTakeFrom = new Deck();
     	for(Tile t: tempTileDeck) {
-    		if (t.getID() > 9) {
-    			if (tileDeck.getDeck().contains(new Tile(Colour.JOKER, new Image("file:resources/joker.gif")))){
-    				Tile joke = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
-    				joke.setID(11);
-    				tileDeck.addTile(joke);
-    			}
-    			else {
-    				tileDeck.addTile(new Tile(Colour.JOKER, new Image("file:resources/joker.gif")));
-    			}
-    		}
-    		else {
-    			Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
-        		Colour color = new Colour(t.getColour().getName(), t.getColour().getSymbol());
-        		Image image = new Image(t.getFilename(color, numb));
-        		tileDeck.addTile(new Tile(color, numb, image));
-    		}    		
+    		tileDeck.addTile(deckToTakeFrom.dealRiggedTile(t));   		
     	}
     	//Deep copy for handTiles object
     	ArrayList<Tile> tempHandTiles = duplicate.getHandTiles();
     	handTiles = new ArrayList<Tile>();
     	for(Tile t: tempHandTiles) {
-    		if (t.getID() > 9) {
-    			if (handTiles.contains(new Tile(Colour.JOKER, new Image("file:resources/joker.gif")))){
-    				Tile joke = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
-    				joke.setID(11);
-    				handTiles.add(joke);
-    			}
-    			else {
-    				handTiles.add(new Tile(Colour.JOKER, new Image("file:resources/joker.gif")));
-    			}
-    			handTiles.add(new Tile(Colour.JOKER, new Image("file:resources/joker.gif")));
-    		}
-    		else {
-    			Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
-        		Colour color = new Colour(t.getColour().getName(), t.getColour().getSymbol());
-        		Image image = new Image(t.getFilename(color, numb));
-        		handTiles.add(new Tile(color, numb, image));
-    		} 		
+    		handTiles.add(deckToTakeFrom.dealRiggedTile(t));
     	}
     	
     	//Deep copy for boardTiles object
