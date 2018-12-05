@@ -14,6 +14,16 @@ public class Meld {
 		meldTiles.add(initialTile);
 	}
 	
+	public Meld () {
+		meldTiles = new ArrayList<Tile>();
+	}
+	
+	// Add method that bypasses checks do not use
+	// for player moves
+	public void add(Tile t) {
+		meldTiles.add(t);
+	}
+	
 	public boolean addRightside(Tile t) {
 		Tile endTile = meldTiles.get(meldTiles.size() - 1);
 
@@ -54,9 +64,6 @@ public class Meld {
 			return true;
 		}
 		return false;
-	}
-	public Meld (int n) {
-		meldTiles = new ArrayList<Tile>();
 	}
 	
 	// Checks if all of the colours in the meld are the same as the tile's colour

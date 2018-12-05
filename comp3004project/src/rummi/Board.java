@@ -77,7 +77,7 @@ public class Board {
     	ArrayList<Meld> tempMeld = duplicate.getMelds();
     	melds = new ArrayList<Meld>();	
     	for(Meld m: tempMeld) {
-    		Meld n = new Meld(0);
+    		Meld n = new Meld();
 	    	for(Tile t: m.getTiles()) {
 	    		Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
 	    		Colour color = new Colour(t.getColour().getName(), t.getColour().getSymbol());
@@ -373,6 +373,7 @@ public class Board {
     			// Meld has only this single tile, can move it freely.
     			if (addBoardTile(t, x, y)) {
     				melds.remove(m);
+    				return true;
     			}
     		}
     		
@@ -381,6 +382,7 @@ public class Board {
     			// Will not mess up how it looks on the board
     			if (addBoardTile(t, x, y)) {
     				m.removeFromMeld(t);
+    				return true;
     			}
     		}
     		
@@ -389,12 +391,32 @@ public class Board {
     			// Will not mess up how it looks on the board
     			if (addBoardTile(t, x, y)) {
     				m.removeFromMeld(t);
+    				return true;
     			}
     		}
     		else {
     			// Tile is moved from the middle of a meld,
     			// Need to split the meld into two new melds by where
     			// the tile was moved from
+    			if (addBoardTile(t, x, y)) {
+        			int i;
+        			int splitIndex =  m.getTiles().indexOf(t);
+        			
+        			Meld leftMeld = new Meld(m.getTiles().get(0));
+        			for (i = 1; i < splitIndex; i++) {
+        				leftMeld.add((m.getTiles().get(i)));
+        			}
+        			
+        			Meld rightMeld = new Meld(m.getTiles().get(splitIndex + 1));
+        			for (i = splitIndex + 1; i < m.getSize(); i++) {
+        				rightMeld.add((m.getTiles().get(i)));
+        			}
+        			
+        			melds.remove(m);
+        			melds.add(leftMeld);
+        			melds.add(rightMeld);
+        			return true;
+    			}    			
     		}
     	}
 		return false;
@@ -423,7 +445,7 @@ public class Board {
 	}
 	
 	public void createMeld() {
-		Meld tempMeld = new Meld(0);
+		Meld tempMeld = new Meld();
 		tempMeld.addLeftside(new Tile(new Colour("Yellow", "y"), new Number("Five", "5"),new Image("file:resources/5y.gif")));
 		tempMeld.addLeftside(new Tile(new Colour("Red", "r"), new Number("Five", "5"),new Image("file:resources/5r.gif")));
 		tempMeld.addLeftside(new Tile(new Colour("Black", "b"), new Number("Five", "5"),new Image("file:resources/5b.gif")));

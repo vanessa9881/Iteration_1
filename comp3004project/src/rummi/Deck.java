@@ -43,7 +43,7 @@ public class Deck {
     	}
 	}
 	
-	public Deck (int n) {
+	public Deck (int i) {
 		tileList = new ArrayList<Tile>();
 	}
 	
