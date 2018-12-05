@@ -9,6 +9,11 @@ public class Strategy2 extends Player {
 	public Strategy2() {
 	}
 
+	@Override
+	public ArrayList<Meld> getMelds(){
+		getMeldsFromHand();
+		return melds;
+	}
 	
 	// Method to show if P3 can make new melds based on hands of other players
 	public boolean makeNewMelds(ArrayList<Player> players) {

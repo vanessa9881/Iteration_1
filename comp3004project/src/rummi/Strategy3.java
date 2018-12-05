@@ -11,7 +11,11 @@ public class Strategy3 extends Player {
 	public Strategy3() {
 	}
 	
-	
+	@Override
+	public ArrayList<Meld> getMelds(){
+		getMeldsFromHand();
+		return melds;
+	}
 	
 	// Method for initial 30+ point turn 
 	public boolean initialTurnPlay(Board b) {

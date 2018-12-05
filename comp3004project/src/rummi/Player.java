@@ -16,8 +16,8 @@ public class Player {
 		score = 0;
 	}
 	
-	public ArrayList<Tile> getMelds(){
-		return this.melds.get(0).getTiles();
+	public ArrayList<Meld> getMelds(){
+		return this.melds;
 	}
 	
 	public int getTurnNumber() {

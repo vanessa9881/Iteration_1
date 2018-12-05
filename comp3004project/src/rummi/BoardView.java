@@ -121,9 +121,8 @@ public class BoardView {
     EventHandler<ActionEvent> drawTileButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		System.out.println("-----------------------DRAW TILE BUTTON PRESSED, DELETING TILE FROM THE FRONT-------------------------------");
-    		controller.drawTile();
-    		Player testp = new Strategy2();
-    		testp.hand.add(controller.returnBoard().getDeck().dealTile());
+    		//controller.drawTile();
+    		//testp.hand.add(controller.returnBoard().getDeck().dealTile());
     		System.out.println("----------SAVED BOARD BUTTON PRESSES--------------");
     		///* ----------This is for testing through hard coding values--------------
     		System.out.println("Board Address: 	  " + controller.returnBoard());
@@ -218,8 +217,9 @@ public class BoardView {
         	String value = riggedTextField.getText();
         	riggedColour = Character.toString(value.charAt(0));
         	riggedNumber = Character.toString(value.charAt(1));
-        	controller.returnBoard().drawRiggedTile(riggedColour, riggedNumber);	
-    		
+        	//controller.returnBoard().drawRiggedTile(riggedColour, riggedNumber);	
+    		controller.returnBoard().getPlayerList().get(0).hand.add(controller.returnBoard().getDeck().dealRiggedTile(riggedColour, riggedNumber));
+    		System.out.print(controller.returnBoard().getPlayerList().get(0).getHandTiles());
     		
     		/* ----------This is for testing through hard coding values(This part can be ignored)--------------
     		board.addHandTile(new Tile(new Colour("Red", "r"), new Number("One", "1"), new Image("file:resources/1r.gif")));
