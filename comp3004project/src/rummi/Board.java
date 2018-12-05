@@ -1,11 +1,9 @@
 package rummi;
 
 import java.awt.Point;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Random;
@@ -30,8 +28,8 @@ public class Board {
     	handTiles = new ArrayList<Tile>();
     	boardTiles = new HashMap<Point, Tile>();
     	// Construct the board with each board space being null
-    	for(int x = 1; x <= controller.BOARDSIZE; x++) {
-    		for (int y = 1; y <= controller.BOARDSIZE; y++) {
+    	for(int x = 1; x <= BoardController.BOARDSIZE; x++) {
+    		for (int y = 1; y <= BoardController.BOARDSIZE; y++) {
     			boardTiles.put(new Point(x,y), null);
     		}
     	}
@@ -52,7 +50,7 @@ public class Board {
     public Board(Board duplicate) { 	
     	//Deep copy for Deck object
     	ArrayList<Tile> tempTileDeck = duplicate.getDeckTiles();
-    	tileDeck = new Deck(0);
+    	tileDeck = new Deck();
     	for(Tile t: tempTileDeck) {
     		Number numb = new Number(t.getNumberValue().getNameValue(), t.getNumberValue().getSymbol());
     		Colour color = new Colour(t.getColour().getName(), t.getColour().getSymbol());
@@ -135,8 +133,61 @@ public class Board {
     	}
     	
     	if (leftTile != null && rightTile != null) {
-    		// Can not put a tile BETWEEN TWO existing tiles!
-    		System.out.println("1");
+    		// Tile placed on the board between two existing melds
+    		// NOTE: If the tile is moved a space to the left or right, and that space is 
+    		// not occupied, and there is another existing meld beside that space,
+    		// then the two melds are the meld it was moved beside and itself
+    		Meld leftMeld = findMeld(leftTile);
+    		Meld rightMeld = findMeld(rightTile);
+    		
+    		// First check if either meld is the single tile being moved
+    		if (leftMeld.getTiles().contains(t)) {
+    			// Treat as adding only that tile
+    			if(rightMeld.addLeftside(t)) {
+    				if (boardTiles.containsValue(t)) {
+    					removeBoardTile(t);
+    				}
+    				else {
+    					removeHandTile(t);
+    				}
+    				boardTiles.put(new Point(xpos, ypos), t);
+        			controller.updateView();
+        			return true;
+    			}
+    			return false;
+    		}
+    		else if (rightMeld.getTiles().contains(t)) {
+    			// Treat as adding only that tile
+    			if(leftMeld.addRightside(t)) {
+    				if (boardTiles.containsValue(t)) {
+    					removeBoardTile(t);
+    				}
+    				else {
+    					removeHandTile(t);
+    				}
+    				boardTiles.put(new Point(xpos, ypos), t);
+        			controller.updateView();
+        			return true;
+    			}
+    			return false;
+    		}
+    		else if (leftMeld.addRightside(t)) {
+    			if(combineMeld(leftMeld, rightMeld)) {
+    				if (boardTiles.containsValue(t)) {
+    	    			removeBoardTile(t);
+    				}
+    				else {
+    					removeHandTile(t);
+    				}
+    				boardTiles.put(new Point(xpos, ypos), t);
+    				controller.updateView();
+    				return true;
+    			}
+    			else {
+    				leftMeld.removeFromMeld(t);
+    				return false;
+    			}
+    		}
     		return false;
     	}
     	
@@ -156,7 +207,27 @@ public class Board {
     	
     	else if(leftTile != null) {
     		// Tile is added to the end of an existing meld
-    		// Do meld stuff here
+    		// OR tile is moved to the right and the left tile is itself!
+    		
+    		if (leftTile.equals(t)) {
+    			if (findMeld(t).getSize() == 1) {
+    				melds.remove(findMeld(t));
+    			}
+    			else {
+    				findMeld(t).removeFromMeld(t);
+    			}
+    			melds.add(new Meld(t));
+        		if (boardTiles.containsValue(t)) {
+        			removeBoardTile(t);
+    			}
+    			else {
+    				removeHandTile(t);
+    			}
+    			boardTiles.put(new Point(xpos, ypos), t);
+    			controller.updateView();
+    			return true;
+    		}
+    		
     		Meld meldToAddTo = findMeld(leftTile);
     		if (meldToAddTo != null) {
     			if(meldToAddTo.addRightside(t)) {
@@ -182,6 +253,26 @@ public class Board {
     	}
     	
     	else if(rightTile != null) {
+    		
+    		if (rightTile.equals(t)) {
+    			if (findMeld(t).getSize() == 1) {
+    				melds.remove(findMeld(t));
+    			}
+    			else {
+    				findMeld(t).removeFromMeld(t);
+    			}
+    			melds.add(new Meld(t));
+        		if (boardTiles.containsValue(t)) {
+        			removeBoardTile(t);
+    			}
+    			else {
+    				removeHandTile(t);
+    			}
+    			boardTiles.put(new Point(xpos, ypos), t);
+    			controller.updateView();
+    			return true;
+    		}
+    		
     		Meld meldToAddTo = findMeld(rightTile);
     		if (meldToAddTo != null) {
     			if(meldToAddTo.addLeftside(t)) {
@@ -212,7 +303,43 @@ public class Board {
     	}
     }
     
-    public Meld findMeld(Tile t) {
+    private boolean combineMeld(Meld lMeld, Meld rMeld) {
+    	if (rMeld.getSize() == 1) {
+    		// Treat as if adding a tile to the end of the meld
+    		if (lMeld.addRightside(rMeld.getTiles().get(0))) {
+    			melds.remove(rMeld);
+    			return true;
+    		}
+    		return false;
+    	}
+    	
+    	else if (lMeld.checkRun() && rMeld.checkRun()) {
+			if (lMeld.getTiles().get(lMeld.getSize() - 1).getValue() == rMeld.getTiles().get(0).getValue() - 1) {
+				lMeld.combineMeld(rMeld);
+				melds.remove(rMeld);
+    			return true;
+			}
+			return false;
+		}
+		
+		else if (lMeld.checkGroup() && rMeld.checkGroup()){
+			if (lMeld.getValue() == rMeld.getValue()) {
+				for (Tile t : lMeld.getTiles()) {
+					for (Tile t2 : rMeld.getTiles()) {
+						if (t.getColour().getName().equals(t2.getColour().getName())) {
+							return false;
+						}
+					}
+				}
+				lMeld.combineMeld(rMeld);
+				melds.remove(rMeld);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Meld findMeld(Tile t) {
     	Meld meldToAddTo = null;
 		for (Meld m : melds) {
 			if (m.getTiles().contains(t)) {

@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -23,8 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
 
 public class BoardView {
 
@@ -121,7 +118,7 @@ public class BoardView {
     EventHandler<ActionEvent> drawTileButtonPress = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {
     		System.out.println("-----------------------DRAW TILE BUTTON PRESSED, DELETING TILE FROM THE FRONT-------------------------------");
-    		//controller.drawTile();
+    		controller.drawTile();
     		//testp.hand.add(controller.returnBoard().getDeck().dealTile());
     		System.out.println("----------SAVED BOARD BUTTON PRESSES--------------");
     		///* ----------This is for testing through hard coding values--------------
@@ -271,8 +268,8 @@ public class BoardView {
 	
 	public void createBoardButtons() {
 		boardButtons = new ArrayList<RummiButton>();
-		for (int x = 0; x < controller.BOARDSIZE; x++) {
-			for(int y = 0; y < controller.BOARDSIZE; y++) {		
+		for (int x = 0; x < BoardController.BOARDSIZE; x++) {
+			for(int y = 0; y < BoardController.BOARDSIZE; y++) {		
 				RummiButton newButton = new RummiButton(x,y);
 				newButton.setPrefSize(100, 100);
 				newButton.setOnAction(boardButtonPress);

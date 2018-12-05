@@ -24,6 +24,10 @@ public class Deck {
 					while ( numberIterator.hasNext() ) {
 						Number number = (Number) numberIterator.next();
 						Tile tile = new Tile( colour, number, new Image(Tile.getFilename( colour, number)) );
+						if (tileList.contains(tile)) {
+							// 2 of each tile are created. Sets the id of the second tile created to 2
+							tile.setID(2);
+						}
 						addTile(tile);
 					}
 				}
