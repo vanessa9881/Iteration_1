@@ -53,6 +53,7 @@ public class BoardView {
     TextField riggedTextField;
     String riggedColour;
     String riggedNumber;
+    int temp1;
     
     private Tile priorSelectedTile;
     private Tile selectedTile;
@@ -84,6 +85,11 @@ public class BoardView {
 	    BorderPane.setAlignment(gameBoard, Pos.TOP_LEFT);
 	    root.setCenter(gameBoard);	
 	    createBoardButtons();
+	    
+		originator.set(controller.returnBoard());
+		caretaker.addMementoBoard(originator.saveToMemento());
+		savedBoardNumber++;
+		currentBoardNumber++;
 	}
     
 	
@@ -129,6 +135,7 @@ public class BoardView {
     	public void handle(final ActionEvent e) {
     		System.out.println("-----------------------DRAW TILE BUTTON PRESSED, DELETING TILE FROM THE FRONT-------------------------------");
     		controller.drawTile();
+    		/*
     		//testp.hand.add(controller.returnBoard().getDeck().dealTile());
     		System.out.println("----------SAVED BOARD BUTTON PRESSES--------------");
     		///* ----------This is for testing through hard coding values--------------
@@ -161,8 +168,42 @@ public class BoardView {
     	}
     };
     
-    EventHandler<ActionEvent> saveBoardAction = new EventHandler<ActionEvent>() {	
+    EventHandler<ActionEvent> endTurnBoardAction = new EventHandler<ActionEvent>() {	
     	public void handle(final ActionEvent e) {
+    		
+    		//If player makes a change
+	    	if (caretaker.getMementoBoard(caretaker.getLastIndex()).getHandTiles().size() > controller.returnBoard().getHandTiles().size()) {
+	    		if (controller.returnBoard().checkBoardState() == true) {
+	        		originator.set(controller.returnBoard());
+	        		caretaker.addMementoBoard(originator.saveToMemento());
+	        		savedBoardNumber++;
+	        		currentBoardNumber++;
+	    		} else  {
+	    			moveInfoTextArea.appendText("Board not in valid state, forcing you to draw tile and ending you turn");
+					controller.returnBoard().setBoard(originator.restoreFromMemento(caretaker.getMementoBoard(caretaker.getLastIndex())));
+					controller.drawTile();
+					draw();
+	    		}
+	    	//Player doesnt make a change (cant make a meld)
+	    	} else if (caretaker.getMementoBoard(caretaker.getLastIndex()).getHandTiles().size() == controller.returnBoard().getHandTiles().size()) {
+	    		controller.drawTile();	
+        		originator.set(controller.returnBoard());
+        		caretaker.addMementoBoard(originator.saveToMemento());
+        		savedBoardNumber++;
+        		currentBoardNumber++;
+        		draw();
+	    	}
+	    }
+    		
+    		/*
+    		if (Player cant make move)
+    			draw tile and end turn (gets 1 tile)
+    			else (board is in invalid state and he clicks end turn)
+    			revert board and draw tile for player hand
+    			}
+    		/* 
+    		---------------------------------------CODE FOR SAVING A BOARD---------------------------------------
+    		
     		System.out.println("----------SAVED BOARD BUTTON PRESSES--------------");
     		///* ----------This is for testing through hard coding values--------------
     		System.out.println("Board Address: 	  " + controller.returnBoard());
@@ -175,12 +216,13 @@ public class BoardView {
     		} else {
     			System.out.println("Board.Melds Address: 	" + controller.returnBoard().getMelds());
     		}
-    		//-----------------------------------------------------------------------*/
+    		//-----------------------------------------------------------------------
     		originator.set(controller.returnBoard());
     		caretaker.addMementoBoard(originator.saveToMemento());
     		savedBoardNumber++;
     		currentBoardNumber++;
-    		}
+    		*/
+    		//------------------------------------------------------------------------------
     };
     
     EventHandler<ActionEvent> resetBoardAction = new EventHandler<ActionEvent>() {
@@ -189,7 +231,10 @@ public class BoardView {
 				System.out.println("-----------------------RESET BUTTON PRESSED-------------------------------------");
 				controller.returnBoard().setBoard(originator.restoreFromMemento( caretaker.getMementoBoard(caretaker.getLastIndex())));
 				draw();
-	    		///* ----------This is for testing through hard coding values--------------
+				
+				/*
+				*******************************************************************************************
+    			///* ----------This is for testing through hard coding values--------------
 	    		System.out.println("Board Address: 	  " + controller.returnBoard());
 	    		System.out.println("Board.deck Address: 	" + controller.returnBoard().getDeckTiles());
 	    		System.out.println("Board.deck: " + controller.returnBoard().getDeck());
@@ -200,18 +245,9 @@ public class BoardView {
 	    		} else {
 	    			System.out.println("Board.Melds Address: 	" + controller.returnBoard().getMelds());
 	    		}
-				/* ----------This is for testing through hard coding values--------------
-	    		System.out.println("Board Address: 	  " + board);
-	    		System.out.println("Board.deck Address: 	" + board.getDeckForMemento());
-	    		System.out.println("Board.deck:\n" + board.getDeck());
-	    		System.out.println("Board.HasMap Address: 	" + board.getBoardTiles());
-	    		System.out.println("Board.HandTiles Address: 	" + board.getHandTiles());
-	    		if (board.getMeld().size() >= 1) {
-	    			System.out.println("Board.Melds Address: 	" + board.getMeldTiles());
-	    		} else {
-	    			System.out.println("Board.Melds Address: 	" + board.getMeld());
-	    		}
-	    		-----------------------------------------------------------------------*/
+	    		********************************************************************************************
+	    		*/
+	    		
 	    		
     		}
     	}
@@ -219,15 +255,27 @@ public class BoardView {
       
     EventHandler<ActionEvent> rigTileButton = new EventHandler<ActionEvent>() {
     	public void handle(final ActionEvent e) {	
-    	
+    		Tile temp;
     		System.out.println("--------------------------RIGGED TILE PRESS------------------------------------------\n\n");
         	String value = riggedTextField.getText();
-        	riggedColour = Character.toString(value.charAt(0));
-        	riggedNumber = Character.toString(value.charAt(1));		//FIX example r13**********************************
-        	Tile temp = controller.returnBoard().drawRiggedTile(riggedColour, riggedNumber);
-        	if (temp == null ) {
-        		moveInfoTextArea.appendText("No more of " + riggedColour + riggedNumber + " in Deck\n");
+        	
+        	if (value.length()==3) {
+        		String substring = value.substring(Math.max(value.length() - 2, 0));
+        		System.out.println("Substring: "+ substring);
+        		
+        		temp1 = Integer.parseInt(substring);
+        		
+            	temp = controller.returnBoard().drawRiggedTile(riggedColour, Integer.toString(temp1));
         	} else {
+            	riggedColour = Character.toString(value.charAt(0));
+            	riggedNumber = Character.toString(value.charAt(1));	
+            	temp = controller.returnBoard().drawRiggedTile(riggedColour, riggedNumber);
+        	}	
+        	if (temp == null) {
+        		moveInfoTextArea.appendText("No more of that tile in deck\n");
+        	} else if (value.length() == 3) {
+        		controller.returnBoard().addHandTile(temp);
+        	} else if (value.length() == 2) {
         		controller.returnBoard().addHandTile(temp);
         	}
         	
@@ -341,8 +389,8 @@ public class BoardView {
 	}
 	
     private VBox addVBox() {
-        Button drawTileButton = new Button("Draw Tile");
-        Button saveBoardButton = new Button("Save Board");
+        Button drawTileButton = new Button("Test-Draw Tile");
+        Button endTurnBoardButton = new Button("End Turn");
         Button resetBoard = new Button("Reset Board");
         
         moveInfoTextArea = new TextArea();
@@ -354,7 +402,7 @@ public class BoardView {
         VBox vbox = new VBox();
         Text title = new Text("Information");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 25));
-        vbox.getChildren().addAll(title,drawTileButton, saveBoardButton, resetBoard, setTimer, displayTimer, moveInfoTextArea, riggedTextField, enterRiggedTile);
+        vbox.getChildren().addAll(title,drawTileButton, endTurnBoardButton, resetBoard, setTimer, displayTimer, moveInfoTextArea, riggedTextField, enterRiggedTile);
         vbox.setSpacing(20);
         
         //Draw Tile Section
@@ -362,8 +410,8 @@ public class BoardView {
         drawTileButton.setOnAction(drawTileButtonPress);
         
         //End Turn Section
-        saveBoardButton.setMaxWidth(Double.MAX_VALUE);
-        saveBoardButton.setOnAction(saveBoardAction);
+        endTurnBoardButton.setMaxWidth(Double.MAX_VALUE);
+        endTurnBoardButton.setOnAction(endTurnBoardAction);
         
         //ResetBoard Button Section
         resetBoard.setMaxWidth(Double.MAX_VALUE);
@@ -377,7 +425,6 @@ public class BoardView {
         moveInfoTextArea.setWrapText(true);
         moveInfoTextArea.setFont(Font.font("Verdana", 10));
         moveInfoTextArea.setMaxWidth(200);
-        moveInfoTextArea.setText("Move Information\n");
         moveInfoTextArea.setEditable(false); 
         
         //RiggedTextField section
