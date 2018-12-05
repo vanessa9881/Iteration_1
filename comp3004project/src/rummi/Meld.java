@@ -96,15 +96,17 @@ public class Meld {
 		// Check if tiles are the same colour		
 		String col = meldTiles.get(0).getColour().getName();
 		for (Tile t : meldTiles) {
-			if (t.getColour().getName().equals(col)) {return false;}	
+			if (!t.getColour().getName().equals(col)) {return false;}	
 		}
 		
 		// Check if tiles are in a sequence increasing by 1
 		// We assume that they are already sorted as they should be
-		for (int index = 0; index < meldTiles.size() - 1; index++) {
-			if (meldTiles.get(index).getValue() != meldTiles.get(index + 1).getValue() + 1) {
+		int sequenceCheck = meldTiles.get(0).getValue() - 1;
+		for (Tile t : meldTiles) {
+			if (sequenceCheck + 1!= t.getValue()) {
 				return false;
 			}
+			sequenceCheck = t.getValue();
 		}
 		return true;
 	}

@@ -96,9 +96,7 @@ public class Board {
     			}
     			return false;
     		}
-    		
     		else if (leftMeld.addRightside(t)) {
-    			
     			if(combineMeld(leftMeld, rightMeld)) {
     				if (boardTiles.containsValue(t)) {
     	    			removeBoardTile(t);
