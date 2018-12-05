@@ -13,7 +13,7 @@ public class Strategy1 extends Player{
 		
 	}
 	
-	
+	 
 	//Game Play
 	public void play(Board game){
 		Meld meld_set;
@@ -60,6 +60,7 @@ public class Strategy1 extends Player{
 			for(int i=0; i<meld_set.getSize();i++) {
 				int x=1;
 				int y=1;
+				SetPlayerScore(meld_set.getTiles().get(i));
 				if(game.addBoardTile(meld_set.getTiles().get(i),x,y)){
 					game.addBoardTile(meld_set.getTiles().get(i),x,y);
 					//x++;
@@ -80,6 +81,7 @@ public class Strategy1 extends Player{
 			for(int i=0; i<meld_run.getSize();i++) {
 				int x=1;
 				int y=1;
+				SetPlayerScore(meld_run.getTiles().get(i));
 				if(game.addBoardTile(meld_run.getTiles().get(i),x,y)){
 					game.addBoardTile(meld_run.getTiles().get(i),x,y);
 					//x++;
@@ -128,6 +130,7 @@ public class Strategy1 extends Player{
 			for(int i=0; i<meld_set.getSize();i++) {
 				int x=1;
 				int y=1;
+				SetPlayerScore(meld_set.getTiles().get(i));
 				if(game.addBoardTile(meld_set.getTiles().get(i),x,y)){
 					game.addBoardTile(meld_set.getTiles().get(i),x,y);
 					//x++;
@@ -141,10 +144,11 @@ public class Strategy1 extends Player{
 				}
 				
 			}
-			meld_set.checkRun();
+			meld_run.checkRun();
 			for(int i=0; i<meld_run.getSize();i++) {
 				int x=1;
 				int y=1;
+				SetPlayerScore(meld_run.getTiles().get(i));
 				if(game.addBoardTile(meld_run.getTiles().get(i),x,y)){
 					game.addBoardTile(meld_run.getTiles().get(i),x,y);
 					//x++;
@@ -258,7 +262,10 @@ public class Strategy1 extends Player{
 		//if none of the above conditions are met, no tile can be placed therefore must draw a tile
 		else {
 			game.drawTile();
+			endTurn();
 		}
+		getTurnNumber();
+		endTurn();
 	}
 
 	//method to verify if player has a score of 30 or over
@@ -317,16 +324,16 @@ public class Strategy1 extends Player{
 				if((current_tile.getValue()== next_tile.getValue()+1 && current_tile.getColour() == next_tile.getColour())){
 					//count++;
 					score+= current_tile.getValue()+next_tile.getValue();
-					SetPlayerScore(current_tile);
-					SetPlayerScore(next_tile);
+					//SetPlayerScore(current_tile);
+					//SetPlayerScore(next_tile);
 					//p1.getHand().remove(i);
 					//p1.getHand().remove(index);
 				}
 				else if((current_tile.getValue()==next_tile.getValue())&&(current_tile.getColour()!=next_tile.getColour())) {
 					//count++;
 					score+= current_tile.getValue()+next_tile.getValue();
-					SetPlayerScore(current_tile);
-					SetPlayerScore(next_tile);
+					//SetPlayerScore(current_tile);
+					//SetPlayerScore(next_tile);
 					//p1.getHand().remove(i);
 					//p1.getHand().remove(index);
 				}

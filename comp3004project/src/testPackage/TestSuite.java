@@ -9,4 +9,4 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({TileTests.class, DeckTests.class, GameLogicTests.class, Strategy1Tests.class, Strategy2Tests.class})
 
 public class TestSuite {
-}
+} 

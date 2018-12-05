@@ -33,7 +33,7 @@ public class BoardView {
     private ArrayList<RummiButton> boardButtons;
     private RummiButton[] handButtons;
     private Button startButton;
-    
+     
     //Level 2
     Caretaker caretaker;
     Originator originator;
@@ -119,7 +119,8 @@ public class BoardView {
     	public void handle(final ActionEvent e) {
     		System.out.println("-----------------------DRAW TILE BUTTON PRESSED, DELETING TILE FROM THE FRONT-------------------------------");
     		controller.drawTile();
-    		//testp.hand.add(controller.returnBoard().getDeck().dealTile());
+    		Player testp= new Strategy1();
+    		testp.hand.add(controller.returnBoard().getDeck().dealTile());
     		System.out.println("----------SAVED BOARD BUTTON PRESSES--------------");
     		///* ----------This is for testing through hard coding values--------------
     		System.out.println("Board Address: 	  " + controller.returnBoard());

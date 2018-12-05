@@ -8,7 +8,7 @@ import java.util.List;
 public class Number {
    private String name;
    private String symbol;
-   
+    
    final static Number ZERO = new Number("Zero", "0");
    final static Number ONE = new Number( "One", "1" );
    final static Number TWO = new Number( "Two", "2" );

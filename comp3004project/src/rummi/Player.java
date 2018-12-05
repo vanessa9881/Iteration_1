@@ -14,7 +14,7 @@ public class Player {
 		handValue = 0;
 		turnNumber = 0;
 		score = 0;
-	}
+	} 
 	
 	public ArrayList<Meld> getMelds(){
 		return this.melds;

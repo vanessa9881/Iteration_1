@@ -11,7 +11,7 @@ public class Tile {
 	private Colour colour;
 	private Image tileImage;
 	private int tileID;
-	
+	 
 	public Tile(Colour c,Number i, Image t) {
 		number = i;
 		colour = c;

@@ -7,3 +7,4 @@ public class HumanPlayer extends Player{
 		//GUIclass.doSomething()
 	}
 }
+ 

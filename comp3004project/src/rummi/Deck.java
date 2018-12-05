@@ -8,7 +8,7 @@ import rummi.Number;
 import rummi.Colour;
 import javafx.scene.image.Image;
 
-public class Deck {
+public class Deck { 
 	
 	private ArrayList<Tile> tileList;
 	

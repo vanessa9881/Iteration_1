@@ -10,7 +10,7 @@ public class Strategy3 extends Player {
 	
 	public Strategy3() {
 	}
-	
+	 
 	@Override
 	public ArrayList<Meld> getMelds(){
 		getMeldsFromHand();

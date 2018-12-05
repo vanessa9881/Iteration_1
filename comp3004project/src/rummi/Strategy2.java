@@ -8,7 +8,7 @@ public class Strategy2 extends Player {
 	//Add constructors, etc... 
 	public Strategy2() {
 	}
-
+ 
 	@Override
 	public ArrayList<Meld> getMelds(){
 		getMeldsFromHand();

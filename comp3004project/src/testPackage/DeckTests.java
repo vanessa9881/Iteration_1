@@ -17,7 +17,7 @@ import rummi.Tile;
 public class DeckTests {
 
 	private Deck testDeck = null;
-	private ArrayList<Tile> hardcodeDeck;
+	private ArrayList<Tile> hardcodeDeck; 
 	
 	@Before
 	public void setUp() {

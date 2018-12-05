@@ -469,10 +469,10 @@ public class Board {
 		if (!(numPlayersAI == 0)) {
 			for (int i = 0; i < numPlayersAI; i++){
 				randNum = rand.nextInt(3) + 1;
-				if (randNum == 1) {this.playerList.add(new Strategy2());}
+				if (randNum == 1) {this.playerList.add(new Strategy1());}
 				if (randNum == 2) {this.playerList.add(new Strategy2());}
 				if (randNum == 3) {this.playerList.add(new Strategy3());}
-				//if (randNum == 4) {this.playerList.add(new Strategy4());}
+				if (randNum == 4) {this.playerList.add(new Strategy4());}
 			}
 		}
 	}

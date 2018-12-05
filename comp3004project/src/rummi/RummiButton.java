@@ -24,7 +24,7 @@ public class RummiButton extends Button implements Comparable<RummiButton>{
 	public int[] getPos() {
 		int[] pos = {xPos, yPos};
 		return pos;
-	}
+	} 
 	
 	public void setTile(Tile t) {
 		buttonTile = t;

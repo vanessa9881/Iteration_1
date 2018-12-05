@@ -13,7 +13,7 @@ public class Meld {
 		meldTiles = new ArrayList<Tile>();
 		meldTiles.add(initialTile);
 	}
-	
+	 
 	public boolean addRightside(Tile t) {
 		Tile endTile = meldTiles.get(meldTiles.size() - 1);
 

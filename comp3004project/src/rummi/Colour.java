@@ -21,7 +21,7 @@ public final class Colour {
       name = nameValue;
       symbol = symbolValue;
    }
-       
+        
    public String getName() {
        return name;
    }
