@@ -97,7 +97,7 @@ public class Board {
 	public void setBoard(Board b) {
 		
 		playerList = b.getPlayerList();
-		tileDeck = b.getDeckForMemento();
+		tileDeck = b.getDeck();
 		boardTiles = b.getBoardTiles();
 		handTiles = b.getHandTiles();
 		melds = b.getMelds();
@@ -308,10 +308,6 @@ public class Board {
 	//This returns all tiles in deck
 	public ArrayList<Tile> getDeckTiles() {
 		return tileDeck.getDeck();
-	}
-	
-	public Deck getDeckForMemento() {	//Redundant
-		return tileDeck;
 	}
 
 	public ArrayList<Meld> getMelds(){
