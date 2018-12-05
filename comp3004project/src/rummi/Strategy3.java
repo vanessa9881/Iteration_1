@@ -81,7 +81,6 @@ public class Strategy3 extends Player {
 				for (Tile t : this.hand) {
 					if (m.getTiles().get(0).equals(t) ==  false && 
 							(!(t.getColour().equals(Colour.JOKER)))) {
-						System.out.println("This is the tile being added to created meld: " + t);
 						m.addLeftside(t);
 						m.addRightside(t);
 					} else if (t.getColour().equals(Colour.JOKER)) {
@@ -116,9 +115,12 @@ public class Strategy3 extends Player {
 			
 			// find highest value meld from this
 			highMeld = highestMeld(allMelds);
+			System.out.println("This is the highest Meld: " + highMeld.getTiles());
 		
 			// Add highest melds to be played 
 			this.melds.add(highMeld);
+			
+			this.printMelds();
 			
 			// remove tiles that exist in meld from hand
 			for (int i = 0; i < highMeld.getSize(); i++) {
@@ -147,6 +149,7 @@ public class Strategy3 extends Player {
 				// Play all melds and wins 
 				for (int i = 0; i < melds.size(); i++) {
 					b.addHandMeld(melds.get(i));
+					b.addMeldToBoard(melds.get(i));
 				}
 				for (Meld m : melds) {
 					for (int i = 0; i < m.getSize(); i++) {
@@ -184,6 +187,7 @@ public class Strategy3 extends Player {
 				// Play all possible melds
 				for (int i = 0; i < melds.size(); i++) {
 					b.addHandMeld(melds.get(i));
+					b.addMeldToBoard(melds.get(i));
 				}
 				for (Meld m : melds) {
 					for (int i = 0; i < m.getSize(); i++) {
