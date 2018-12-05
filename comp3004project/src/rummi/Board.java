@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -59,8 +58,28 @@ public class Board {
     	}
     	
     	if (leftTile != null && rightTile != null) {
-    		// Can not put a tile BETWEEN TWO existing tiles!
-    		System.out.println("1");
+    		// Tile placed on the board between two existing melds
+    		Meld leftMeld = findMeld(leftTile);
+    		Meld rightMeld = findMeld(rightTile);
+    		
+    		if (leftMeld.addRightside(t)) {
+    			
+    			if(combineMeld(leftMeld, rightMeld)) {
+    				if (boardTiles.containsValue(t)) {
+    	    			removeBoardTile(t);
+    				}
+    				else {
+    					removeHandTile(t);
+    				}
+    				boardTiles.put(new Point(xpos, ypos), t);
+    				controller.updateView();
+    				return true;
+    			}
+    			else {
+    				leftMeld.removeFromMeld(t);
+    				return false;
+    			}
+    		}
     		return false;
     	}
     	
@@ -136,7 +155,43 @@ public class Board {
     	}
     }
     
-    public Meld findMeld(Tile t) {
+    private boolean combineMeld(Meld lMeld, Meld rMeld) {
+    	if (rMeld.getSize() == 1) {
+    		// Treat as if adding a tile to the end of the meld
+    		if (lMeld.addRightside(rMeld.getTiles().get(0))) {
+    			melds.remove(rMeld);
+    			return true;
+    		}
+    		return false;
+    	}
+    	
+    	else if (lMeld.checkRun() && rMeld.checkRun()) {
+			if (lMeld.getTiles().get(lMeld.getSize() - 1).getValue() == rMeld.getTiles().get(0).getValue() - 1) {
+				lMeld.combineMeld(rMeld);
+				melds.remove(rMeld);
+    			return true;
+			}
+			return false;
+		}
+		
+		else if (lMeld.checkGroup() && rMeld.checkGroup()){
+			if (lMeld.getValue() == rMeld.getValue()) {
+				for (Tile t : lMeld.getTiles()) {
+					for (Tile t2 : rMeld.getTiles()) {
+						if (t.getColour().getName().equals(t2)) {
+							return false;
+						}
+					}
+				}
+				lMeld.combineMeld(rMeld);
+				melds.remove(rMeld);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Meld findMeld(Tile t) {
     	Meld meldToAddTo = null;
 		for (Meld m : melds) {
 			if (m.getTiles().contains(t)) {

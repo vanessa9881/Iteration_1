@@ -1,7 +1,6 @@
 package rummi;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Meld {
 	
@@ -70,13 +69,18 @@ public class Meld {
 	
 	// Checks whether this meld is a group
 	public boolean checkGroup() {
+		if (meldTiles.size() == 1) {
+			// could be the start of a group with only 1 tile
+			return true;
+		}
+		
 		// Check if all tiles have the same value
 		int groupValue = meldTiles.get(0).getValue();
 		for (Tile t : meldTiles) {
 			if (t.getValue() != groupValue) {return false;}
 			// Check if tiles all have the different colours
 			for (Tile t2 : meldTiles) {
-				if (t.getColour().getName().equals(t2.getColour().getName())) {return false;}
+				if (!t.equals(t2) && t.getColour().getName().equals(t2.getColour().getName())) {return false;}
 			}	
 		}
 		return true;
@@ -84,7 +88,12 @@ public class Meld {
 	
 	// Checks whether this meld is a run
 	public boolean checkRun() {		
-		// Check if tiles are the same colour
+		if (meldTiles.size() == 1) {
+			// could be the start of a run with only 1 tile
+			return true;
+		}
+		
+		// Check if tiles are the same colour		
 		String col = meldTiles.get(0).getColour().getName();
 		for (Tile t : meldTiles) {
 			if (t.getColour().getName().equals(col)) {return false;}	
@@ -180,6 +189,12 @@ public class Meld {
 	// Function for obtaining the meld 
 	public ArrayList<Tile> getTiles(){
 		return this.meldTiles;
+	}
+
+	public void combineMeld(Meld rMeld) {
+		for (Tile t : rMeld.getTiles()) {
+			meldTiles.add(t);
+		}
 	}
 	
 }
