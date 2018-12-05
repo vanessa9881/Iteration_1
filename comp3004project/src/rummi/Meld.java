@@ -310,5 +310,82 @@ public class Meld {
 	public void printMeld() {
 		System.out.println(this.getTiles());
 	}
+
+	// Used for setting the joker within a meld
+	// after a third tile has been added to it
+	// i at 0 means leftside add, i at 1 means rightside add
+	public boolean setMeld(Tile t, int i) {
+		// Get index of non joker tile
+		int nonJokeIndex;
+		if (meldTiles.get(0).getID() > 9) {
+			nonJokeIndex = 1;
+		}
+		else {
+			nonJokeIndex = 0;
+		}
+		
+		if (i == 0) {
+			if (meldTiles.get(nonJokeIndex).getValue() == t.getValue()) {
+				// player intends for the meld to be a group
+				if (t.getColour().getName().equals(meldTiles.get(nonJokeIndex).getColour().getName())) {
+					return false;
+				}
+				if (nonJokeIndex == 1) {
+					meldTiles.get(0).setJokerValue(meldTiles.get(nonJokeIndex).getValue());
+				}
+				else {
+					meldTiles.get(1).setJokerValue(meldTiles.get(nonJokeIndex).getValue());	
+				}
+				meldTiles.add(0, t);
+				return true;
+			}
+			else if (t.getColour().getName().equals(meldTiles.get(nonJokeIndex).getColour().getName())) {
+				// player intends for meld to be a run
+				if (nonJokeIndex == 0 && t.getValue() > 0 && t.getValue() + 1 == meldTiles.get(nonJokeIndex).getValue()) {
+					meldTiles.get(1).setJokerValue(t.getValue() + 2);
+					meldTiles.add(0, t);
+					return true;
+				}
+				else if (nonJokeIndex == 1 && t.getValue() - 2 > 0 && t.getValue() + 2 == meldTiles.get(nonJokeIndex).getValue()) {
+					meldTiles.get(0).setJokerValue(t.getValue() + 1);
+					meldTiles.add(0, t);
+					return true;
+				}
+				return false;
+			}
+		}
+		
+		if (i == 1) {
+			if (meldTiles.get(nonJokeIndex).getValue() == t.getValue()) {
+				// player intends for the meld to be a group
+				if (t.getColour().getName().equals(meldTiles.get(nonJokeIndex).getColour().getName())) {
+					return false;
+				}
+				if (nonJokeIndex == 1) {
+					meldTiles.get(0).setJokerValue(meldTiles.get(nonJokeIndex).getValue());
+				}
+				else {
+					meldTiles.get(1).setJokerValue(meldTiles.get(nonJokeIndex).getValue());	
+				}
+				meldTiles.add(t);
+				return true;
+			}
+			else if (t.getColour().getName().equals(meldTiles.get(nonJokeIndex).getColour().getName())) {
+				// player intends for meld to be a run
+				if (nonJokeIndex == 0 && t.getValue() + 2 < 14 && t.getValue() - 2 == meldTiles.get(nonJokeIndex).getValue()) {
+					meldTiles.add(t);
+					meldTiles.get(1).setJokerValue(t.getValue() - 1);
+					return true;
+				}
+				else if (nonJokeIndex == 1 && t.getValue() > 0 && t.getValue() + 2 == meldTiles.get(nonJokeIndex).getValue()) {
+					meldTiles.add(t);
+					meldTiles.get(0).setJokerValue(meldTiles.get(nonJokeIndex).getValue() - 1);
+					return true;
+				}
+				return false;
+			}
+		}
+		return false;
+	}
 	
 }

@@ -33,17 +33,10 @@ public class Board {
     			boardTiles.put(new Point(x,y), null);
     		}
     	}
-    	/*
-		Meld tempMeld = new Meld(0);
-		tempMeld.addToMeld(new Tile(new Colour("Yellow", "y"), new Number("Five", "5"),new Image("file:resources/5y.gif")));
-		tempMeld.addToMeld(new Tile(new Colour("Red", "r"), new Number("Five", "5"),new Image("file:resources/5r.gif")));
-		tempMeld.addToMeld(new Tile(new Colour("Black", "b"), new Number("Five", "5"),new Image("file:resources/5b.gif")));
-		melds.add(tempMeld);
     	// Board looks like this:
     	// [1,1] [1,2] [1,3] [1,4] [1,5] [1,6] [1,7] [1,8] [1,9] [1,10] [1,11] [1,12] ...
     	// [2,1] [2,2] [2,3] [2,4] [2,5] [2,6] [2,7] [2,8] [2,9] [2,10] [2,11] [2,12] ...
     	// etc
-    	 */
     }
     
     public Boolean checkBoardState() {
@@ -90,12 +83,9 @@ public class Board {
 	    	melds.add(n);
     	}
     	
-    	
     	//Deep copy for playerList object
     	playerList = new ArrayList<Player>();
-   
-    }
-    
+    } 
 
 	public void setBoard(Board b) {
 		
@@ -233,8 +223,17 @@ public class Board {
     		
     		if(leftTile.getID() > 9) {
     			// First tile of meld to add to is a joker
-    			
-    			
+    			if (findMeld(leftTile).getSize() == 2) {
+    				// Just the joker and another tile in the meld
+    				// Can change the joker's value now to reflect the newly
+    				// added tile
+    				if(findMeld(leftTile).setMeld(t, 0)) {
+    					boardTiles.put(new Point(xpos, ypos), t);
+    	    			controller.updateView();
+    					return true;
+    				}
+    				return false;
+    			}
     		}
     		
     		Meld meldToAddTo = findMeld(leftTile);
@@ -279,6 +278,21 @@ public class Board {
     			boardTiles.put(new Point(xpos, ypos), t);
     			controller.updateView();
     			return true;
+    		}
+    		
+    		if(rightTile.getID() > 9) {
+    			// First tile of meld to add to is a joker
+    			if (findMeld(rightTile).getSize() == 2) {
+    				// Just the joker and another tile in the meld
+    				// Can change the joker's value now to reflect the newly
+    				// added tile
+    				if(findMeld(rightTile).setMeld(t, 1)) {
+    					boardTiles.put(new Point(xpos, ypos), t);
+    	    			controller.updateView();
+    					return true;
+    				}
+    				return false;
+    			}
     		}
     		
     		Meld meldToAddTo = findMeld(rightTile);
