@@ -321,6 +321,7 @@ public class BoardView {
     		                System.out.println(interval);
     		                interval--;
     		            } else {
+
     		            	//Time is up, Check valid State of Board, if valid reset timer and go to the next player turn (If ai, disable timer)
     		            	//If human player start timer again. 
     		            	//********************************************************End Turn*****************************************************************************************************
@@ -341,6 +342,7 @@ public class BoardView {
     		}
     		
     	};
+    	
 
     
     EventHandler<ActionEvent> handButtonPress = new EventHandler<ActionEvent>() {
@@ -454,6 +456,7 @@ public class BoardView {
     	int index = 0;
     	for (Tile t : handTiles) {
     		if (index > 64) {
+    			//Make draw tile disabled
     			System.out.print("Error, can't have more than 64 tiles in hand");
     			controller.returnBoard().getDeck().addTile(t);
     			handTiles.remove(t);

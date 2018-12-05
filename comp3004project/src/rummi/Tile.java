@@ -10,7 +10,7 @@ public class Tile {
 	private Number number;
 	private Colour colour;
 	private Image tileImage;
-	private int tileID;
+	private static int tileID;
 	
 	public Tile(Colour c,Number i, Image t) {
 		number = i;
@@ -31,6 +31,9 @@ public class Tile {
 	
 
 	public static String getFilename(Colour colour, Number number) {
+		if(tileID >9) {
+			return "file:resources/joker.gif"; 
+		}
 	   return "file:resources/"+number.getSymbol() + colour.getSymbol() + ".gif";   
 	}
 	
