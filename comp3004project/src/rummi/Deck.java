@@ -32,9 +32,11 @@ public class Deck {
 					}
 				}
 			}
-				Tile joker = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
-				addTile(joker);
-				addTile(joker);
+				Tile joker1 = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
+				Tile joker2 = new Tile(Colour.JOKER, new Image("file:resources/joker.gif"));
+				joker2.setID(11);
+				addTile(joker1);
+				addTile(joker2);
 				
 			shuffle(); 
 		} 
